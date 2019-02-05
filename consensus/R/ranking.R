@@ -72,7 +72,7 @@ ranking <- function(v, n = NULL, decreasing = FALSE) {
     i <- i + 1
   }
 
-  class(ranking) <- "ranking"
+  class(ranking) <- c("ranking", "numeric")
 
   return(ranking)
 }
@@ -97,9 +97,12 @@ print.ranking <- function(ranking) {
   }
 
   cat(gr, "\n")
-  return(ranking)
+  #NextMethod() # for calling the print of the next class which is the vector
+  return(gr)
 }
 
 default.ranking <- function(ranking) {
-
+  stop("Error: method not defined for the class ranking")
 }
+
+is.ranking <- function(x) inherits(x, "ranking")
