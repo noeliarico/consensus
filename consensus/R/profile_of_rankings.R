@@ -157,6 +157,10 @@ print.por <- function(profileOfRankings) {
 
 split_profile_of_rankings <- function(profileOfRankings) {
 
+  if(!is.por(profileOfRankings) || !is.data.frame(profileOfRankings)) {
+    stop("The profile of rankings must belong to the classes por and data.frame")
+  }
+
   # Get the votes for each ranking
   votes <- profileOfRankings$numberOfVoters
 
