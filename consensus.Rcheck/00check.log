@@ -1,7 +1,8 @@
-* using log directory ‘/Users/noeliarico/Desktop/Tesis/consensus/consensus/consensus.Rcheck’
+* using log directory ‘/Users/noeliarico/Desktop/Github/consensus/consensus.Rcheck’
 * using R version 3.5.2 (2018-12-20)
 * using platform: x86_64-apple-darwin15.6.0 (64-bit)
 * using session charset: UTF-8
+* using options ‘--no-manual --as-cran’
 * checking for file ‘consensus/DESCRIPTION’ ... OK
 * checking extension type ... Package
 * this is package ‘consensus’ version ‘0.1.0’
@@ -14,14 +15,18 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
+* checking serialization versions ... OK
 * checking whether package ‘consensus’ can be installed ... OK
 * checking installed package size ... OK
 * checking package directory ... OK
+* checking ‘build’ directory ... OK
 * checking DESCRIPTION meta-information ... WARNING
 Non-standard license specification:
   What license is it under?
 Standardizable: FALSE
-* checking top-level files ... OK
+* checking top-level files ... NOTE
+Non-standard files/directories found at top level:
+  ‘README.Rmd’ ‘README_files’
 * checking for left-over files ... OK
 * checking index information ... OK
 * checking package subdirectories ... OK
@@ -32,25 +37,61 @@ Standardizable: FALSE
 * checking whether the package can be unloaded cleanly ... OK
 * checking whether the namespace can be loaded with stated dependencies ... OK
 * checking whether the namespace can be unloaded cleanly ... OK
-* checking loading without being on the library search path ... OK
 * checking dependencies in R code ... OK
 * checking S3 generic/method consistency ... WARNING
 print:
   function(x, ...)
+print.por:
+  function(profileOfRankings)
+
+print:
+  function(x, ...)
 print.ranking:
-  function(x)
+  function(ranking)
 
 See section ‘Generic functions and methods’ in the ‘Writing R
 Extensions’ manual.
+
+Found the following apparent S3 methods exported but not registered:
+  print.por print.ranking
+See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+manual.
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... OK
+* checking R code for possible problems ... NOTE
+calculate_distances: no visible binding for global variable ‘por’
+calculate_distances: no visible binding for global variable ‘rows_test’
+calculate_distances: no visible binding for global variable ‘developer’
+calculate_distances: no visible global function definition for ‘dist’
+parse_ranking: no visible global function definition for
+  ‘str_replace_all’
+profile_of_rankings: no visible global function definition for
+  ‘translate.matrix’
+ranking_distances: no visible binding for global variable
+  ‘distance_values’
+ranking_distances: no visible binding for global variable ‘developer’
+ranking_distances : <anonymous>: no visible binding for global variable
+  ‘dist_index’
+ranking_distances: no visible global function definition for
+  ‘graphic_profile_of_rankings’
+read_rankings: no visible global function definition for ‘%>%’
+Undefined global functions or variables:
+  %>% developer dist dist_index distance_values
+  graphic_profile_of_rankings por rows_test str_replace_all
+  translate.matrix
+Consider adding
+  importFrom("stats", "dist")
+to your NAMESPACE file.
 * checking Rd files ... OK
 * checking Rd metadata ... OK
+* checking Rd line widths ... OK
 * checking Rd cross-references ... OK
 * checking for missing documentation entries ... WARNING
 Undocumented code objects:
-  ‘as_ranking’ ‘print.ranking’
+  ‘as_ranking’ ‘borda_count’ ‘calculatePoints’ ‘calculate_distances’
+  ‘default.ranking’ ‘is.por’ ‘is.ranking’ ‘parse_ranking’ ‘print.por’
+  ‘print.ranking’ ‘ranking’ ‘ranking_distances’ ‘read_rankings’ ‘s’
+  ‘scoring’ ‘split_profile_of_rankings’ ‘two’ ‘veto’
 All user-level objects in a package should have documentation entries.
 See chapter ‘Writing R documentation files’ in the ‘Writing R
 Extensions’ manual.
@@ -58,13 +99,24 @@ Extensions’ manual.
 Functions or methods with usage in documentation object 'hello' but not in code:
   hello
 
-* checking Rd \usage sections ... OK
+* checking Rd \usage sections ... WARNING
+Undocumented arguments in documentation object 'plurality'
+  ‘verbose’
+
+Functions with \usage entries need to have the appropriate \alias
+entries, and all their arguments documented.
+The \usage entries must correspond to syntactically valid R code.
+See chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
 * checking Rd contents ... OK
 * checking for unstated dependencies in examples ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
 * checking examples ... ERROR
 Running examples in ‘consensus-Ex.R’ failed
 The error most likely occurred in:
 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: hello
 > ### Title: Hello, World!
 > ### Aliases: hello
@@ -74,10 +126,11 @@ The error most likely occurred in:
 > hello()
 Error in hello() : could not find function "hello"
 Execution halted
-* checking PDF version of manual ... WARNING
-LaTeX errors when creating PDF version.
-This typically indicates Rd problems.
-* checking PDF version of manual without hyperrefs or index ... ERROR
-Re-running with no redirection of stdout/stderr.
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking re-building of vignette outputs ... OK
 * DONE
-Status: 2 ERRORs, 5 WARNINGs
+Status: 1 ERROR, 5 WARNINGs, 2 NOTEs

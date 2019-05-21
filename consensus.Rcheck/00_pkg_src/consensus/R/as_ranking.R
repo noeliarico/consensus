@@ -35,10 +35,10 @@ as_ranking <- function(v, decreasing = FALSE) {
       }
 
     }
-     else { # it can't be less cause they're ordered so this means it's equal
-       if(this_elem > previous_elem) {
-         pos_ranking <- pos_ranking + 1
-       }
+    else { # it can't be less cause they're ordered so this means it's equal
+      if(this_elem > previous_elem) {
+        pos_ranking <- pos_ranking + 1
+      }
     }
     ordv[index] <- pos_ranking
     previous_elem <- v[index]
@@ -57,8 +57,6 @@ as_ranking <- function(v, decreasing = FALSE) {
     ranking[elem] <- ordv[i]
     i <- i + 1
   }
-
-  class(ranking) <- "ranking"
 
   # print('the rankings is')
   # print(ranking)

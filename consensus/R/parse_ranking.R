@@ -19,5 +19,5 @@ parse_ranking <- function(string) {
     }
 
   }
-  return(ranking)
+  return(ranking(ranking))
 }

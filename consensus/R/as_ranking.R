@@ -3,22 +3,22 @@ as_ranking <- function(v, decreasing = FALSE) {
   # print('ranking for')
   # print(v)
 
-  # si el vector tiene nombres los utilizo
+  # if the vector already has names, these names are used as the candidates
   if(!is.null(names(v))) {
     candidates <- names(v)
   }
-  # si el vector no tiene nombres los creo
+  # otherwise, creates the names for the candidates
   else {
     candidates <- as.character(1:length(v))
+    names(v) <- candidates
   }
 
-  names(v) <- candidates
 
-  # Creo el vector que será el ranking
+  # Create the vector that will store the ranking
   ranking <- rep(0, length(v))
   names(ranking) <- candidates
 
-  # Ordenar el vector de mayor a menor
+  # Sort the vector, default higher to lower
   v <- sort(v, decreasing = decreasing)
 
   ordv <- rep(0, length(v))
