@@ -1,65 +1,48 @@
-#' @export
-#'
-#' @title Plurality (first-past-the-post) ranking rule
-#'
-#' @description Candidates are ranked according to the number of voters that
-#' considered this candidate their preferred option. It leads to a ranking rule
-#' where only the main choice of each voter is taken into account.
-#'
-#' @param profileOfRankings The profile of ranking where the ranking rule is applied
-#'
-#' @keywords ranking rule, plurality
-#'
-#' @return The graphic representation of the ranking obtained after applying
-#' plurality to the profile of rankings received as parameter
-#'
-#' # Create a profile of rankings
-#' profileOfRankings <- profile.of.rankings(candidates = c('a','b','c','d'))
-#' profileOfRankings <- add.ranking(profileOfRankings, c('c','b','a','d'), votes = 6)
-#' profileOfRankings <- add.ranking(profileOfRankings, c('a','d','b','c'), votes = 5)
-#' profileOfRankings <- add.ranking(profileOfRankings, c('b','a','d','c'), votes = 3)
-#'
-#' # Calculate the ranking
-#' plurality(profileOfRankings)
-#'
-#' @export
-plurality <- function(profileOfRankings, verbose = FALSE) {
+scoring <- function(profileOfRankings, method = NULL, ones = 0, verbose = FALSE) {
+
+  if(verbose) {
+    cat('Executing a scoring ranking rule...\n')
+  }
+
+  attname <- deparse(substitute(profileOfRankings))
 
   # Split votes and rankings
   splittedPOF <- split_profile_of_rankings(profileOfRankings)
-  # Get the votes
+  # Get votes
   votes <- splittedPOF$votes
-  # Get the rankings
+  # Get rankings
   profileOfRankings <- splittedPOF$rankings
   # Get the candidates
   candidates <- splittedPOF$candidates
 
-  # Empty vector to fill to calculate the final solution
-  # the name of each element is the name of one of the candidates
-  # in the order given in the profile of rankings
-  # Initially, all values will be 0 but during the function this vector will
-  # store the number of voters that consider each of the elements the best
+  # Result vectors
   v <- vector(length = ncol(profileOfRankings))
   names(v) <- names(profileOfRankings)
 
-  # For each row of the profile of rankings, this is, for each ranking
-  # Take the elements (plural cause there could be ties) in the first position
-  # and in the vector of results sum the number of voters of that ranking to
-  # this/those element
-  for(i in 1:nrow(profileOfRankings)) { # for each ranking of the profile
-    numVotersRow <- votes[i] # get how many voters have voted that ranking
-    # get the candidates that are in the first position of that ranking
-    indexesBestCandidates <- which(profileOfRankings[i,] == 1)
-    # increment the number of voters that voted that candidate in first position
-    v[indexesBestCandidates] <- v[indexesBestCandidates] + (numVotersRow * 1/length(indexesBestCandidates))
+  # For each ranking in the profile of rankings
+  for(i in 1:nrow(profileOfRankings)) {
+    numVotersRow <- votes[i]
+    ranking <- profileOfRankings[i,]
+
+    p <- calculatePoints(ranking, method, ones)
+    v <- v + (numVotersRow * p)
+
+    if(verbose) {
+      cat("-> The points for this ranking\n")
+      print(p)
+      cat("-> This ranking has ",numVotersRow," voters\n")
+      cat("-> The current value of the total points is:")
+      print(v)
+    }
+
   }
 
-  # At this point, v is a vector with the names of the candidate and for
-  # each candidate it stores the number of voters that consider that candidate
-  # the best
-
   v <- sort(v, decreasing = TRUE) # sort v from more votes to less
-  gr <- names(v)[1] # graphic ranking
+  if(verbose) {
+    print(paste('Points rewarded by each candidate of the profile of rankings', "'", attname, "'"))
+    print(v)
+    print('Ranking:')
+  }
 
   # vector that will store the final ranking
   ranking <- rep(0, length(candidates))
@@ -69,7 +52,7 @@ plurality <- function(profileOfRankings, verbose = FALSE) {
 
   for(i in 1:(length(v)-1)) {
 
-    # gr
+
     thisElem <- v[i]
     nextElem <- v[i+1]
 
@@ -78,26 +61,99 @@ plurality <- function(profileOfRankings, verbose = FALSE) {
     ranking[index_of_candidate] <- pos
 
     if(thisElem > nextElem) {
-      gr <- paste(gr, '>',names(v)[i+1])
       pos <- pos + 1
     }
-    else { # this means the two rankings are equals
-      gr <- paste(gr, '~',names(v)[i+1])
-    }
+    # else, nothing -> this means the two rankings are equals
+    # so it's not necessary increment the position cause it will be tied
+    # with the previous element
+
   }
 
-  # the last position isn't evaluated in the loop
   ranking[which(candidates == names(v)[i+1])] <- pos
 
-  if(verbose == TRUE) {
-   
-    
-    cat("The points for each candidate are:\n")
-    print(v)
-    cat("The ranking obtained by plurality is:\n")
-    cat(gr, "\n")
-  }
+  return(ranking(ranking))
 
-  return(ranking)
+}
 
+calculatePoints <- function(ranking, method = NULL, ones = 0, verbose = F) {
+
+  switch(method,
+
+         plurality = {
+           points <- as.integer(ranking == 1)
+           return(points)
+         },
+
+         veto = {
+           last_pos <- max(ranking)
+           points <- as.integer(ranking == last_pos)
+           return(points)
+         },
+
+         ones = {
+           points <- as.integer(ranking %in% 1:ones)
+           print(ones)
+           print(points)
+           return(points)
+         },
+
+         borda = {
+
+           # number of different positions in the rankings
+           n_of_candidates <- length(ranking)
+           max_pos <- max(ranking)
+
+           if(n_of_candidates == max_pos) {
+             # the same result would be achieve with the following code
+             # but here the operation is vectorized so execution time decreases
+             if(verbose)
+               cat("No ties for this ranking\n")
+             return(n_of_candidates - ranking)
+           }
+
+           # vector that will store the puntuation for each category
+           points_by_pos <- rep(-1, max_pos)
+
+           # for each category...
+           for(i in 1:max_pos) {
+             max_interval <- n_of_candidates - 1 - sum(ranking < i)
+             min_interval <- max_interval - (sum(ranking == i) - 1)
+             points_by_pos[i] <- (max_interval+min_interval)/2
+           }
+
+           points_for_each_candidate <- ranking
+           points_for_each_candidate <- sapply(ranking,
+                                               function(x) {points_by_pos[x]})
+
+           if(verbose) {
+             cat("The points for the ranking...\n")
+             print(ranking)
+             cat("...are:\n")
+             print(points_for_each_candidate)
+           }
+         },
+
+         {
+           stop(paste(method, "is not a valid scoring ranking rule"))
+         }
+
+  )
+
+  return(points_for_each_candidate)
+}
+
+plurality <- function(profileOfRankings, verbose = FALSE) {
+  scoring(profileOfRankings, "plurality")
+}
+
+veto <- function(profileOfRankings, verbose = FALSE) {
+  scoring(profileOfRankings, "veto")
+}
+
+two <- function(profileOfRankings, verbose = FALSE) {
+  scoring(profileOfRankings, "ones", ones = 2)
+}
+
+borda_count <- function(profileOfRankings, verbose = FALSE) {
+  scoring(profileOfRankings, "borda")
 }
