@@ -5,6 +5,8 @@ date: "21/5/2019"
 output: github_document
 ---
 
+Added from RStudio
+
 Documentation of the package
 
 ```{r setup, include=FALSE}
