@@ -36,7 +36,6 @@
 #'  'd','a','c','b'),
 #' candidates = c('a','b','c','d'))
 #'
-
 profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
                                 candidates = NULL, ties = NULL) {
 

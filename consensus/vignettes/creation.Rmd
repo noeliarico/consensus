@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(consensus)
+#library(stringr)
 ```
 
 Representation of a ranking:
@@ -30,9 +31,9 @@ b > a ~ c ~ e > d
 ```
 
 ```{r}
-the_ranking <- "a > b ~ c > d > e"
-the_ranking <- parse_ranking(the_ranking)
-class(the_ranking)
-print.default(the_ranking)
+# the_ranking <- "a > b ~ c > d > e"
+# the_ranking <- parse_ranking(the_ranking)
+# class(the_ranking)
+# print.default(the_ranking)
 ```
 

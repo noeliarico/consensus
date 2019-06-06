@@ -1,4 +1,22 @@
-scoring <- function(profileOfRankings, method = NULL, ones = 0, verbose = FALSE) {
+#' Scoring ranking rules
+#'
+#' @param profileOfRankings object of the class profile of rankings
+#' @param method
+#' \itemize{
+##'  \item{"plurality"}{Stuff}
+##'  \item{"borda"}{Stuff}
+##'  \item{"ones"}{Stuff}
+##' }
+#' @param ones only necessary when the \code{method} choosen is
+#' @param verbose by default FALSE. Change to TRUE for seeing on the screen
+#'                the workflow of the function
+#'
+#' @return the ranking generated after applying the ranking rule
+#'
+#' @examples
+#'
+#'
+scoring <- function(profileOfRankings, method = NULL, ones = 1, verbose = FALSE) {
 
   if(verbose) {
     cat('Executing a scoring ranking rule...\n')
@@ -51,7 +69,6 @@ scoring <- function(profileOfRankings, method = NULL, ones = 0, verbose = FALSE)
   pos <- 1 # position in the ranking
 
   for(i in 1:(length(v)-1)) {
-
 
     thisElem <- v[i]
     nextElem <- v[i+1]

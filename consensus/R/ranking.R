@@ -1,3 +1,4 @@
+#' @export
 ranking <- function(v, n = NULL, decreasing = FALSE) {
 
   # if it is a vector value, the method use those names as candidates

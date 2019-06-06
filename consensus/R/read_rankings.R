@@ -1,3 +1,4 @@
+#' @export
 read_rankings <- function(file_path, verbose = FALSE) {
   conn <- file(file_path,open="r")
   lines <- readLines(conn)
