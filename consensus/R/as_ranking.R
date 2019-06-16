@@ -1,10 +1,9 @@
-#' as_ranking
+#' to be deleteD: as_ranking
 #'
 #' @param v
 #' @param decreasing
 #'
 #' @return
-#' @export
 #'
 #' @examples
 as_ranking <- function(v, decreasing = FALSE) {
@@ -66,6 +65,8 @@ as_ranking <- function(v, decreasing = FALSE) {
     ranking[elem] <- ordv[i]
     i <- i + 1
   }
+
+  class(ranking) <- c("ranking", "numeric")
 
   # print('the rankings is')
   # print(ranking)
