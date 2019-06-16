@@ -1,3 +1,12 @@
+#' as_ranking
+#'
+#' @param v
+#' @param decreasing
+#'
+#' @return
+#' @export
+#'
+#' @examples
 as_ranking <- function(v, decreasing = FALSE) {
 
   # print('ranking for')

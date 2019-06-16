@@ -159,18 +159,68 @@ calculatePoints <- function(ranking, method = NULL, ones = 0, verbose = F) {
   return(points_for_each_candidate)
 }
 
+
+#' Title
+#'
+#' @param profileOfRankings
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
 plurality <- function(profileOfRankings, verbose = FALSE) {
   scoring(profileOfRankings, "plurality")
 }
 
+#' Title
+#'
+#' @param profileOfRankings
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
 veto <- function(profileOfRankings, verbose = FALSE) {
   scoring(profileOfRankings, "veto")
 }
 
+#' Title
+#'
+#' @param profileOfRankings
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
 two <- function(profileOfRankings, verbose = FALSE) {
   scoring(profileOfRankings, "ones", ones = 2)
 }
 
+#' Title
+#'
+#' @param profileOfRankings
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
+three <- function(profileOfRankings, verbose = FALSE) {
+  scoring(profileOfRankings, "ones", ones = 2)
+}
+
+#' Title
+#'
+#' @param profileOfRankings
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
 borda_count <- function(profileOfRankings, verbose = FALSE) {
   scoring(profileOfRankings, "borda")
 }
