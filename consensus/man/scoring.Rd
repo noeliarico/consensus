@@ -17,12 +17,16 @@ scoring(profileOfRankings, method = NULL, ones = 1, verbose = FALSE)
 
 \item{ones}{only necessary when the \code{method} choosen is}
 
-\item{verbose}{by default FALSE. Change to TURN for seeing on the screen
+\item{verbose}{by default FALSE. Change to TRUE for seeing on the screen
 the workflow of the function}
 }
 \value{
-
+the ranking generated after applying the ranking rule
 }
 \description{
 Scoring ranking rules
+}
+\examples{
+
+
 }
