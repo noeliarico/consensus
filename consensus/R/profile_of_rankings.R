@@ -130,6 +130,7 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
 
 is.por <- function(x) inherits(x, "por")
 
+#' @export
 print.por <- function(profileOfRankings) {
 
   # Matrix that stores the number of votters of each ranking

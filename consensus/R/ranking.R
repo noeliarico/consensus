@@ -80,6 +80,7 @@ ranking <- function(v, n = NULL, decreasing = FALSE) {
 
 
 # Generic methods for the class ranking
+#' @export
 print.ranking <- function(ranking) {
   ranking <- sort(ranking)
 
