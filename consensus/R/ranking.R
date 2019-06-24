@@ -7,7 +7,7 @@ ranking <- function(v, n = NULL, decreasing = FALSE) {
     candidates <- names(v)
     # all the candidates must have a different name
     if(length(unique(candidates)) != length(candidates)) {
-      warning("The name of each candidate must be unique")
+      stop("The name of each candidate must be unique")
     }
   }
   # if we get to this condition then that means that names(v) is null,
