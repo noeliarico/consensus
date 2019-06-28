@@ -209,7 +209,33 @@ two <- function(profileOfRankings, verbose = FALSE) {
 #'
 #' @examples
 three <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "ones", ones = 2)
+  scoring(profileOfRankings, "ones", ones = 3)
+}
+
+#' Title
+#'
+#' @param profileOfRankings
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
+five <- function(profileOfRankings, verbose = FALSE) {
+  scoring(profileOfRankings, "ones", ones = 5)
+}
+
+#' Title
+#'
+#' @param profileOfRankings
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
+five <- function(profileOfRankings, verbose = FALSE) {
+  scoring(profileOfRankings, "seven", ones = 7)
 }
 
 #' Title
