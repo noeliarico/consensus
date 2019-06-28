@@ -234,8 +234,8 @@ five <- function(profileOfRankings, verbose = FALSE) {
 #' @export
 #'
 #' @examples
-five <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "seven", ones = 7)
+seven <- function(profileOfRankings, verbose = FALSE) {
+  scoring(profileOfRankings, "ones", ones = 7)
 }
 
 #' Title
