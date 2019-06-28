@@ -2,13 +2,16 @@
 % Please edit documentation in R/as_ranking.R
 \name{as_ranking}
 \alias{as_ranking}
-\title{as_ranking}
+\title{to be deleteD: as_ranking}
 \usage{
 as_ranking(v, decreasing = FALSE)
 }
 \arguments{
 \item{decreasing}{}
 }
+\value{
+
+}
 \description{
-as_ranking
+to be deleteD: as_ranking
 }
