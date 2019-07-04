@@ -42,7 +42,7 @@ scoring <- function(profileOfRankings, method = NULL, ones = 1, verbose = FALSE)
     numVotersRow <- votes[i]
     ranking <- profileOfRankings[i,]
 
-    p <- calculatePoints(ranking, method, ones)
+    p <- calculatePoints(ranking, method, ones, verbose)
     v <- v + (numVotersRow * p)
 
     if(verbose) {
@@ -98,20 +98,24 @@ calculatePoints <- function(ranking, method = NULL, ones = 0, verbose = F) {
 
          plurality = {
            points <- as.integer(ranking == 1)
-           return(points)
+           total <- sum(ranking == 1)
+           if(verbose) print(points/total)
+           return(points/total)
          },
 
          veto = {
            last_pos <- max(ranking)
            points <- as.integer(ranking == last_pos)
-           return(points)
+           total <- sum(ranking == last_pos)
+           if(verbose) print(points/total)
+           return(points/total)
          },
 
          ones = {
            points <- as.integer(ranking %in% 1:ones)
-           print(ones)
-           print(points)
-           return(points)
+           total <- sum(ranking %in% 1:ones)
+           if(verbose) print(points/total)
+           return(points/total)
          },
 
          borda = {
@@ -170,7 +174,7 @@ calculatePoints <- function(ranking, method = NULL, ones = 0, verbose = F) {
 #'
 #' @examples
 plurality <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "plurality")
+  scoring(profileOfRankings, "plurality", verbose = verbose)
 }
 
 #' Title
@@ -183,7 +187,7 @@ plurality <- function(profileOfRankings, verbose = FALSE) {
 #'
 #' @examples
 veto <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "veto")
+  scoring(profileOfRankings, "veto", verbose = verbose)
 }
 
 #' Title
@@ -196,7 +200,7 @@ veto <- function(profileOfRankings, verbose = FALSE) {
 #'
 #' @examples
 two <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "ones", ones = 2)
+  scoring(profileOfRankings, "ones", ones = 2, verbose = verbose)
 }
 
 #' Title
@@ -209,7 +213,7 @@ two <- function(profileOfRankings, verbose = FALSE) {
 #'
 #' @examples
 three <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "ones", ones = 3)
+  scoring(profileOfRankings, "ones", ones = 3, verbose = verbose)
 }
 
 #' Title
@@ -222,7 +226,7 @@ three <- function(profileOfRankings, verbose = FALSE) {
 #'
 #' @examples
 five <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "ones", ones = 5)
+  scoring(profileOfRankings, "ones", ones = 5, verbose = verbose)
 }
 
 #' Title
@@ -235,7 +239,7 @@ five <- function(profileOfRankings, verbose = FALSE) {
 #'
 #' @examples
 seven <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "ones", ones = 7)
+  scoring(profileOfRankings, "ones", ones = 7, verbose = verbose)
 }
 
 #' Title
@@ -248,5 +252,5 @@ seven <- function(profileOfRankings, verbose = FALSE) {
 #'
 #' @examples
 borda_count <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "borda")
+  scoring(profileOfRankings, "borda", verbose = verbose)
 }
