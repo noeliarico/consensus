@@ -114,7 +114,7 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
 
          t = {
 
-           if(t>=length(ranking)) {
+           if(t >= length(ranking)) {
              if(seePoints) print(rep(1, length(ranking)))
              return(rep(1, length(ranking)))
            }
@@ -129,7 +129,7 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
                }
                else {
                  real_pos <- num_of_better_candidates <- sum(ranking < i) + 1
-                 points[ranking == i] <- (t - real_pos + 1)/(candidates_in_pos_i+1)
+                 points[ranking == i] <- (t - real_pos + 1)/(candidates_in_pos_i)
                }
                num_of_rewarded_candidates <- num_of_rewarded_candidates + candidates_in_pos_i
                i <- i+1
