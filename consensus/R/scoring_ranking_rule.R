@@ -5,9 +5,9 @@
 #' \itemize{
 ##'  \item{"plurality"}{Stuff}
 ##'  \item{"borda"}{Stuff}
-##'  \item{"ones"}{Stuff}
+##'  \item{"t"}{Stuff}
 ##' }
-#' @param ones only necessary when the \code{method} choosen is
+#' @param t only necessary when the \code{method} choosen is
 #' @param verbose by default FALSE. Change to TRUE for seeing on the screen
 #'                the workflow of the function
 #'
@@ -16,7 +16,7 @@
 #' @examples
 #'
 #'
-scoring <- function(profileOfRankings, method = NULL, ones = 1, verbose = FALSE) {
+scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, seePoints = FALSE) {
 
   if(verbose) {
     cat('Executing a scoring ranking rule...\n')
@@ -42,7 +42,7 @@ scoring <- function(profileOfRankings, method = NULL, ones = 1, verbose = FALSE)
     numVotersRow <- votes[i]
     ranking <- profileOfRankings[i,]
 
-    p <- calculatePoints(ranking, method, ones, verbose)
+    p <- calculatePoints(ranking, method, t, verbose, seePoints)
     v <- v + (numVotersRow * p)
 
     if(verbose) {
@@ -92,7 +92,7 @@ scoring <- function(profileOfRankings, method = NULL, ones = 1, verbose = FALSE)
 
 }
 
-calculatePoints <- function(ranking, method = NULL, ones = 0, verbose = F) {
+calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoints = F) {
 
   switch(method,
 
@@ -100,6 +100,7 @@ calculatePoints <- function(ranking, method = NULL, ones = 0, verbose = F) {
            points <- as.integer(ranking == 1)
            total <- sum(ranking == 1)
            if(verbose) print(points/total)
+           if(seePoints) print(points/total)
            return(points/total)
          },
 
@@ -111,11 +112,38 @@ calculatePoints <- function(ranking, method = NULL, ones = 0, verbose = F) {
            return(points/total)
          },
 
-         ones = {
-           points <- as.integer(ranking %in% 1:ones)
-           total <- sum(ranking %in% 1:ones)
-           if(verbose) print(points/total)
-           return(points/total)
+         t = {
+
+           if(t>=length(ranking)) {
+             if(seePoints) print(rep(1, length(ranking)))
+             return(rep(1, length(ranking)))
+           }
+           else {
+             points <- rep(0, length(ranking))
+             num_of_rewarded_candidates <- 0
+             i <- 1
+             while(num_of_rewarded_candidates < t) {
+               candidates_in_pos_i <- sum(ranking == i)
+               if((num_of_rewarded_candidates+candidates_in_pos_i) <= t) {
+                 points[ranking == i] <- 1
+               }
+               else {
+                 real_pos <- num_of_better_candidates <- sum(ranking < i) + 1
+                 points[ranking == i] <- (t - real_pos + 1)/(candidates_in_pos_i+1)
+               }
+               num_of_rewarded_candidates <- num_of_rewarded_candidates + candidates_in_pos_i
+               i <- i+1
+             }
+             if(seePoints) print(points)
+             return(points)
+           }
+
+
+           # old implementation
+           # points <- as.integer(ranking %in% 1:t)
+           # total <- sum(ranking %in% 1:t)
+           # if(verbose) print(points/total)
+           # return(points/total)
          },
 
          borda = {
@@ -160,6 +188,8 @@ calculatePoints <- function(ranking, method = NULL, ones = 0, verbose = F) {
 
   )
 
+
+  if(seePoints) print(points_for_each_candidate)
   return(points_for_each_candidate)
 }
 
@@ -173,8 +203,8 @@ calculatePoints <- function(ranking, method = NULL, ones = 0, verbose = F) {
 #' @export
 #'
 #' @examples
-plurality <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "plurality", verbose = verbose)
+plurality <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "plurality", verbose = verbose, seePoints = seePoints)
 }
 
 #' Title
@@ -186,8 +216,8 @@ plurality <- function(profileOfRankings, verbose = FALSE) {
 #' @export
 #'
 #' @examples
-veto <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "veto", verbose = verbose)
+veto <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "veto", verbose = verbose, seePoints = seePoints)
 }
 
 #' Title
@@ -199,8 +229,8 @@ veto <- function(profileOfRankings, verbose = FALSE) {
 #' @export
 #'
 #' @examples
-two <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "ones", ones = 2, verbose = verbose)
+two <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "t", t = 2, verbose = verbose, seePoints = seePoints)
 }
 
 #' Title
@@ -212,8 +242,8 @@ two <- function(profileOfRankings, verbose = FALSE) {
 #' @export
 #'
 #' @examples
-three <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "ones", ones = 3, verbose = verbose)
+three <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "t", t = 3, verbose = verbose, seePoints = seePoints)
 }
 
 #' Title
@@ -225,8 +255,8 @@ three <- function(profileOfRankings, verbose = FALSE) {
 #' @export
 #'
 #' @examples
-five <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "ones", ones = 5, verbose = verbose)
+five <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "t", t = 5, verbose = verbose, seePoints = seePoints)
 }
 
 #' Title
@@ -238,8 +268,8 @@ five <- function(profileOfRankings, verbose = FALSE) {
 #' @export
 #'
 #' @examples
-seven <- function(profileOfRankings, verbose = FALSE) {
-  scoring(profileOfRankings, "ones", ones = 7, verbose = verbose)
+seven <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "t", t = 7, verbose = verbose, seePoints = seePoints)
 }
 
 #' Title
@@ -251,6 +281,6 @@ seven <- function(profileOfRankings, verbose = FALSE) {
 #' @export
 #'
 #' @examples
-borda_count <- function(profileOfRankings, verbose = FALSE) {
+borda_count <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
   scoring(profileOfRankings, "borda", verbose = verbose)
 }
