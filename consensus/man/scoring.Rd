@@ -4,7 +4,8 @@
 \alias{scoring}
 \title{Scoring ranking rules}
 \usage{
-scoring(profileOfRankings, method = NULL, ones = 1, verbose = FALSE)
+scoring(profileOfRankings, method = NULL, t = 1, verbose = FALSE,
+  seePoints = FALSE)
 }
 \arguments{
 \item{profileOfRankings}{object of the class profile of rankings}
@@ -12,10 +13,10 @@ scoring(profileOfRankings, method = NULL, ones = 1, verbose = FALSE)
 \item{method}{\itemize{
  \item{"plurality"}{Stuff}
  \item{"borda"}{Stuff}
- \item{"ones"}{Stuff}
+ \item{"t"}{Stuff}
 }}
 
-\item{ones}{only necessary when the \code{method} choosen is}
+\item{t}{only necessary when the \code{method} choosen is}
 
 \item{verbose}{by default FALSE. Change to TRUE for seeing on the screen
 the workflow of the function}

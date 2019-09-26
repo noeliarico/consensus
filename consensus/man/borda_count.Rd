@@ -4,7 +4,7 @@
 \alias{borda_count}
 \title{Title}
 \usage{
-borda_count(profileOfRankings, verbose = FALSE)
+borda_count(profileOfRankings, verbose = FALSE, seePoints = FALSE)
 }
 \arguments{
 \item{verbose}{}

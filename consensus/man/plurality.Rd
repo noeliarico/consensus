@@ -4,7 +4,7 @@
 \alias{plurality}
 \title{Title}
 \usage{
-plurality(profileOfRankings, verbose = FALSE)
+plurality(profileOfRankings, verbose = FALSE, seePoints = FALSE)
 }
 \arguments{
 \item{verbose}{}

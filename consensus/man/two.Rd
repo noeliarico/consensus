@@ -4,7 +4,7 @@
 \alias{two}
 \title{Title}
 \usage{
-two(profileOfRankings, verbose = FALSE)
+two(profileOfRankings, verbose = FALSE, seePoints = FALSE)
 }
 \arguments{
 \item{verbose}{}

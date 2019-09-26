@@ -55,6 +55,10 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, se
 
   }
 
+  if(seePoints) {
+    print(v)
+  }
+
   v <- sort(v, decreasing = TRUE) # sort v from more votes to less
   if(verbose) {
     print(paste('Points rewarded by each candidate of the profile of rankings', "'", attname, "'"))

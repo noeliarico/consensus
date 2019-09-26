@@ -4,7 +4,7 @@
 \alias{five}
 \title{Title}
 \usage{
-five(profileOfRankings, verbose = FALSE)
+five(profileOfRankings, verbose = FALSE, seePoints = FALSE)
 }
 \arguments{
 \item{verbose}{}

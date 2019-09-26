@@ -4,7 +4,7 @@
 \alias{veto}
 \title{Title}
 \usage{
-veto(profileOfRankings, verbose = FALSE)
+veto(profileOfRankings, verbose = FALSE, seePoints = FALSE)
 }
 \arguments{
 \item{verbose}{}

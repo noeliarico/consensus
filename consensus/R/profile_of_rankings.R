@@ -155,6 +155,7 @@ print.por <- function(profileOfRankings) {
 
 }
 
+#' @export
 split_profile_of_rankings <- function(profileOfRankings) {
 
   if(!is.por(profileOfRankings) || !is.data.frame(profileOfRankings)) {
