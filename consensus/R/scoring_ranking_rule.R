@@ -96,6 +96,7 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, se
 
 }
 
+#' @export
 calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoints = F) {
 
   switch(method,
