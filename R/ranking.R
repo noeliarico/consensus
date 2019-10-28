@@ -108,3 +108,4 @@ default.ranking <- function(ranking) {
 }
 
 is.ranking <- function(x) inherits(x, "ranking")
+

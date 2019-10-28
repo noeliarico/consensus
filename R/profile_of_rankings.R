@@ -205,5 +205,16 @@ split_profile_of_rankings <- function(profileOfRankings) {
 
 }
 
+#' @export
+random_profile_of_rankings <- function(ncandidates = 4, nranking = 10) {
+  rankings <- t(replicate(nranking, sample(1:ncandidates)))
+  por <- profile_of_rankings(rankings)
+  return(por)
+}
+
+#' @export
+toLatex.por <- function(x) {
+  xtable(print(x))
+}
 
 
