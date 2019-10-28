@@ -39,6 +39,35 @@
 profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
                                 candidates = NULL, ties = NULL) {
 
+
+
+  if(is.numeric(matrix) &&
+     is.null(numberOfVoters) &&
+     is.null(candidates) &&
+     is.null(ties)) {
+
+    profileOfRankings <- data.frame()
+
+    unique.rankings <- unique.matrix(matrix) # rows of the profile of rankings
+
+    for(indexrow in 1:nrow(unique.rankings)) {
+      v <- unique.rankings[indexrow, ]
+      row.is.a.match <- apply(matrix, 1, identical, v)
+      match.idx <- which(row.is.a.match)
+      total.matches <- sum(row.is.a.match)
+      profileOfRankings <- rbind(profileOfRankings, c(total.matches, v))
+    }
+    colnames(matrix) <- LETTERS[1:ncol(matrix)]
+
+    names(profileOfRankings) <- c('numberOfVoters',colnames(matrix))
+
+
+    class(profileOfRankings) <- c("por", "data.frame")
+    return(profileOfRankings)
+
+  }
+
+
   # PROFILE OF RANKINGS:
   # ranking -- numberOfVoters -- candidate1 -- candidate2 ...
   # 1             ..             rankingpos    rankingpos ...

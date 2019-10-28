@@ -3,6 +3,7 @@
 S3method(print,por)
 S3method(print,ranking)
 export(borda_count)
+export(calculatePoints)
 export(five)
 export(parse_ranking)
 export(plurality)
