@@ -39,6 +39,28 @@
 profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
                                 candidates = NULL, ties = NULL) {
 
+  if(is.tibble(matrix)) {
+
+    matrix <- as.matrix(matrix)
+    profileOfRankings <- data.frame()
+
+    unique.rankings <- unique.matrix(matrix) # rows of the profile of rankings
+
+    for(indexrow in 1:nrow(unique.rankings)) {
+      v <- unique.rankings[indexrow, ]
+      row_is_a_match <- apply(matrix, 1, identical, v)
+      match_idx <- which(row_is_a_match)
+      total_matches <- sum(row_is_a_match)
+      profileOfRankings <- rbind(profileOfRankings, c(total_matches, v))
+    }
+    print(profileOfRankings)
+    names(profileOfRankings) <- c('numberOfVoters',colnames(matrix))
+
+
+    class(profileOfRankings) <- c("por", "data.frame")
+    return(profileOfRankings)
+
+  }
 
 
   if(is.numeric(matrix) &&
@@ -156,6 +178,8 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
   class(profileOfRankings) <- c("por", "data.frame")
   return(profileOfRankings)
 }
+
+
 
 is.por <- function(x) inherits(x, "por")
 
