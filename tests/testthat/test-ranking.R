@@ -1,3 +1,1 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
-})
+# My tests are too poor yet, I'm so ashamed of them I'm gonna hide this file haha
