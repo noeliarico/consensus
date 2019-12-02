@@ -1,0 +1,20 @@
+---
+title: "README"
+author: "Noelia Rico"
+date: "21/5/2019"
+output: github_document
+---
+```{r}
+manhattan <- parse_ranking("A ~ D ~ E > G > C > B ~ H > F")
+euclidean <- parse_ranking("E > C ~ G > A ~ D > B > F ~ H")
+chebyshev <- parse_ranking("C ~ E > B > F > G > A ~ D ~ H")
+```
+
+```{r}
+por <- profile_of_rankings(rbind(manhattan, euclidean, chebyshev))
+```
+
+```{r}
+plurality(por)
+```
+
