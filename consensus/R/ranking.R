@@ -10,6 +10,7 @@ ranking <- function(v, n = NULL, decreasing = FALSE) {
       stop("The name of each candidate must be unique")
     }
   }
+
   # if we get to this condition then that means that names(v) is null,
   # so if the n param is not null and it
   else if(!is.null(n)) {
@@ -108,3 +109,7 @@ default.ranking <- function(ranking) {
 }
 
 is.ranking <- function(x) inherits(x, "ranking")
+
+may_be_ranking <- function(vector) {
+
+}

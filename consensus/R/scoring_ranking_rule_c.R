@@ -16,7 +16,7 @@
 #' @examples
 #'
 #'
-scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, seePoints = FALSE) {
+scoringc <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, seePoints = FALSE) {
 
   if(verbose) {
     cat('Executing a scoring ranking rule...\n')
@@ -35,7 +35,7 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, se
 
   # Result vectors
   v <- vector(length = ncol(profileOfRankings))
-  names(v) <- names(profileOfRankings)
+
 
   # For each ranking in the profile of rankings
   for(i in 1:nrow(profileOfRankings)) {
@@ -59,38 +59,11 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, se
 
   #}
 
-  v <- sort(v, decreasing = TRUE) # sort v from more votes to less
-  if(verbose) {
-    print(paste('Points rewarded by each candidate of the profile of rankings', "'", attname, "'"))
-    print(v)
-    print('Ranking:')
-  }
-
-  # vector that will store the final ranking
-  ranking <- rep(0, length(candidates))
-  names(ranking) <- candidates
-
-  pos <- 1 # position in the ranking
-
-  for(i in 1:(length(v)-1)) {
-
-    thisElem <- v[i]
-    nextElem <- v[i+1]
-
-    # ranking
-    index_of_candidate <- which(candidates == names(v)[i])
-    ranking[index_of_candidate] <- pos
-
-    if(thisElem > nextElem) {
-      pos <- pos + 1
-    }
-    # else, nothing -> this means the two rankings are equals
-    # so it's not necessary increment the position cause it will be tied
-    # with the previous element
-
-  }
-
-  ranking[which(candidates == names(v)[i+1])] <- pos
+  ranking <- .C("pointsToRanking",
+                ranking = integer(length(v)),
+                nranking = as.integer(length(v)),
+                points = as.double(v))$ranking
+  names(ranking) <- names(profileOfRankings)
 
   return(ranking(ranking))
 
