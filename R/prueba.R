@@ -1,5 +1,5 @@
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("Welcome to my package")
+  packageStartupMessage("#CONSENSUS#")
 }
 
 .onLoad <- function(libname, pkgname) {
@@ -19,15 +19,15 @@
   invisible()
 }
 
-
-set.seed(123)
-por <- random_profile_of_rankings(6, 4)
-toLatex(por)
-
-por <- tribble(~A, ~B, ~C, ~D, ~E, ~F,
-               2, 4, 6, 3, 5, 1,
-               2, 3, 2, 2, 4, 1,
-               4, 3, 2, 5, 4, 1,
-               1, 3, 2, 1, 3, 1)
-por <- profile_of_rankings(por)
-borda_count(por, seePoints = T)
+#
+# set.seed(123)
+# por <- random_profile_of_rankings(6, 4)
+# toLatex(por)
+#
+# por <- tribble(~A, ~B, ~C, ~D, ~E, ~F,
+#                2, 4, 6, 3, 5, 1,
+#                2, 3, 2, 2, 4, 1,
+#                4, 3, 2, 5, 4, 1,
+#                1, 3, 2, 1, 3, 1)
+# por <- profile_of_rankings(por)
+# borda_count(por, seePoints = T)
