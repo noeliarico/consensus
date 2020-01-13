@@ -99,7 +99,7 @@ print.ranking <- function(ranking) {
     }
   }
 
-  cat(gr, "\n")
+  #cat(gr, "\n")
   #NextMethod() # for calling the print of the next class which is the vector
   return(gr)
 }
