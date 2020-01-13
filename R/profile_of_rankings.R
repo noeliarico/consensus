@@ -53,7 +53,7 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
       total_matches <- sum(row_is_a_match)
       profileOfRankings <- rbind(profileOfRankings, c(total_matches, v))
     }
-    print(profileOfRankings)
+    #print(profileOfRankings)
     names(profileOfRankings) <- c('numberOfVoters',colnames(matrix))
 
 
@@ -203,7 +203,7 @@ print.por <- function(profileOfRankings) {
 
   colnames(gpor) <- c('numberOfVoters', 'ranking')
 
-  print(gpor)
+  #print(gpor)
   return(gpor)
 
 }
