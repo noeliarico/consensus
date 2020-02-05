@@ -41,10 +41,13 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
 
   if(is.tibble(matrix)) {
 
+    candidates <- colnames(matrix)
     matrix <- as.matrix(matrix)
     profileOfRankings <- data.frame()
 
-    unique.rankings <- unique.matrix(matrix) # rows of the profile of rankings
+    # evaluate the profile of ranking to get the rows which are unique
+    # this means, the different rankings given by the voters
+    unique.rankings <- unique.matrix(matrix)
 
     for(indexrow in 1:nrow(unique.rankings)) {
       v <- unique.rankings[indexrow, ]
@@ -54,7 +57,7 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
       profileOfRankings <- rbind(profileOfRankings, c(total_matches, v))
     }
     #print(profileOfRankings)
-    names(profileOfRankings) <- c('numberOfVoters',colnames(matrix))
+    names(profileOfRankings) <- c('numberOfVoters',candidates)
 
 
     class(profileOfRankings) <- c("por", "data.frame")
