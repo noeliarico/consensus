@@ -40,7 +40,7 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
                                 candidates = NULL, ties = NULL) {
 
   if(is.tibble(matrix)) {
-
+    print("Tibble to profile of rankings")
     candidates <- colnames(matrix)
     matrix <- as.matrix(matrix)
     profileOfRankings <- data.frame()
@@ -61,6 +61,7 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
 
 
     class(profileOfRankings) <- c("por", "data.frame")
+    print(profileOfRankings)
     return(profileOfRankings)
 
   }
