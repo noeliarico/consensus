@@ -7,8 +7,8 @@
   op.devtools <- list(
     devtools.path = "~/R-dev",
     devtools.install.args = "",
-    devtools.name = "Your name goes here",
-    devtools.desc.author = "First Last <first.last@example.com> [aut, cre]",
+    devtools.name = "Noelia",
+    devtools.desc.author = "Noelia Rico <noeliarico@uniovi.es> [aut, cre]",
     devtools.desc.license = "What license is it under?",
     devtools.desc.suggests = NULL,
     devtools.desc = list()

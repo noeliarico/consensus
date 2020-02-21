@@ -9,7 +9,7 @@ Description: Calculate rankings for profiles of rankings applying ranking rules
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Imports:
     stringr
 Suggests: 

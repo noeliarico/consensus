@@ -40,7 +40,6 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
                                 candidates = NULL, ties = NULL) {
 
   if(is.tibble(matrix)) {
-    print("Tibble to profile of rankings")
     candidates <- colnames(matrix)
     matrix <- as.matrix(matrix)
     profileOfRankings <- data.frame()
@@ -48,6 +47,11 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
     # evaluate the profile of ranking to get the rows which are unique
     # this means, the different rankings given by the voters
     unique.rankings <- unique.matrix(matrix)
+    is_ok <- apply(unique.rankings, 1, is.ranking)
+
+    if(!all(is_ok)) {
+      stop("Error creating the profile of rankings: At least one of the rows is not a ranking")
+    }
 
     for(indexrow in 1:nrow(unique.rankings)) {
       v <- unique.rankings[indexrow, ]
@@ -61,123 +65,122 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
 
 
     class(profileOfRankings) <- c("por", "data.frame")
-    print(profileOfRankings)
+
     return(profileOfRankings)
 
   }
 
-
-  if(is.numeric(matrix) &&
-     is.null(numberOfVoters) &&
-     is.null(candidates) &&
-     is.null(ties)) {
-
-    profileOfRankings <- data.frame()
-
-    unique.rankings <- unique.matrix(matrix) # rows of the profile of rankings
-
-    for(indexrow in 1:nrow(unique.rankings)) {
-      v <- unique.rankings[indexrow, ]
-      row.is.a.match <- apply(matrix, 1, identical, v)
-      match.idx <- which(row.is.a.match)
-      total.matches <- sum(row.is.a.match)
-      profileOfRankings <- rbind(profileOfRankings, c(total.matches, v))
-    }
-    colnames(matrix) <- LETTERS[1:ncol(matrix)]
-
-    names(profileOfRankings) <- c('numberOfVoters',colnames(matrix))
-
-
-    class(profileOfRankings) <- c("por", "data.frame")
-    return(profileOfRankings)
-
-  }
-
-
-  # PROFILE OF RANKINGS:
-  # ranking -- numberOfVoters -- candidate1 -- candidate2 ...
-  # 1             ..             rankingpos    rankingpos ...
-  # 2             ..             rankingpos    rankingpos ...
-
-  # ERROR 0: It can do anything with the parameters available
-  if(is.null(matrix) && is.null(numberOfVoters) && is.null(candidates)) {
-    #print('ERROR 0')
-    stop("The function must contain one of these parameters at least: matrix | candidates")
-  }
-
-  # The dataframe that is going to represent the profile of rankings
-  profileOfRankings <- data.frame()
-
-  # OPC1 : The matrix contains one row for each ranking, the rankings could be
-  # repeated so this option groups them and sets the number of voters for
-  # each one. The rankings are already given in a proper format: columns are
-  # the candidates and each cell the position of the candidate column in the
-  # ranking of the row. So this option ignores "ties"
-  # Use for the function csv.to.profile.of.rankings
-  if(is.matrix(matrix) && is.null(numberOfVoters) && is.null(ties)) {
-    #print('OPC1')
-
-    # ERROR, alguna de las filas tiene algo que no es un número o un número
-    # mayor que el número de columnas (candidatos)
-    # IMPLEMENTAR!!
-
-    unique.rankings <- unique.matrix(matrix) # rows of the profile of rankings
-
-    for(indexrow in 1:nrow(unique.rankings)) {
-      v <- unique.rankings[indexrow, ]
-      row.is.a.match <- apply(matrix, 1, identical, v)
-      match.idx <- which(row.is.a.match)
-      total.matches <- sum(row.is.a.match)
-      profileOfRankings <- rbind(profileOfRankings, c(total.matches, v))
-    }
-
-    names(profileOfRankings) <- c('numberOfVoters',colnames(matrix))
-  }
-
-  # OPC2: The matrix contains one row for each unique ranking.
-  # The numberOfVoters vector contains the vector that represents the number
-  # of voters who has choosen the matching ranking.
-  # The rankings are already given in a proper format: columns are
-  # the candidates and each cell the position of the candidate column in the
-  # ranking of the row. So this option ignores "ties"
-  else if(is.matrix(matrix) && !is.null(numberOfVoters) && is.null(ties)) {
-    #print('OPC2')
-
-    # ERROR: distinto numero de filas o rankings repetidos
-
-    profileOfRankings <- data.frame(numberOfVoters, as.matrix.data.frame(matrix))
-    colnames(profileOfRankings) <- append(c('numberOfVoters'), colnames(matrix))
-
-  }
-
-  # OPC3: Basic structure
-  else if(is.null(matrix) && is.null(numberOfVoters) && is.null(ties)) {
-    #print('OPC3')
-
-    profileOfRankings <- data.frame(matrix(ncol = length(candidates)+1, nrow = 0))
-    colnames(profileOfRankings) <- append('numberOfVoters', candidates)
-  }
-
-  # OPC4: Opc1 but Matrix as a vector
-  else if(!is.matrix(matrix) && !is.null(candidates) && is.null(numberOfVoters)) {
-    #print('OPC4')
-    profileOfRankings <- profile_of_rankings(
-                            matrix = translate.matrix(matrix, candidates)
-                          )
-  }
-
-  # OPC5: Opc2 but Matrix as a vector
-  else if(!is.matrix(matrix) && !is.null(candidates) && !is.null(numberOfVoters)) {
-    #print('OPC5')
-    profileOfRankings <- profile_of_rankings(
-                  matrix = translate.matrix(matrix, candidates),
-                  numberOfVoters = numberOfVoters
-                )
-  }
-
-  else {
-    print('Invalid combination of parameters')
-  }
+  # if(is.numeric(matrix) &&
+  #    is.null(numberOfVoters) &&
+  #    is.null(candidates) &&
+  #    is.null(ties)) {
+  #
+  #   profileOfRankings <- data.frame()
+  #
+  #   unique.rankings <- unique.matrix(matrix) # rows of the profile of rankings
+  #
+  #   for(indexrow in 1:nrow(unique.rankings)) {
+  #     v <- unique.rankings[indexrow, ]
+  #     row.is.a.match <- apply(matrix, 1, identical, v)
+  #     match.idx <- which(row.is.a.match)
+  #     total.matches <- sum(row.is.a.match)
+  #     profileOfRankings <- rbind(profileOfRankings, c(total.matches, v))
+  #   }
+  #   colnames(matrix) <- LETTERS[1:ncol(matrix)]
+  #
+  #   names(profileOfRankings) <- c('numberOfVoters',colnames(matrix))
+  #
+  #
+  #   class(profileOfRankings) <- c("por", "data.frame")
+  #   return(profileOfRankings)
+  #
+  # }
+  #
+  #
+  # # PROFILE OF RANKINGS:
+  # # ranking -- numberOfVoters -- candidate1 -- candidate2 ...
+  # # 1             ..             rankingpos    rankingpos ...
+  # # 2             ..             rankingpos    rankingpos ...
+  #
+  # # ERROR 0: It can do anything with the parameters available
+  # if(is.null(matrix) && is.null(numberOfVoters) && is.null(candidates)) {
+  #   #print('ERROR 0')
+  #   stop("The function must contain one of these parameters at least: matrix | candidates")
+  # }
+  #
+  # # The dataframe that is going to represent the profile of rankings
+  # profileOfRankings <- data.frame()
+  #
+  # # OPC1 : The matrix contains one row for each ranking, the rankings could be
+  # # repeated so this option groups them and sets the number of voters for
+  # # each one. The rankings are already given in a proper format: columns are
+  # # the candidates and each cell the position of the candidate column in the
+  # # ranking of the row. So this option ignores "ties"
+  # # Use for the function csv.to.profile.of.rankings
+  # if(is.matrix(matrix) && is.null(numberOfVoters) && is.null(ties)) {
+  #   #print('OPC1')
+  #
+  #   # ERROR, alguna de las filas tiene algo que no es un número o un número
+  #   # mayor que el número de columnas (candidatos)
+  #   # IMPLEMENTAR!!
+  #
+  #   unique.rankings <- unique.matrix(matrix) # rows of the profile of rankings
+  #
+  #   for(indexrow in 1:nrow(unique.rankings)) {
+  #     v <- unique.rankings[indexrow, ]
+  #     row.is.a.match <- apply(matrix, 1, identical, v)
+  #     match.idx <- which(row.is.a.match)
+  #     total.matches <- sum(row.is.a.match)
+  #     profileOfRankings <- rbind(profileOfRankings, c(total.matches, v))
+  #   }
+  #
+  #   names(profileOfRankings) <- c('numberOfVoters',colnames(matrix))
+  # }
+  #
+  # # OPC2: The matrix contains one row for each unique ranking.
+  # # The numberOfVoters vector contains the vector that represents the number
+  # # of voters who has choosen the matching ranking.
+  # # The rankings are already given in a proper format: columns are
+  # # the candidates and each cell the position of the candidate column in the
+  # # ranking of the row. So this option ignores "ties"
+  # else if(is.matrix(matrix) && !is.null(numberOfVoters) && is.null(ties)) {
+  #   #print('OPC2')
+  #
+  #   # ERROR: distinto numero de filas o rankings repetidos
+  #
+  #   profileOfRankings <- data.frame(numberOfVoters, as.matrix.data.frame(matrix))
+  #   colnames(profileOfRankings) <- append(c('numberOfVoters'), colnames(matrix))
+  #
+  # }
+  #
+  # # OPC3: Basic structure
+  # else if(is.null(matrix) && is.null(numberOfVoters) && is.null(ties)) {
+  #   #print('OPC3')
+  #
+  #   profileOfRankings <- data.frame(matrix(ncol = length(candidates)+1, nrow = 0))
+  #   colnames(profileOfRankings) <- append('numberOfVoters', candidates)
+  # }
+  #
+  # # OPC4: Opc1 but Matrix as a vector
+  # else if(!is.matrix(matrix) && !is.null(candidates) && is.null(numberOfVoters)) {
+  #   #print('OPC4')
+  #   profileOfRankings <- profile_of_rankings(
+  #                           matrix = translate.matrix(matrix, candidates)
+  #                         )
+  # }
+  #
+  # # OPC5: Opc2 but Matrix as a vector
+  # else if(!is.matrix(matrix) && !is.null(candidates) && !is.null(numberOfVoters)) {
+  #   #print('OPC5')
+  #   profileOfRankings <- profile_of_rankings(
+  #                 matrix = translate.matrix(matrix, candidates),
+  #                 numberOfVoters = numberOfVoters
+  #               )
+  # }
+  #
+  # else {
+  #   print('Invalid combination of parameters')
+  # }
 
   class(profileOfRankings) <- c("por", "data.frame")
   return(profileOfRankings)
@@ -200,15 +203,16 @@ print.por <- function(profileOfRankings) {
   # Get rankings
   profileOfRankings <- splittedPOF$rankings
 
-  gr <- apply(profileOfRankings, 1, print.ranking)
+
+  gr <- apply(profileOfRankings, 1, format.ranking)
   gr <- as.data.frame(gr)
 
   gpor <- cbind(gpor, gr)
 
   colnames(gpor) <- c('numberOfVoters', 'ranking')
 
-  #print(gpor)
-  return(gpor)
+  print(gpor)
+  invisible(gpor)
 
 }
 
@@ -234,8 +238,11 @@ split_profile_of_rankings <- function(profileOfRankings) {
 }
 
 #' @export
-random_profile_of_rankings <- function(ncandidates = 4, nranking = 10) {
-  rankings <- t(replicate(nranking, sample(1:ncandidates)))
+random_profile_of_rankings <- function(ncandidates = 4, nranking = 10, seed = NULL) {
+  if(!is.null(seed)) {
+    set.seed(seed)
+  }
+  rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% as.tibble()
   por <- profile_of_rankings(rankings)
   return(por)
 }
@@ -244,5 +251,25 @@ random_profile_of_rankings <- function(ncandidates = 4, nranking = 10) {
 toLatex.por <- function(x) {
   xtable(print(x))
 }
+
+#' @export
+read_rankings <- function(file_path, verbose = FALSE) {
+  conn <- file(file_path,open="r")
+  lines <- readLines(conn)
+  the_rankings <- matrix(ncol = length(lines))
+  for (line in lines){
+    r <- parse_ranking(line)
+    if(verbose) {
+      print(r)
+    }
+    the_rankings <- the_rankings %>% rbind(r)
+  }
+  close(conn)
+  the_rankings <- the_rankings[-1, ]
+  rownames(the_rankings) <- NULL
+  the_rankings <- profile_of_rankings(the_rankings)
+  return(the_rankings)
+}
+
 
 

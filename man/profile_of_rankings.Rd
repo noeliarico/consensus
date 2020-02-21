@@ -4,8 +4,12 @@
 \alias{profile_of_rankings}
 \title{Create Profile of Rankings}
 \usage{
-profile_of_rankings(matrix = NULL, numberOfVoters = NULL,
-  candidates = NULL, ties = NULL)
+profile_of_rankings(
+  matrix = NULL,
+  numberOfVoters = NULL,
+  candidates = NULL,
+  ties = NULL
+)
 }
 \arguments{
 \item{matrix}{matrix where each row reperesents a ranking or vector where

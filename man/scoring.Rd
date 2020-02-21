@@ -4,8 +4,13 @@
 \alias{scoring}
 \title{Scoring ranking rules}
 \usage{
-scoring(profileOfRankings, method = NULL, t = 1, verbose = FALSE,
-  seePoints = FALSE)
+scoring(
+  profileOfRankings,
+  method = NULL,
+  t = 1,
+  verbose = FALSE,
+  seePoints = FALSE
+)
 }
 \arguments{
 \item{profileOfRankings}{object of the class profile of rankings}

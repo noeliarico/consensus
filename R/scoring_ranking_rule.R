@@ -193,7 +193,6 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
 
   )
 
-
   if(seePoints) print(points_for_each_candidate)
   return(points_for_each_candidate)
 }
@@ -234,47 +233,8 @@ veto <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
 #' @export
 #'
 #' @examples
-two <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "t", t = 2, verbose = verbose, seePoints = seePoints)
-}
-
-#' Title
-#'
-#' @param profileOfRankings
-#' @param verbose
-#'
-#' @return
-#' @export
-#'
-#' @examples
-three <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "t", t = 3, verbose = verbose, seePoints = seePoints)
-}
-
-#' Title
-#'
-#' @param profileOfRankings
-#' @param verbose
-#'
-#' @return
-#' @export
-#'
-#' @examples
-five <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "t", t = 5, verbose = verbose, seePoints = seePoints)
-}
-
-#' Title
-#'
-#' @param profileOfRankings
-#' @param verbose
-#'
-#' @return
-#' @export
-#'
-#' @examples
-seven <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "t", t = 7, verbose = verbose, seePoints = seePoints)
+tapproval <- function(profileOfRankings, t = 2, verbose = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "t", t, verbose = verbose, seePoints = seePoints)
 }
 
 #' Title
