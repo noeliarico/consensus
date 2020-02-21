@@ -40,9 +40,12 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
                                 candidates = NULL, ties = NULL) {
 
   if(is.tibble(matrix)) {
-    candidates <- colnames(matrix)
     matrix <- as.matrix(matrix)
-    profileOfRankings <- data.frame()
+  }
+
+  candidates <- colnames(matrix)
+
+  profileOfRankings <- data.frame()
 
     # evaluate the profile of ranking to get the rows which are unique
     # this means, the different rankings given by the voters
@@ -63,12 +66,11 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
     #print(profileOfRankings)
     names(profileOfRankings) <- c('numberOfVoters',candidates)
 
-
     class(profileOfRankings) <- c("por", "data.frame")
 
     return(profileOfRankings)
 
-  }
+
 
   # if(is.numeric(matrix) &&
   #    is.null(numberOfVoters) &&
@@ -238,11 +240,14 @@ split_profile_of_rankings <- function(profileOfRankings) {
 }
 
 #' @export
-random_profile_of_rankings <- function(ncandidates = 4, nranking = 10, seed = NULL) {
+random_profile_of_rankings <- function(ncandidates = 4,
+                                       nranking = 10,
+                                       seed = NULL) {
   if(!is.null(seed)) {
     set.seed(seed)
   }
   rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% as.tibble()
+  names(rankings) <- paste0("C", 1:ncol(rankings))
   por <- profile_of_rankings(rankings)
   return(por)
 }

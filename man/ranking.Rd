@@ -6,7 +6,7 @@
 the better the candidate is considered
 If names are given in n it will overwrite the names in the vector if named}
 \usage{
-ranking(v, n = NULL, decreasing = FALSE)
+ranking(v, cnames = NULL, decreasing = FALSE)
 }
 \description{
 Default behaviour creates an ascending value. This is, the lower the value
