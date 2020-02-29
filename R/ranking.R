@@ -4,6 +4,7 @@
 #' @export
 ranking <- function(v, cnames = NULL, decreasing = FALSE) {
 
+
   # Validate the parameters ----------------------------------------------------
 
   if(!is.null(cnames) && !is.vector(cnames)) {
@@ -47,8 +48,11 @@ ranking <- function(v, cnames = NULL, decreasing = FALSE) {
     # hasn't names. If it has names and the names are valid they are used. If it
     # doesn't have names or they are invalid default names are given
 
+
     if(!is.null(names(v)) && !has_names) {
+
       candidates_names <- names(v)
+
       # all the candidates must have a different name
       # if the names of the vector are not suitable for the names of the
       # candidates a warning message is send and automatic values will be created
@@ -60,7 +64,7 @@ ranking <- function(v, cnames = NULL, decreasing = FALSE) {
                 accomplish this requirement.")
       }
       else {
-        candidates_names <- cnames
+        # the names of the vector are keeped
         has_names <- TRUE
       }
     }
@@ -111,25 +115,28 @@ ranking <- function(v, cnames = NULL, decreasing = FALSE) {
         previous_elem <- v[index]
       }
 
-    } # how to order if the vector has ties
+    } # end of how to order if the vector has ties
     else { # no ties
+
       ordv <- 1:length(v)
       names(ordv) <- names(v)
-    }
+    } # end of how to order if the vector has not ties
       # Recorro el vector, sustituyo el mejor número por un 1, que es la posición
       # continúo y sustituyo el número real por la misma posición si es igual al
       # de la posición anterior y si no incremento y luego sustituyo
 
+
       # ahora tengo que hacer coincidir el vector del ranking con la posición
       # original basándome en los nombres de las columnas
-      indexes <- match(names(ordv), candidates_names)
+    indexes <- match(names(ordv), candidates_names)
 
-      i <- 1
-      for(elem in indexes) {
-        ranking[elem] <- ordv[i]
-        i <- i + 1
-      }
-    } # end of is.nuemric
+    i <- 1
+    for(elem in indexes) {
+      ranking[elem] <- ordv[i]
+      i <- i + 1
+    }
+
+  } # end of is.nuemric
 
 
 
@@ -159,7 +166,7 @@ format.ranking <- function(ranking) {
   for(i in 1:(length(ranking)-1)) {
     thisElem <- ranking[i]
     nextElem <- ranking[i+1]
-    #print(paste('Comparing: ',thisElem,'--',nextElem))
+
     if(thisElem<nextElem) {
       gr <- paste(gr, '≻',names[i+1])
     }
@@ -188,7 +195,7 @@ default.ranking <- function(ranking) {
 
 #' @export
 is.ranking <- function(x) {
-  if(length(unique(names(x))) == length(x)){
+  #if(length(unique(names(x))) == length(x)){
     max_pos <- max(x)
     min_pos <- min(x)
     if(min_pos > 0 && max_pos > 0 &&
@@ -199,7 +206,7 @@ is.ranking <- function(x) {
         return(TRUE)
       #}
     }
-  }
+  #}
   return(FALSE)
 }
 

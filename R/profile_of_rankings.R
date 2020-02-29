@@ -43,6 +43,9 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
     matrix <- as.matrix(matrix)
   }
 
+  if(is.null(colnames(matrix))) {
+    colnames(matrix) <- paste0("C", 1:ncol(matrix))
+  }
   candidates <- colnames(matrix)
 
   profileOfRankings <- data.frame()
@@ -64,7 +67,7 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
       profileOfRankings <- rbind(profileOfRankings, c(total_matches, v))
     }
     #print(profileOfRankings)
-    names(profileOfRankings) <- c('numberOfVoters',candidates)
+    names(profileOfRankings) <- c('numberOfVoters', candidates)
 
     class(profileOfRankings) <- c("por", "data.frame")
 
@@ -221,7 +224,7 @@ print.por <- function(profileOfRankings) {
 #' @export
 split_profile_of_rankings <- function(profileOfRankings) {
 
-  if(!is.por(profileOfRankings) || !is.data.frame(profileOfRankings)) {
+  if(!is.por(profileOfRankings)) {# || !is.data.frame(profileOfRankings)) {
     stop("The profile of rankings must belong to the classes por and data.frame")
   }
 
