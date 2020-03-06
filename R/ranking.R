@@ -206,8 +206,13 @@ is.ranking <- function(x) {
         return(TRUE)
       #}
     }
+    else {
+      print("Not is ranking")
+      print(x)
+      return(FALSE)
+    }
   #}
-  return(FALSE)
+
 }
 
 #s <- "a > b ~ c > d > e"
