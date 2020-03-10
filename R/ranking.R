@@ -115,31 +115,27 @@ ranking <- function(v, cnames = NULL, decreasing = FALSE) {
         previous_elem <- v[index]
       }
 
+      # ahora tengo que hacer coincidir el vector del ranking con la posición
+      # original basándome en los nombres de las columnas
+      indexes <- match(names(ordv), candidates_names)
+
+      i <- 1
+      for(elem in indexes) {
+        ranking[elem] <- ordv[i]
+        i <- i + 1
+      }
+
     } # end of how to order if the vector has ties
     else { # no ties
-
       ordv <- 1:length(v)
       names(ordv) <- names(v)
+      ranking <- match(candidates_names, names(ordv))
+      names(ranking) <- candidates_names
     } # end of how to order if the vector has not ties
       # Recorro el vector, sustituyo el mejor número por un 1, que es la posición
       # continúo y sustituyo el número real por la misma posición si es igual al
       # de la posición anterior y si no incremento y luego sustituyo
-
-
-      # ahora tengo que hacer coincidir el vector del ranking con la posición
-      # original basándome en los nombres de las columnas
-    indexes <- match(names(ordv), candidates_names)
-
-    i <- 1
-    for(elem in indexes) {
-      ranking[elem] <- ordv[i]
-      i <- i + 1
-    }
-
   } # end of is.nuemric
-
-
-
 
   else if(is.character(v)) {
     # Validate unique candidates -----------------------------------------------
@@ -159,6 +155,11 @@ ranking <- function(v, cnames = NULL, decreasing = FALSE) {
 # Generic methods for the class ranking
 #' @export
 format.ranking <- function(ranking) {
+
+  if(length(ranking) == 1){
+    return(names(ranking))
+  }
+
   ranking <- sort(ranking)
 
   names <- as.character(names(ranking))
@@ -195,6 +196,11 @@ default.ranking <- function(ranking) {
 
 #' @export
 is.ranking <- function(x) {
+
+  if(length(x) == 1 && x == 1) {
+    return(TRUE)
+  }
+
   #if(length(unique(names(x))) == length(x)){
     max_pos <- max(x)
     min_pos <- min(x)
