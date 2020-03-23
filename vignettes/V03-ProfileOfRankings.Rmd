@@ -1,0 +1,19 @@
+---
+title: "V03-ProfileOfRankings"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{V03-ProfileOfRankings}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(consensus)
+```
