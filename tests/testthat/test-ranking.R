@@ -54,3 +54,24 @@ test_that("Create numeric ranking with names", {
   expect_output(print(r), "p ≻ t ≻ i ≻ r ≻ l ")
   
 })
+
+test_that("Parse ranking", {
+  
+  # TODO numeric 
+  # TODO candidates names start with number
+  # TODO with letters
+  # TODO without ties
+  
+  r <- parse_ranking("C2 ∼ C3 ∼ C4 ≻ C1 ∼ C5")
+  expect_s3_class(r, "ranking")
+  expect_equal(as.numeric(r), c(2, 1, 1, 1, 2))
+  
+  r <- parse_ranking("C3 ∼ C5 ≻ C4 ≻ C1 ∼ C2")
+  expect_s3_class(r, "ranking")
+  expect_equal(as.numeric(r), c(3, 3, 1, 2, 1))
+  
+  r <- parse_ranking("C1 ≻ C3 ∼ C4 ∼ C5 ≻ C2")
+  expect_s3_class(r, "ranking")
+  expect_equal(as.numeric(r), c(1, 3, 2, 2, 2))
+  
+})

@@ -237,25 +237,35 @@ is.ranking <- function(x) {
 #' @export
 #'
 parse_ranking <- function(string) {
-  string <- str_replace_all(string, " ", "")
-  candidates <- unlist(strsplit(string, ">|~"))
-  candidates <- sort(candidates)
-  ranking <- rep(0, length(candidates))
-  names(ranking) <- candidates
-  string <- strsplit(string, "")[[1]]
   
+  string <- stringr::str_replace_all(string, " ", "")
+  candidates <- unlist(strsplit(string, "≻|∼"))
+  candidates_names <- candidates[!candidates %in% c("∼", "≻")]
+  number_of_candidates <- length(candidates_names)
+  ranking <- integer(number_of_candidates)
+  names(ranking) <- candidates_names
+  operators <- unlist(strsplit(string, ""))
+  operators <- operators[operators %in% c("∼", "≻")]
+  
+  
+  i <- 1
   pos <- 1
-  for (elem in string) {
-    if(elem == ">" || elem == "~") {
-      if(elem == ">") {
-        pos <- pos + 1
-      }
-    }
-    else {
-      ranking[which(names(ranking) == elem)] <- pos
+  ranking[i] <- 1
+  for (elem in operators) {
+    i <- i + 1
+    print(elem)
+    if(elem == "≻") {
+      pos <- pos + 1
     }
     
+    ranking[i] <- pos
+   
   }
-  return(ranking(ranking))
+  
+  ranking <- ranking[order(names(ranking))]
+  print(ranking)
+  
+  class(ranking) <- c("ranking", "numeric")
+  return(ranking)
 }
 
