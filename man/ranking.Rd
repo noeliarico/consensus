@@ -8,6 +8,15 @@ If names are given in n it will overwrite the names in the vector if named}
 \usage{
 ranking(v, cnames = NULL, decreasing = FALSE)
 }
+\arguments{
+\item{v}{vector to be translated to a ranking}
+
+\item{cnames}{names of the candidates. The values in this vector cannot
+must identified uniquely each candidate, thus, repeated values are not 
+allowed.}
+
+\item{decreasing}{boolean parameter to . Default is FALSE.}
+}
 \description{
 Default behaviour creates an ascending value. This is, the lower the value
 the better the candidate is considered

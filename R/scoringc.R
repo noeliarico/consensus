@@ -16,7 +16,8 @@
 #' @examples
 #' @export
 #'
-scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, seePoints = FALSE) {
+#' @useDynLib consensus pointsToRanking
+scoringc <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, seePoints = FALSE) {
   
   if(verbose) {
     cat('Executing a scoring ranking rule...\n')
@@ -35,7 +36,7 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, se
   
   # Result vectors
   v <- vector(length = ncol(profileOfRankings))
-  names(v) <- names(profileOfRankings)
+  
   
   # For each ranking in the profile of rankings
   for(i in 1:nrow(profileOfRankings)) {
@@ -59,38 +60,11 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, se
   
   #}
   
-  v <- sort(v, decreasing = TRUE) # sort v from more votes to less
-  if(verbose) {
-    print(paste('Points rewarded by each candidate of the profile of rankings', "'", attname, "'"))
-    print(v)
-    print('Ranking:')
-  }
-  
-  # vector that will store the final ranking
-  ranking <- rep(0, length(candidates))
-  names(ranking) <- candidates
-  
-  pos <- 1 # position in the ranking
-  
-  for(i in 1:(length(v)-1)) {
-    
-    thisElem <- v[i]
-    nextElem <- v[i+1]
-    
-    # ranking
-    index_of_candidate <- which(candidates == names(v)[i])
-    ranking[index_of_candidate] <- pos
-    
-    if(thisElem > nextElem) {
-      pos <- pos + 1
-    }
-    # else, nothing -> this means the two rankings are equals
-    # so it's not necessary increment the position cause it will be tied
-    # with the previous element
-    
-  }
-  
-  ranking[which(candidates == names(v)[i+1])] <- pos
+  ranking <- .C("pointsToRanking",
+                ranking = integer(length(v)),
+                nranking = as.integer(length(v)),
+                points = as.double(v))$ranking
+  names(ranking) <- names(profileOfRankings)
   
   return(ranking(ranking))
   
@@ -157,14 +131,11 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
            n_of_candidates <- length(ranking)
            max_pos <- max(ranking)
            
-           # For the rankings withouf ties the result is
-           if(n_of_candidates == max_pos) { 
+           if(n_of_candidates == max_pos) {
              # the same result would be achieve with the following code
              # but here the operation is vectorized so execution time decreases
-             
              if(verbose)
-               cat("-- Ranking without ties -- \n")
-             
+               cat("No ties for this ranking\n")
              return(n_of_candidates - ranking)
            }
            
@@ -184,7 +155,7 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
            
            if(verbose) {
              cat("The points for the ranking...\n")
-             print(ranking)
+             cat(paste0(format(ranking), "\n"))
              cat("...are:\n")
              print(points_for_each_candidate)
            }
@@ -195,6 +166,7 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
          }
          
   )
+  
   
   if(seePoints) print(points_for_each_candidate)
   return(points_for_each_candidate)
@@ -236,8 +208,47 @@ veto <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
 #' @export
 #'
 #' @examples
-tapproval <- function(profileOfRankings, t = 2, verbose = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "t", t, verbose = verbose, seePoints = seePoints)
+two <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "t", t = 2, verbose = verbose, seePoints = seePoints)
+}
+
+#' Title
+#'
+#' @param profileOfRankings
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
+three <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "t", t = 3, verbose = verbose, seePoints = seePoints)
+}
+
+#' Title
+#'
+#' @param profileOfRankings
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
+five <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "t", t = 5, verbose = verbose, seePoints = seePoints)
+}
+
+#' Title
+#'
+#' @param profileOfRankings
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
+seven <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "t", t = 7, verbose = verbose, seePoints = seePoints)
 }
 
 #' Title
@@ -253,11 +264,8 @@ borda_count <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
   scoring(profileOfRankings, "borda", verbose = verbose)
 }
 
-#' Borda Winner
+#' Title
 #'
-#' Applies Borda Count in the profile of rankings given as first parameter and
-#' then it takes the winner in the first position. 
-#' 
 #' @param profileOfRankings
 #' @param verbose
 #'
@@ -269,3 +277,4 @@ borda_winner <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) 
   ranking <- scoring(profileOfRankings, "borda", verbose = verbose)
   names(ranking[which.max(ranking)])
 }
+

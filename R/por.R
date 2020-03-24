@@ -245,14 +245,29 @@ split_profile_of_rankings <- function(profileOfRankings) {
   
 }
 
+#' Create random profile of rankings
+#' 
+#' @param ncandidates Number of candidates
+#' @param nranking Number of rankings in the profile of rankings
+#' @param seed Fix a seed to hace reproducible code
+#' @param withties The rankings are generated without ties by default.
+#'
 #' @export
 random_profile_of_rankings <- function(ncandidates = 4,
                                        nranking = 10,
-                                       seed = NULL) {
+                                       seed = NULL,
+                                       withties = FALSE) {
   if(!is.null(seed)) {
     set.seed(seed)
   }
-  rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% as.tibble()
+  
+  if(!withties) {
+    rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% as.tibble()
+  }
+  else {
+    rankings <- t(replicate(nranking, ranking(sample(1:(sample(2:ncandidates, 1)), ncandidates, replace = TRUE)))) %>% as.tibble()
+  }
+  
   names(rankings) <- paste0("C", 1:ncol(rankings))
   por <- profile_of_rankings(rankings)
   return(por)
