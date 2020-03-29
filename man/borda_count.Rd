@@ -2,7 +2,7 @@
 % Please edit documentation in R/rr_scoring.R, R/scoringc.R
 \name{borda_count}
 \alias{borda_count}
-\title{Title}
+\title{Apply Borda Count ranking rule in a profile of ranking}
 \usage{
 borda_count(profileOfRankings, verbose = FALSE, seePoints = FALSE)
 
@@ -17,7 +17,15 @@ borda_count(profileOfRankings, verbose = FALSE, seePoints = FALSE)
 
 }
 \description{
-Title
+Apply Borda Count ranking rule in a profile of ranking
 
 Title
 }
+\seealso{
+Other ranking rule: 
+\code{\link{borda_winner}()},
+\code{\link{scoring}()},
+\code{\link{tapproval}()},
+\code{\link{veto}()}
+}
+\concept{ranking rule}

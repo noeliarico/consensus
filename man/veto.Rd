@@ -21,3 +21,11 @@ Title
 
 Title
 }
+\seealso{
+Other ranking rule: 
+\code{\link{borda_count}()},
+\code{\link{borda_winner}()},
+\code{\link{scoring}()},
+\code{\link{tapproval}()}
+}
+\concept{ranking rule}

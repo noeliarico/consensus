@@ -15,3 +15,10 @@ parse_ranking(string)
 \description{
 Title
 }
+\seealso{
+Other ranking: 
+\code{\link{format.ranking}()},
+\code{\link{print.ranking}()},
+\code{\link{ranking}()}
+}
+\concept{ranking}

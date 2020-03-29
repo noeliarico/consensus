@@ -2,9 +2,7 @@
 % Please edit documentation in R/ranking.R
 \name{ranking}
 \alias{ranking}
-\title{Default behaviour creates an ascending value. This is, the lower the value
-the better the candidate is considered
-If names are given in n it will overwrite the names in the vector if named}
+\title{Creates ranking from vector}
 \usage{
 ranking(v, cnames = NULL, decreasing = FALSE)
 }
@@ -22,3 +20,10 @@ Default behaviour creates an ascending value. This is, the lower the value
 the better the candidate is considered
 If names are given in n it will overwrite the names in the vector if named
 }
+\seealso{
+Other ranking: 
+\code{\link{format.ranking}()},
+\code{\link{parse_ranking}()},
+\code{\link{print.ranking}()}
+}
+\concept{ranking}

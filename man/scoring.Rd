@@ -32,3 +32,14 @@ the ranking generated after applying the ranking rule
 \description{
 Scoring ranking rules
 }
+\examples{
+
+}
+\seealso{
+Other ranking rule: 
+\code{\link{borda_count}()},
+\code{\link{borda_winner}()},
+\code{\link{tapproval}()},
+\code{\link{veto}()}
+}
+\concept{ranking rule}

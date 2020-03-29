@@ -20,3 +20,11 @@ borda_winner(profileOfRankings, verbose = FALSE, seePoints = FALSE)
 Applies Borda Count in the profile of rankings given as first parameter and
 then it takes the winner in the first position.
 }
+\seealso{
+Other ranking rule: 
+\code{\link{borda_count}()},
+\code{\link{scoring}()},
+\code{\link{tapproval}()},
+\code{\link{veto}()}
+}
+\concept{ranking rule}

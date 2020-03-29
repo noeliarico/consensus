@@ -15,3 +15,11 @@ tapproval(profileOfRankings, t = 2, verbose = FALSE, seePoints = FALSE)
 \description{
 Title
 }
+\seealso{
+Other ranking rule: 
+\code{\link{borda_count}()},
+\code{\link{borda_winner}()},
+\code{\link{scoring}()},
+\code{\link{veto}()}
+}
+\concept{ranking rule}
