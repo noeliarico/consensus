@@ -14,6 +14,9 @@
 #' @return the ranking generated after applying the ranking rule
 #'
 #' @examples
+#' 
+#' @family ranking rule
+#' 
 #' @export
 #'
 scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, seePoints = FALSE) {
@@ -118,6 +121,7 @@ plurality <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
 #' @return
 #' @export
 #'
+#' @family ranking rule
 #' @examples
 veto <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
   scoring(profileOfRankings, "veto", verbose = verbose, seePoints = seePoints)
@@ -131,12 +135,14 @@ veto <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
 #' @return
 #' @export
 #'
+#' @family ranking rule
+#' 
 #' @examples
 tapproval <- function(profileOfRankings, t = 2, verbose = FALSE, seePoints = FALSE) {
   scoring(profileOfRankings, "t", t, verbose = verbose, seePoints = seePoints)
 }
 
-#' Title
+#' Apply Borda Count ranking rule in a profile of ranking
 #'
 #' @param profileOfRankings
 #' @param verbose
@@ -144,6 +150,8 @@ tapproval <- function(profileOfRankings, t = 2, verbose = FALSE, seePoints = FAL
 #' @return
 #' @export
 #'
+#' @family ranking rule
+#' 
 #' @examples
 borda_count <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
   scoring(profileOfRankings, "borda", verbose = verbose)
@@ -159,7 +167,9 @@ borda_count <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
 #'
 #' @return
 #' @export
-#'
+#' 
+#' @family ranking rule
+#' 
 #' @examples
 borda_winner <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
   ranking <- scoring(profileOfRankings, "borda", verbose = verbose)

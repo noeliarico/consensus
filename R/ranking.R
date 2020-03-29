@@ -1,3 +1,5 @@
+#' Creates ranking from vector
+#' 
 #' Default behaviour creates an ascending value. This is, the lower the value
 #' the better the candidate is considered
 #' If names are given in n it will overwrite the names in the vector if named
@@ -8,6 +10,7 @@
 #' allowed. 
 #' @param decreasing  boolean parameter to . Default is FALSE.
 #'
+#' @family ranking
 #' @export
 ranking <- function(v, cnames = NULL, decreasing = FALSE) {
   
@@ -160,6 +163,9 @@ ranking <- function(v, cnames = NULL, decreasing = FALSE) {
 }
 
 # Generic methods for the class ranking
+#' @param ranking 
+#'
+#' @family ranking
 #' @export
 format.ranking <- function(ranking) {
   
@@ -189,6 +195,10 @@ format.ranking <- function(ranking) {
 
 
 # Generic methods for the class ranking
+#' @param ranking 
+#'
+#' @family ranking
+#' 
 #' @export
 print.ranking <- function(ranking) {
   r <- format.ranking(ranking)
@@ -232,7 +242,9 @@ is.ranking <- function(x) {
 #' Title
 #'
 #' @param string
-#'
+#' 
+#' @family ranking
+#' 
 #' @return
 #' @export
 #'
