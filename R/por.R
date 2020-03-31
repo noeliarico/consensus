@@ -43,20 +43,29 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
     matrix <- as.matrix(matrix)
   }
   
-  if(is.null(colnames(matrix))) {
-    colnames(matrix) <- paste0("C", 1:ncol(matrix))
+  if(is.data.frame(matrix)) {
+    matrix <- as.matrix(matrix)
   }
-  candidates <- colnames(matrix)
   
-  rownames(matrix) <- NULL
+  if(is.null(colnames(matrix))) {
+    candidates <- paste0("C", 1:ncol(matrix))
+  }
+  else {
+    candidates <- colnames(matrix)
+  }
+  colnames(matrix) <- NULL
+  
+  #colnames(matrix) <- NULL
   
   profileOfRankings <- data.frame()
-  
   
   # evaluate the profile of ranking to get the rows which are unique
   # this means, the different rankings given by the voters
   unique.rankings <- unique.matrix(matrix,)
   is_ok <- apply(unique.rankings, 1, is.ranking)
+  
+  print("unique rankings")
+  print(unique.rankings)
   
   if(!all(is_ok)) {
     stop("Error creating the profile of rankings: At least one of the rows is not a ranking")
@@ -68,12 +77,13 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
     #row_is_a_match <- apply(matrix, 1, identical, v)
     # identical does not work for a matrix of 1x1 with names in rows and columns
     row_is_a_match <- apply(matrix, 1, function(x, v) all(x == v), v)
+    print(row_is_a_match)
     match_idx <- which(row_is_a_match)
-    total_matches <- sum(row_is_a_match)
+    total_matches <- length(match_idx)
     profileOfRankings <- rbind(profileOfRankings, c(total_matches, v))
   }
-  #print(profileOfRankings)
-  names(profileOfRankings) <- c('numberOfVoters', candidates)
+  
+  colnames(profileOfRankings) <- c('numberOfVoters', candidates)
   class(profileOfRankings) <- c("por", "data.frame")
   
   return(profileOfRankings)
@@ -282,15 +292,15 @@ toLatex.por <- function(x) {
 as.por <- function(matrix) {
   #TODO takes a numeric matrix with numeric values and not rankings by row
   print("-----------------------------------------")
-  print("Matrix after apply ranking")
+  print("Matrix before apply ranking")
   print(matrix)
   print("Matrix after apply ranking")
-  matrix[] <- apply(matrix, 1, ranking)
+  matrix[] <- t(apply(matrix, 1, ranking))
   print(matrix)
-  print("Por")
+  #print("Por")
   por <- profile_of_rankings(matrix)
-  #print(por)
-  print("-----------------------------------------")
+  print(por)
+  #print("-----------------------------------------")
   return(por)
 }
 
