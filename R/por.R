@@ -323,3 +323,45 @@ read_rankings <- function(file_path, verbose = FALSE) {
   return(the_rankings)
 }
 
+#' @title Parse profile of rankings
+#' @description Create profile of rankings using its string representation.
+#'
+#' @param string A string containing a representation of the ranking in the form:
+#' "number_of_voters_r1, ranking1,
+#'  number_of_voters_r2, ranking2,
+#'  ...,
+#'  number_of_voters_rN, rankingN"
+#'  The operators used for representing that one candidate is preferred to 
+#'  another are ≻ and >. For representing ties use ~.
+#'
+#' @return A profile of rankings object containing the representation.
+#' 
+#' @export
+#'
+#' @examples
+#' 
+#' parse_profile_of_rankings("6, a ≻ b ≻ c ≻ d,
+#'                            5, b ≻ c ≻ a ≻ d,
+#'                            3, c ≻ d ≻ a ≻ b")
+
+parse_profile_of_rankings <- function(string) {
+  
+  string <- stringr::str_remove(string, "\n")
+  string <- str_split(string, ",", simplify = TRUE)
+  m <- NULL
+  numberOfVoters <- numeric()
+  for (i in seq(1, length(string), 2)) {
+    numberOfVoters <- append(numberOfVoters, as.numeric(string[i]))
+    if(is.null(m)) {
+      m <- t(as.matrix(parse_ranking(string[i+1])))
+    }
+    else {
+      m <- rbind(m, parse_ranking(string[i+1]))
+    }
+  }
+
+  m <- data.frame(cbind(numberOfVoters, m))
+  class(m) <- c("por", "data.frame")
+  return(m)
+}
+
