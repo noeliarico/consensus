@@ -16,10 +16,10 @@ parse_profile_of_rankings(string)
  another are ≻ and >. For representing ties use ~.}
 }
 \value{
-A profile of rankings object containing the representation
+A profile of rankings object containing the representation.
 }
 \description{
-Create profile of rankings using its string representation
+Create profile of rankings using its string representation.
 }
 \examples{
 

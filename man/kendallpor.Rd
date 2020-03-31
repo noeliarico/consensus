@@ -2,7 +2,7 @@
 % Please edit documentation in R/kendall.R
 \name{kendallpor}
 \alias{kendallpor}
-\title{Title}
+\title{Kendall distance in a profile of rankings}
 \usage{
 kendallpor(profileOfRankings, verbose = FALSE)
 }
@@ -17,5 +17,5 @@ kendallpor(profileOfRankings, verbose = FALSE)
 
 }
 \description{
-Title
+Kendall distance in a profile of rankings
 }

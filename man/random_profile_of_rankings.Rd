@@ -21,5 +21,5 @@ random_profile_of_rankings(
 \item{withties}{The rankings are generated without ties by default.}
 }
 \description{
-Create random profile of rankings
+Creates a ranfom profile of rankings
 }
