@@ -22,8 +22,6 @@ If names are given in n it will overwrite the names in the vector if named
 }
 \seealso{
 Other ranking: 
-\code{\link{format.ranking}()},
-\code{\link{parse_ranking}()},
-\code{\link{print.ranking}()}
+\code{\link{parse_ranking}()}
 }
 \concept{ranking}

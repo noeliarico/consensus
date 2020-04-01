@@ -162,18 +162,15 @@ ranking <- function(v, cnames = NULL, decreasing = FALSE) {
   return(ranking)
 }
 
-# Generic methods for the class ranking
-#' @param ranking 
-#'
-#' @family ranking
+#' @method format ranking
 #' @export
-format.ranking <- function(ranking) {
+format.ranking <- function(x, ...) {
   
-  if(length(ranking) == 1){
-    return(names(ranking))
+  if(length(x) == 1){
+    return(names(x))
   }
   
-  ranking <- sort(ranking)
+  ranking <- sort(x)
   
   names <- as.character(names(ranking))
   gr <- names[1]
@@ -182,10 +179,10 @@ format.ranking <- function(ranking) {
     nextElem <- ranking[i+1]
     
     if(thisElem<nextElem) {
-      gr <- paste(gr, '≻',names[i+1])
+      gr <- paste(gr, '\u227B',names[i+1])
     }
     else { # this means the two rankings are equals
-      gr <- paste(gr, '∼',names[i+1])
+      gr <- paste(gr, '\u007E',names[i+1])
     }
   }
   
@@ -194,14 +191,10 @@ format.ranking <- function(ranking) {
 }
 
 
-# Generic methods for the class ranking
-#' @param ranking 
-#'
-#' @family ranking
-#' 
+#' @method print ranking
 #' @export
-print.ranking <- function(ranking) {
-  r <- format.ranking(ranking)
+print.ranking <- function(x, ...) {
+  r <- format.ranking(x)
   cat(r, "\n")
   #NextMethod() # for calling the print of the next class which is the vector
   invisible(r)
@@ -250,20 +243,20 @@ is.ranking <- function(x) {
 parse_ranking <- function(string) {
   
   string <- stringr::str_replace_all(string, " ", "")
-  candidates <- unlist(strsplit(string, ">|≻|∼"))
-  candidates_names <- candidates[!candidates %in% c("∼", "≻", ">")]
+  candidates <- unlist(strsplit(string, ">|\u227B|\u007E"))
+  candidates_names <- candidates[!candidates %in% c("\u007E", "\u227B", ">")]
   number_of_candidates <- length(candidates_names)
   ranking <- integer(number_of_candidates)
   names(ranking) <- candidates_names
   operators <- unlist(strsplit(string, ""))
-  operators <- operators[operators %in% c("∼", "≻", ">")]
+  operators <- operators[operators %in% c("\u007E", "\u227B", ">")]
   
   i <- 1
   pos <- 1
   ranking[i] <- 1
   for (elem in operators) {
     i <- i + 1
-    if(elem == "≻" || elem == ">") {
+    if(elem == "\u227B" || elem == ">") {
       pos <- pos + 1
     }
     ranking[i] <- pos

@@ -2,18 +2,24 @@
 % Please edit documentation in R/kemeny.R
 \name{kemeny}
 \alias{kemeny}
-\title{Title}
+\title{Kemeny ranking rule}
 \usage{
-kemeny(profileOfRankings, verbose = FALSE)
+kemeny(profileOfRankings, details = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{profileOfRankings}{}
+\item{profileOfRankings}{an object of the class "por"}
 
 \item{verbose}{}
 }
 \value{
-
+kemeny returns an object of class kemeny
 }
 \description{
-Title
+Kemeny ranking rule
+}
+\examples{
+por <- parse_profile_of_rankings("6, a ≻ b ≻ c ≻ d,
+                                  5, b ≻ c ≻ a ≻ d,
+                                  3, c ≻ d ≻ a ≻ b")
+kemeny(por)
 }

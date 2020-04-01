@@ -39,7 +39,7 @@
 profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
                                 candidates = NULL, ties = NULL) {
   
-  if(is.tibble(matrix)) {
+  if(is_tibble(matrix)) {
     matrix <- as.matrix(matrix)
   }
   
@@ -64,9 +64,6 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
   unique.rankings <- unique.matrix(matrix,)
   is_ok <- apply(unique.rankings, 1, is.ranking)
   
-  print("unique rankings")
-  print(unique.rankings)
-  
   if(!all(is_ok)) {
     stop("Error creating the profile of rankings: At least one of the rows is not a ranking")
   }
@@ -77,7 +74,6 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
     #row_is_a_match <- apply(matrix, 1, identical, v)
     # identical does not work for a matrix of 1x1 with names in rows and columns
     row_is_a_match <- apply(matrix, 1, function(x, v) all(x == v), v)
-    print(row_is_a_match)
     match_idx <- which(row_is_a_match)
     total_matches <- length(match_idx)
     profileOfRankings <- rbind(profileOfRankings, c(total_matches, v))
@@ -222,12 +218,12 @@ print.por <- function(profileOfRankings) {
   
   
   gr <- apply(profileOfRankings, 1, format.ranking)
+  
   gr <- as.data.frame(gr)
   
   gpor <- cbind(gpor, gr)
   
   colnames(gpor) <- c('numberOfVoters', 'ranking')
-  
   print(gpor)
   invisible(gpor)
   
@@ -272,14 +268,15 @@ random_profile_of_rankings <- function(ncandidates = 4,
   }
   
   if(!withties) {
-    rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% as.tibble()
+    rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% as_tibble()
   }
   else {
-    rankings <- t(replicate(nranking, ranking(sample(1:(sample(2:ncandidates, 1)), ncandidates, replace = TRUE)))) %>% as.tibble()
+    rankings <- t(replicate(nranking, ranking(sample(1:(sample(2:ncandidates, 1)), ncandidates, replace = TRUE)))) %>% as_tibble()
   }
   
   names(rankings) <- paste0("C", 1:ncol(rankings))
   por <- profile_of_rankings(rankings)
+
   return(por)
 }
 
@@ -332,7 +329,6 @@ read_rankings <- function(file_path) {
   the_rankings <- matrix(ncol = length(lines))
   for (line in lines){
     r <- parse_ranking(line)
-    print(r)
     the_rankings <- the_rankings %>% rbind(r)
   }
   close(conn)
@@ -366,7 +362,7 @@ read_rankings <- function(file_path) {
 parse_profile_of_rankings <- function(string) {
   
   string <- stringr::str_remove(string, "\n")
-  string <- str_split(string, ",", simplify = TRUE)
+  string <- stringr::str_split(string, ",", simplify = TRUE)
   m <- NULL
   numberOfVoters <- numeric()
   for (i in seq(1, length(string), 2)) {

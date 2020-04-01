@@ -1,12 +1,16 @@
-#' Title
+#' Kemeny ranking rule
 #'
-#' @param profileOfRankings 
+#' @param profileOfRankings an object of the class "por"
 #' @param verbose 
 #'
-#' @return
+#' @return kemeny returns an object of class kemeny
 #' @export
 #'
 #' @examples
+#' por <- parse_profile_of_rankings("6, a ≻ b ≻ c ≻ d,
+#'                                   5, b ≻ c ≻ a ≻ d,
+#'                                   3, c ≻ d ≻ a ≻ b")
+#' kemeny(por)
 kemeny <- function(profileOfRankings, details = TRUE, verbose = FALSE) {
 
   # Split votes and rankings
@@ -32,17 +36,19 @@ kemeny <- function(profileOfRankings, details = TRUE, verbose = FALSE) {
     out <- cbind(rev, distances, distance)
   }
   else {
-    distances <- sapply(1:nrow(rev), function(i) {
+    ncores < detectCores()
+    cl <- makeCluster(ncores)
+    distances <- parSapply(cl, 1:nrow(rev), function(i) {
       sapply(1:nrow(profileOfRankings), function(j) {
         kendall(get_ranking(profileOfRankings, j), ranking(rev[i,]))
       })
     })
+    stopCluster(cl)
     distances <- sapply(distances, function(x) x * votes)
     distances <- rowSums(distances)
     out <- cbind(rev, distances)
   }
   
   return(out)
-  
 }
 
