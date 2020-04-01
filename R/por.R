@@ -204,8 +204,7 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
   return(profileOfRankings)
 }
 
-
-
+#' @export
 is.por <- function(x) inherits(x, "por")
 
 #' @export
@@ -234,7 +233,7 @@ print.por <- function(profileOfRankings) {
   
 }
 
-#' @export
+#' For internal purpouse only
 split_profile_of_rankings <- function(profileOfRankings) {
   
   if(!is.por(profileOfRankings)) {# || !is.data.frame(profileOfRankings)) {
@@ -255,7 +254,8 @@ split_profile_of_rankings <- function(profileOfRankings) {
   
 }
 
-#' Create random profile of rankings
+#' @title Create random profile of rankings
+#' @description Creates a ranfom profile of rankings
 #' 
 #' @param ncandidates Number of candidates
 #' @param nranking Number of rankings in the profile of rankings
@@ -283,11 +283,25 @@ random_profile_of_rankings <- function(ncandidates = 4,
   return(por)
 }
 
+#' @title Latex table of profile of rankings
+#' 
+#' @param profileOfRankings
+#'
 #' @export
-toLatex.por <- function(x) {
-  xtable(print(x))
+toLatex.por <- function(profileOfRankings) {
+  # TODO probar con format en vez de con print para que no lo imprima
+  xtable::xtable(print(profileOfRankings))
 }
 
+# -------------------------------------------------------------------------
+
+
+#' @title Convert matrix to profile of rankings
+#' 
+#' @param matrix Matrix to convert to a profile of rankings
+#'
+#' @return A profile of rankings object
+#' 
 #' @export
 as.por <- function(matrix) {
   #TODO takes a numeric matrix with numeric values and not rankings by row
@@ -304,16 +318,21 @@ as.por <- function(matrix) {
   return(por)
 }
 
+#' @title Read rankings from file
+#' 
+#' @description Given a .csv file, read the rankings in the file and creates
+#' a profile of rankings object.
+#' 
+#' @param file_path Path of the file storing the rankings
+#'
 #' @export
-read_rankings <- function(file_path, verbose = FALSE) {
-  conn <- file(file_path,open="r")
+read_rankings <- function(file_path) {
+  conn <- file(file_path,open = "r")
   lines <- readLines(conn)
   the_rankings <- matrix(ncol = length(lines))
   for (line in lines){
     r <- parse_ranking(line)
-    if(verbose) {
-      print(r)
-    }
+    print(r)
     the_rankings <- the_rankings %>% rbind(r)
   }
   close(conn)
@@ -363,5 +382,23 @@ parse_profile_of_rankings <- function(string) {
   m <- data.frame(cbind(numberOfVoters, m))
   class(m) <- c("por", "data.frame")
   return(m)
+}
+
+#' @export
+get_ranking <- function(profileOfRankings, index) {
+  
+  if(index > nrow(profileOfRankings))
+    stop(paste("There are ", nrow(profileOfRankings), "different rankings only."))
+  
+  # Split votes and rankings
+  splittedPOF <- split_profile_of_rankings(profileOfRankings)
+  # Get rankings
+  rankings <- splittedPOF$rankings
+  
+  class(rankings) <- "data.frame"
+  # Get ranking from index
+  ranking <- unlist(rankings[index,])
+  class(ranking) <- "ranking"
+  return(ranking)
 }
 

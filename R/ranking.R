@@ -230,8 +230,7 @@ is.ranking <- function(x) {
     #}
   }
   else {
-    print("Not is ranking")
-    print(x)
+    message("The vector is not a ranking")
     return(FALSE)
   }
   #}
@@ -251,31 +250,26 @@ is.ranking <- function(x) {
 parse_ranking <- function(string) {
   
   string <- stringr::str_replace_all(string, " ", "")
-  candidates <- unlist(strsplit(string, "≻|∼"))
-  candidates_names <- candidates[!candidates %in% c("∼", "≻")]
+  candidates <- unlist(strsplit(string, ">|≻|∼"))
+  candidates_names <- candidates[!candidates %in% c("∼", "≻", ">")]
   number_of_candidates <- length(candidates_names)
   ranking <- integer(number_of_candidates)
   names(ranking) <- candidates_names
   operators <- unlist(strsplit(string, ""))
-  operators <- operators[operators %in% c("∼", "≻")]
-  
+  operators <- operators[operators %in% c("∼", "≻", ">")]
   
   i <- 1
   pos <- 1
   ranking[i] <- 1
   for (elem in operators) {
     i <- i + 1
-    print(elem)
-    if(elem == "≻") {
+    if(elem == "≻" || elem == ">") {
       pos <- pos + 1
     }
-    
     ranking[i] <- pos
-   
   }
   
   ranking <- ranking[order(names(ranking))]
-  print(ranking)
   
   class(ranking) <- c("ranking", "numeric")
   return(ranking)
