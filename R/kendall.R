@@ -9,10 +9,22 @@
 #'
 #' @examples
 kendall <- function(ranking1, ranking2, verbose = FALSE) {
+  
+  if(any(names(ranking1) != names(ranking2))) {
+    stop("The rankings must refer to the same candidates")
+  }
+  
+  if(verbose) {
+    print("Kendall distance between")
+    print(ranking1)
+    print(ranking2)
+  }
+  r2sort <- sort(ranking2) 
+  r1sort <- ranking1[names(r2sort)]
   .C("kendall",
-     ranking = as.integer(ranking1),
-     reference = as.integer(sapply(1:length(ranking2), function(x) which(ranking2 == x))),
-     candidates = length(ranking1),
+     ranking = as.integer(r1sort),
+     reference = as.integer(sapply(1:length(r2sort), function(x) which(r2sort == x))),
+     candidates = length(r1sort),
      result = integer(1)
   )$result
 }
@@ -32,6 +44,14 @@ reversals <- function(candidates, verbose = FALSE) {
                                     v = 1:length(candidates))
   colnames(reversals) <- candidates
   return(reversals)
+}
+
+#' @export
+all_reversals <- function(from = 4, up = 10) {
+  
+  parallel::mclapply(from:up, function(x) { 
+    reversals(paste0("C", 1:x)) 
+  })
 }
 
 #' Kendall distance in a profile of rankings

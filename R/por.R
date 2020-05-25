@@ -302,15 +302,22 @@ toLatex.por <- function(profileOfRankings) {
 #' @export
 as.por <- function(matrix) {
   #TODO takes a numeric matrix with numeric values and not rankings by row
-  print("-----------------------------------------")
-  print("Matrix before apply ranking")
-  print(matrix)
-  print("Matrix after apply ranking")
+  #print("-----------------------------------------")
+  #print("Matrix before apply ranking")
+  #print(matrix)
+  if(!is.null(colnames(matrix))) {
+    candidates <- colnames(matrix)
+  }
+  else {
+    candidates <- paste0("C", 1:ncol(matrix))
+  }
+  #print("Matrix after apply ranking")
   matrix[] <- t(apply(matrix, 1, ranking))
-  print(matrix)
+  #print(matrix)
+  colnames(matrix) <- candidates
   #print("Por")
   por <- profile_of_rankings(matrix)
-  print(por)
+  #print(por)
   #print("-----------------------------------------")
   return(por)
 }

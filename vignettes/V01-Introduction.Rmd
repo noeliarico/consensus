@@ -1,5 +1,5 @@
 ---
-title: "V01-Introduction"
+title: "Introduction"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{V01-Introduction}

@@ -173,5 +173,5 @@ borda_count <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
 #' @examples
 borda_winner <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
   ranking <- scoring(profileOfRankings, "borda", verbose = verbose)
-  names(ranking[which.max(ranking)])
+  names(ranking[which.min(ranking)])
 }

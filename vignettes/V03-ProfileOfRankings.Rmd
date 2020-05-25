@@ -1,5 +1,5 @@
 ---
-title: "V03-ProfileOfRankings"
+title: "Profile of rankings"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{V03-ProfileOfRankings}

@@ -16,7 +16,7 @@ void kendall(int* ranking,
   int total = 0; // number of swaps
   int ncandidates = *candidates; // Number of candidates
   int iter = 0, i, temp;
-  
+
   while(iter < ncandidates) {
     for(i = 0; i < ncandidates-1; i ++) {
       if(reference[ranking[i]-1] > reference[ranking[i+1]-1]) {

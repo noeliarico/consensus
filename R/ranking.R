@@ -14,11 +14,10 @@
 #' @export
 ranking <- function(v, cnames = NULL, decreasing = FALSE) {
   
-  
   # Validate the parameters ----------------------------------------------------
   
   if(!is.null(cnames) && !is.vector(cnames)) {
-    stop("v argument must be a vector")
+    stop("The argument cnames must be a vector")
   }
   
   if(is.numeric(v)) {
@@ -155,7 +154,7 @@ ranking <- function(v, cnames = NULL, decreasing = FALSE) {
   }
   
   else {
-    stop("v argument must be a vector")
+    stop("The first argument must be a vector.")
   }
   
   class(ranking) <- c("ranking", "numeric")
@@ -189,7 +188,6 @@ format.ranking <- function(x, ...) {
   #NextMethod() # for calling the print of the next class which is the vector
   return(gr)
 }
-
 
 #' @method print ranking
 #' @export
