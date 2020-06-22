@@ -8,7 +8,7 @@
 #' @param cnames  names of the candidates. The values in this vector cannot
 #' must identified uniquely each candidate, thus, repeated values are not 
 #' allowed. 
-#' @param decreasing  boolean parameter to . Default is FALSE.
+#' @param decreasing Default is FALSE.
 #'
 #' @family ranking
 #' @export
