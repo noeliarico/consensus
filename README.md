@@ -6,8 +6,7 @@
 
 Welcome to the `consensus` package! The goal of consensus is to serve as a tool for managing rankings and profile of rankings and applying ranking rules.
 
-- `ranking`
-- `parse_ranking`
+Check the full doc in https://noeliarico.github.io/consensus/
 
 
 
