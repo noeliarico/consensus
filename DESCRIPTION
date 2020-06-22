@@ -1,13 +1,13 @@
 Package: consensus
-Title: What the Package Does (One Line, Title Case)
+Title: A package for ranking rules in the field of social choice theory
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Noelia",
+           family = "Rico",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
+           email = "noeliarico@uniovi.es",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: Functions implementing ranking rules.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
