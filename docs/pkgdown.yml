@@ -1,4 +1,4 @@
-pandoc: 2.7.3
+pandoc: 2.9.2.1
 pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
@@ -7,5 +7,5 @@ articles:
   V03-ProfileOfRankings: V03-ProfileOfRankings.html
   V04-RankingRules: V04-RankingRules.html
   V05-ImportingData: V05-ImportingData.html
-last_built: 2020-06-22T15:11Z
+last_built: 2020-06-29T07:26Z
 
