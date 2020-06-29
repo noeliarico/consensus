@@ -1,4 +1,4 @@
-# consensus &lt;img src="man/figures/logo.png" align="right" /&gt;
+# consensus <img src='man/figures/logo.svg' align="right" height="139" />
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/noeliarico/consensus.svg?branch=master)](https://travis-ci.org/noeliarico/consensus)
