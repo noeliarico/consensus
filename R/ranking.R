@@ -228,8 +228,9 @@ is.ranking <- function(x) {
   
 }
 
-#s <- "a > b ~ c > d > e"
-#' Title
+#' Translate ranking 
+#' 
+#' Parses a ranking from a graphical format to its R representation
 #'
 #' @param string
 #' 
@@ -240,14 +241,20 @@ is.ranking <- function(x) {
 #'
 parse_ranking <- function(string) {
   
+  # Remove all the blankspaces
   string <- stringr::str_replace_all(string, " ", "")
-  candidates <- unlist(strsplit(string, ">|\u227B|\u007E"))
+  # Get the list of candidates splitting by the operators
+  candidates <- unlist(strsplit(string, ">|~|∼|\u227B|\u007E"))
+  # Get the names of the candidates removing the operators
   candidates_names <- candidates[!candidates %in% c("\u007E", "\u227B", ">")]
+  # Count the number of candidates
   number_of_candidates <- length(candidates_names)
+  # Vector of zeros (one per candidate) that will store the final ranking
   ranking <- integer(number_of_candidates)
+  # Name the vector
   names(ranking) <- candidates_names
   operators <- unlist(strsplit(string, ""))
-  operators <- operators[operators %in% c("\u007E", "\u227B", ">")]
+  operators <- operators[operators %in% c("\u007E", "\u227B", ">", "∼", "~")]
   
   i <- 1
   pos <- 1

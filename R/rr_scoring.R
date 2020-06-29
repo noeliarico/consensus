@@ -17,8 +17,6 @@
 #' 
 #' @family ranking rule
 #' 
-#' @export
-#'
 scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, seePoints = FALSE) {
   
   if(verbose) {
@@ -100,7 +98,7 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, se
 }
 
 
-#' Title
+#' plurality ranking rule
 #'
 #' @param profileOfRankings
 #' @param verbose
@@ -113,7 +111,7 @@ plurality <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
   scoring(profileOfRankings, "plurality", verbose = verbose, seePoints = seePoints)
 }
 
-#' Title
+#' veto ranking rule
 #'
 #' @param profileOfRankings
 #' @param verbose
@@ -127,7 +125,7 @@ veto <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
   scoring(profileOfRankings, "veto", verbose = verbose, seePoints = seePoints)
 }
 
-#' Title
+#' t-approval ranking rule
 #'
 #' @param profileOfRankings
 #' @param verbose
@@ -142,6 +140,8 @@ tapproval <- function(profileOfRankings, t = 2, verbose = FALSE, seePoints = FAL
   scoring(profileOfRankings, "t", t, verbose = verbose, seePoints = seePoints)
 }
 
+#' Borda Count ranking rule
+#' 
 #' Apply Borda Count ranking rule in a profile of ranking
 #'
 #' @param profileOfRankings
