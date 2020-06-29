@@ -1,5 +1,4 @@
-
-# consensus
+# consensus &lt;img src="man/figures/logo.png" align="right" /&gt;
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/noeliarico/consensus.svg?branch=master)](https://travis-ci.org/noeliarico/consensus)
