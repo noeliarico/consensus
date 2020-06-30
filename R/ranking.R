@@ -1,8 +1,10 @@
-#' Creates ranking from vector
+#' Create ranking from vector
 #' 
-#' Default behaviour creates an ascending value. This is, the lower the value
-#' the better the candidate is considered
-#' If names are given in n it will overwrite the names in the vector if named
+#' Given a numeric vector, the default behaviour creates a ranking in 
+#' ascending value. This is, the lower the value of the vector the better the 
+#' candidate is considered.
+#' If names are given in the vector they will be used as names of the 
+#' candidates, to overwrite them, use the argument `cnames`.
 #'
 #' @param v   vector to be translated to a ranking
 #' @param cnames  names of the candidates. The values in this vector cannot
@@ -179,9 +181,12 @@ format.ranking <- function(x, ...) {
     
     if(thisElem<nextElem) {
       gr <- paste(gr, '\u227B',names[i+1])
+      #gr <- paste(gr, '&#227B',names[i+1])
     }
     else { # this means the two rankings are equals
-      gr <- paste(gr, '\u007E',names[i+1])
+      #gr <- paste(gr, '\u007E',names[i+1])
+      gr <- paste(gr, '\u223C',names[i+1])
+      #gr <- paste(gr, '&#007E',names[i+1])
     }
   }
   
