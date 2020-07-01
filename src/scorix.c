@@ -6,7 +6,7 @@ void scorix(int *profileOfRankings,
             int *votes, 
             int *ncandidates, 
             int *nrankings,
-            int *results) {
+            int *scorix) {
   
   //  numberOfVoters       ranking
   //  1              6 c ≻ b ≻ a ≻ d
@@ -34,7 +34,7 @@ void scorix(int *profileOfRankings,
   printf("\nEstoy dentro de scorix\n");
   
   
-  int i = 0, j = 0;
+  int c1, c2, r, total;
   int nc = *ncandidates;
   int nr = *nrankings;
   int totpos = nc * nr;
@@ -43,9 +43,18 @@ void scorix(int *profileOfRankings,
   printf("nr: %d \n", nr);
   printf("totpos: %d \n", totpos/2);
    
-  for(i = 0; i < totpos/2; i++) {
-    for(j = i; j < i+nc; j++) {
-      printf("j: %d \n", j);
+  for(c1 = 0; c1 < nc; c1++) {
+    for(c2 = c1; c2 < nc; c2++) {
+      for(r = 1; r <= nr; r++) {
+        total = 0;
+        if(profileOfRankings[c1*r] > profileOfRankings[c2*r]) {
+          total++;
+        }
+        scorix[0] = total;
+        scorix[0] = nr - total;
+      }
     }
-  } 
+  }
+  
+   
 } 
