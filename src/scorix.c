@@ -34,7 +34,7 @@ void scorix(int *profileOfRankings,
   printf("\nEstoy dentro de scorix\n");
   
   
-  int c1, c2, r, total;
+  int c, r, total;
   int nc = *ncandidates;
   int nr = *nrankings;
   int totpos = nc * nr;
@@ -43,16 +43,10 @@ void scorix(int *profileOfRankings,
   printf("nr: %d \n", nr);
   printf("totpos: %d \n", totpos/2);
    
-  for(c1 = 0; c1 < nc; c1++) {
-    for(c2 = c1; c2 < nc; c2++) {
-      for(r = 1; r <= nr; r++) {
-        total = 0;
-        if(profileOfRankings[c1*r] > profileOfRankings[c2*r]) {
-          total++;
-        }
-        scorix[0] = total;
-        scorix[0] = nr - total;
-      }
+  for(c = 0; c < nc; c++) { // for each of the candidates
+    for(r = 0; r < nr; r++) { // do that in each ranking
+      //printf("The position of the candidate %d in the ranking %d is %d\n", c, r, profileOfRankings[c+(r*nc)]);
+      scorix[(c*nc)+(profileOfRankings[c+(r*nc)]-1)] += 1;
     }
   }
   

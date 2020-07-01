@@ -1,11 +1,11 @@
-#' Scorix
+#' Votrix
 #'
 #' @param profileOfRankings 
 #'
 #' @return
 #' @export
 #' @examples
-scorix <- function(profileOfRankings) {
+votrix <- function(profileOfRankings) {
   # Split votes and rankings
   splittedPOF <- split_profile_of_rankings(profileOfRankings)
   # Get votes
@@ -14,12 +14,9 @@ scorix <- function(profileOfRankings) {
   profileOfRankings <- as.matrix(splittedPOF$rankings)
   # Get the candidates
   candidates <- splittedPOF$candidates
-  print(profileOfRankings)
   
-  print(profileOfRankings)
-  print(as.integer(t(profileOfRankings)))
   matrix(
-  .C("scorix",
+  .C("votrix",
      profileOfRankings = as.integer(t(profileOfRankings)),
      votes = as.integer(votes),
      ncandidates = as.integer(ncol(profileOfRankings)),

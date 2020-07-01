@@ -14,15 +14,13 @@ scorix <- function(profileOfRankings) {
   profileOfRankings <- as.matrix(splittedPOF$rankings)
   # Get the candidates
   candidates <- splittedPOF$candidates
-  print(profileOfRankings)
-  
-  print(profileOfRankings)
-  print(as.integer(t(profileOfRankings)))
+
+  matrix(
   .C("scorix",
      profileOfRankings = as.integer(t(profileOfRankings)),
      votes = as.integer(votes),
      ncandidates = as.integer(ncol(profileOfRankings)),
      nrankings = as.integer(length(votes)),
-     results = integer(length(as.integer(t(profileOfRankings))))
-  )$results
+     results = integer(ncol(profileOfRankings)^2)
+  )$results, byrow = TRUE, nrow = ncol(profileOfRankings))
 }
