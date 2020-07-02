@@ -15,12 +15,12 @@ votrix <- function(profileOfRankings) {
   # Get the candidates
   candidates <- splittedPOF$candidates
   
-  matrix(
-  .C("votrix",
+  votrix <- matrix(.C("votrix",
      profileOfRankings = as.integer(t(profileOfRankings)),
      votes = as.integer(votes),
      ncandidates = as.integer(ncol(profileOfRankings)),
      nrankings = as.integer(length(votes)),
      results = integer(ncol(profileOfRankings)^2)
   )$results, nrow = ncol(profileOfRankings))
+  
 }

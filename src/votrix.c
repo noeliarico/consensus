@@ -52,6 +52,9 @@ void votrix(int *profileOfRankings,
         if(profileOfRankings[c1+(r*nc)] > profileOfRankings[c2+(r*nc)]) {
           total++;
         }
+        else if(profileOfRankings[c1+(r*nc)] == profileOfRankings[c2+(r*nc)]){
+          total+=0.5;
+        }
         printf("Is %d > %d?\n", profileOfRankings[c1+(r*nc)], profileOfRankings[c2+(r*nc)]);
       }
       
