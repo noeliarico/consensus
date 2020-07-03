@@ -330,16 +330,30 @@ as.por <- function(matrix) {
 #' @param file_path Path of the file storing the rankings
 #'
 #' @export
-read_rankings <- function(file_path) {
+read_rankings <- function(file_path, from_csv = FALSE) {
   conn <- file(file_path,open = "r")
   lines <- readLines(conn)
-  the_rankings <- matrix(ncol = length(lines))
-  for (line in lines){
-    r <- parse_ranking(line)
-    the_rankings <- the_rankings %>% rbind(r)
+  if(from_csv) {
+    ncandidates <- length(str_split(lines[1], ",", simplify = TRUE))
+    print(ncandidates)
+    the_rankings <- matrix(ncol = ncandidates)
+    for (line in lines) {
+      r <- as.numeric(str_split(line, ",", simplify = TRUE))
+      the_rankings <- the_rankings %>% rbind(r)
+    }
   }
+  else {
+    the_rankings <- matrix(ncol = length(lines))
+    for (line in lines){
+      r <- parse_ranking(line)
+      the_rankings <- the_rankings %>% rbind(r)
+    }
+  }
+  
   close(conn)
-  the_rankings <- the_rankings[-1, ]
+  print(the_rankings)
+  # Remove the first row which is a row of NAs from the creation of the matrix
+  the_rankings <- the_rankings[-1, ] 
   rownames(the_rankings) <- NULL
   the_rankings <- profile_of_rankings(the_rankings)
   return(the_rankings)
