@@ -10,11 +10,11 @@
 #' @param cnames  names of the candidates. The values in this vector cannot
 #' must identified uniquely each candidate, thus, repeated values are not 
 #' allowed. 
-#' @param decreasing Default is FALSE.
+#' @param desc Default is FALSE.
 #'
 #' @family ranking
 #' @export
-ranking <- function(v, cnames = NULL, decreasing = FALSE) {
+ranking <- function(v, cnames = NULL, desc = FALSE) {
   
   # Validate the parameters ----------------------------------------------------
   
@@ -100,7 +100,7 @@ ranking <- function(v, cnames = NULL, decreasing = FALSE) {
     names(ranking) <- candidates_names
     
     # Sort the vector with the given criteria (ascending or descending)
-    v <- sort(v, decreasing = decreasing)
+    v <- sort(v, decreasing = desc)
     
     if(length(v) != length(unique(v))) {
       
@@ -112,7 +112,7 @@ ranking <- function(v, cnames = NULL, decreasing = FALSE) {
       previous_elem <- v[1]
       for(index in 2:length(v)) {
         this_elem <- v[index]
-        if(decreasing) {
+        if(desc) {
           if(this_elem < previous_elem) {
             pos_ranking <- pos_ranking + 1
           }

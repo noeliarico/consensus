@@ -300,9 +300,7 @@ toLatex.por <- function(profileOfRankings) {
 #' @return A profile of rankings object
 #' 
 #' @export
-as.por <- function(matrix) {
-  #TODO takes a numeric matrix with numeric values and not rankings by row
-  #print("-----------------------------------------")
+as_por <- function(matrix, criterion = NULL) {
   #print("Matrix before apply ranking")
   #print(matrix)
   if(!is.null(colnames(matrix))) {
@@ -312,7 +310,27 @@ as.por <- function(matrix) {
     candidates <- paste0("C", 1:ncol(matrix))
   }
   #print("Matrix after apply ranking")
-  matrix[] <- t(apply(matrix, 1, ranking))
+  if(is.null(criterion)) {
+    matrix[] <- t(apply(matrix, 1, ranking))
+  }
+  else {
+    if(length(criterion) > 1) {
+      if(!all(criterion %in% c("asc", "desc"))) {
+        stop("Unkown criterion. The vector must contain only 'asc' and 'desc'.")
+      } 
+      criterion <- criterion == "desc"
+      matrix <- t(mapply(ranking, as.data.frame(t(matrix)), desc = criterion))
+    } else if(criterion == "asc") {
+      matrix[] <- t(apply(matrix, 1, ranking))
+    } else if (criterion == "desc") {
+      matrix[] <- t(apply(matrix, 1, ranking, desc = TRUE))
+    } else if (criterion == "desc") {
+      stop("Unkown criterion. It must be 'asc', 'desc' or a vector 
+           containing one of these values for each row.")
+    }
+  }
+  
+  
   #print(matrix)
   colnames(matrix) <- candidates
   #print("Por")

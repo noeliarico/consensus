@@ -4,7 +4,7 @@
 \alias{read_rankings}
 \title{Read rankings from file}
 \usage{
-read_rankings(file_path)
+read_rankings(file_path, from_csv = FALSE)
 }
 \arguments{
 \item{file_path}{Path of the file storing the rankings}

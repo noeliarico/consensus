@@ -4,7 +4,7 @@
 \alias{permutations}
 \title{Title}
 \usage{
-permutations(vector)
+permutations(vector, save = FALSE, as_por = FALSE, keepFile = FALSE)
 }
 \arguments{
 \item{vector}{}
