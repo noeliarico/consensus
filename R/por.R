@@ -3,7 +3,7 @@
 #' @title Create Profile of Rankings
 #'
 #' @description `profile_of_rankings()` creates a profile of rankings.
-#' These profile of rankings will be usefull for all the functions
+#' These profile of rankings will be useful for all the functions
 #' implementing ranking rules
 #'
 #'  # PROFILE OF RANKINGS: \cr

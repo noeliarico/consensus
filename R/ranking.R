@@ -246,12 +246,18 @@ is.ranking <- function(x) {
 #'
 parse_ranking <- function(string) {
   
-  # Remove all the blankspaces
+  # Valid symbols to express succ and sim
+  succ <- c("≻", "\u227B", ">")
+  sim <- c("~", "∼", "\u223C", "\u007E", "=")
+  symbols <- paste(paste(succ, collapse = "|"), 
+             paste(sim, collapse = "|"), sep = "|")
+  
+  # Remove all the blank spaces
   string <- stringr::str_replace_all(string, " ", "")
   # Get the list of candidates splitting by the operators
-  candidates <- unlist(strsplit(string, ">|~|∼|\u227B|\u007E"))
+  candidates <- unlist(strsplit(string, symbols))
   # Get the names of the candidates removing the operators
-  candidates_names <- candidates[!candidates %in% c("\u007E", "\u227B", ">")]
+  candidates_names <- candidates[!candidates %in% symbols]
   # Count the number of candidates
   number_of_candidates <- length(candidates_names)
   # Vector of zeros (one per candidate) that will store the final ranking
@@ -259,14 +265,17 @@ parse_ranking <- function(string) {
   # Name the vector
   names(ranking) <- candidates_names
   operators <- unlist(strsplit(string, ""))
-  operators <- operators[operators %in% c("\u007E", "\u227B", ">", "∼", "~")]
+  operators <- operators[operators %in% c(succ, sim)]
   
   i <- 1
   pos <- 1
   ranking[i] <- 1
+  print(ranking)
+  print(string)
+  print(operators)
   for (elem in operators) {
     i <- i + 1
-    if(elem == "\u227B" || elem == ">") {
+    if(elem %in% succ) {
       pos <- pos + 1
     }
     ranking[i] <- pos
