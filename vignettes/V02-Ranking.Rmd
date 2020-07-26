@@ -2,7 +2,7 @@
 title: "Ranking"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{V02-Ranking}
+  %\VignetteIndexEntry{Ranking}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

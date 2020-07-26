@@ -2,7 +2,7 @@
 title: "Profile of rankings"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{V03-ProfileOfRankings}
+  %\VignetteIndexEntry{Profile of rankings}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

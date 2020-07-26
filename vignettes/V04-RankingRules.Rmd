@@ -2,10 +2,18 @@
 title: "Ranking Rules"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{V04-RankingRules}
+  %\VignetteIndexEntry{Ranking Rules}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+- Scoring ranking rules
+  - $t$-approval
+  - Borda Count
+- Majority
+- Condorcet
+- Schulze
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -42,9 +50,13 @@ $$
 To replicate this using the package. First, it is necessary to create the profile of rankings:
 
 ```{r}
-por <- parse_profile_of_rankings("6, c > b > a > d,
-                                  5, a > d > b > c,
-                                  3, b > a > d > c")
-borda_count(por)
+# por <- parse_profile_of_rankings("6, c > b > a > d,
+#                                   5, a > d > b > c,
+#                                   3, b > a > d > c")
+# borda_count(por)
 ```
+
+# WVM
+
+The Weighted Voting Method considers the proportion of victories and defeats for each couple of candidates and it assigns to each candidate a score based on the aggregation of all the proportions of victories and ranks the candidates according to their score.
 
