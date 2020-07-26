@@ -4,7 +4,7 @@
 \alias{as_por}
 \title{Convert matrix to profile of rankings}
 \usage{
-as_por(matrix)
+as_por(matrix, criterion = NULL)
 }
 \arguments{
 \item{matrix}{Matrix to convert to a profile of rankings}

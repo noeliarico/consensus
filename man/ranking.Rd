@@ -4,7 +4,7 @@
 \alias{ranking}
 \title{Create ranking from vector}
 \usage{
-ranking(v, cnames = NULL, decreasing = FALSE)
+ranking(v, cnames = NULL, desc = FALSE)
 }
 \arguments{
 \item{v}{vector to be translated to a ranking}
@@ -13,7 +13,7 @@ ranking(v, cnames = NULL, decreasing = FALSE)
 must identified uniquely each candidate, thus, repeated values are not 
 allowed.}
 
-\item{decreasing}{Default is FALSE.}
+\item{desc}{Default is FALSE.}
 }
 \description{
 Given a numeric vector, the default behaviour creates a ranking in 

@@ -23,4 +23,5 @@ Imports:
     gtools,
     xtable,
     tibble,
-    parallel
+    parallel,
+    dplyr
