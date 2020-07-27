@@ -6,24 +6,27 @@
 #' @export
 #' @examples
 votrix <- function(profileOfRankings) {
-  # Split votes and rankings
-  splittedPOF <- split_profile_of_rankings(profileOfRankings)
-  # Get votes
-  votes <- splittedPOF$votes
-  # Get rankings
-  profileOfRankings <- as.matrix(splittedPOF$rankings)
-  # Get the candidates
-  candidates <- splittedPOF$candidates
+  
+  votes <- profileOfRankings$numberOfVoters
+  candidates <- profileOfRankings$candidates
+  por <- profileOfRankings$profileOfRankings
+  
+  print(as.integer(t(por)))
+  print(integer(ncol(por)^2))
   
   v <- matrix(.C("votrix",
-     profileOfRankings = as.integer(t(profileOfRankings)),
+     profileOfRankings = as.integer(t(por)),
      votes = as.integer(votes),
-     ncandidates = as.integer(ncol(profileOfRankings)),
+     totalvotes = as.integer(sum(votes)),
+     ncandidates = as.integer(length(candidates)),
      nrankings = as.integer(length(votes)),
-     results = integer(ncol(profileOfRankings)^2)
-  )$results, nrow = ncol(profileOfRankings))
-  
+     results = integer(ncol(por)^2)
+  )$results, nrow = length(candidates))
+
   colnames(v) <- candidates
   rownames(v) <- candidates
-  return(v)
+  
+  profileOfRankings$votrix <- v
+  
+  return(profileOfRankings)
 }
