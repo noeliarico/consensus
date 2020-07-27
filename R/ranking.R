@@ -165,7 +165,7 @@ ranking <- function(v, cnames = NULL, desc = FALSE) {
 
 #' @method format ranking
 #' @export
-format.ranking <- function(x, ...) {
+format.ranking <- function(x, latex = FALSE, ...) {
   
   if(length(x) == 1){
     return(names(x))
@@ -180,24 +180,35 @@ format.ranking <- function(x, ...) {
     nextElem <- ranking[i+1]
     
     if(thisElem<nextElem) {
-      gr <- paste(gr, '\u227B',names[i+1])
+      if(latex) {
+        gr <- paste(gr, '\\succ',names[i+1])
+      } else {
+        gr <- paste(gr, '\u227B',names[i+1])
+      }
+
       #gr <- paste(gr, '&#227B',names[i+1])
     }
     else { # this means the two rankings are equals
-      #gr <- paste(gr, '\u007E',names[i+1])
-      gr <- paste(gr, '\u223C',names[i+1])
+      if(latex) {
+        gr <- paste(gr, '\\sim',names[i+1])
+      } else {
+        gr <- paste(gr, '\u223C',names[i+1])
+      }
       #gr <- paste(gr, '&#007E',names[i+1])
     }
   }
   
-  #NextMethod() # for calling the print of the next class which is the vector
+  if(latex) {
+    gr <- paste0("$$", gr, "$$")
+  }
+  
   return(gr)
 }
 
 #' @method print ranking
 #' @export
-print.ranking <- function(x, ...) {
-  r <- format.ranking(x)
+print.ranking <- function(x, latex = FALSE, ...) {
+  r <- format.ranking(x, latex)
   cat(r, "\n")
   #NextMethod() # for calling the print of the next class which is the vector
   invisible(r)
