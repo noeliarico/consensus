@@ -1,4 +1,5 @@
 library(tidyverse)
+library(tibble)
 
 # set.seed(2020)
 # m1 <- t(replicate(5, sample(1:10, 5)))
