@@ -3,7 +3,6 @@
 #include <R.h>
 #include <Rinternals.h>
 
-
 void beatpath(int *votrix, 
               int *ncandidates, 
               int *beatpath) {
@@ -21,9 +20,10 @@ void beatpath(int *votrix,
             t2 = votrix[(nc*j)+iter];
             current = votrix[(nc*j)+i];
             printf("Iter %d: comparing [%d](%d, %d) and [%d](%d, %d) against [%d](%d, %d)\n",
-                     iter, t1, iter, i, t2, j, iter, current, i, j);
+                     iter+1, t1, iter+1, i+1, t2, j+1, iter+1, current, i+1, j+1);
             tentative = MIN(t1, t2);
             if(current < tentative) {
+              printf("UPDATE %d -> %d\n", current, tentative);
               votrix[(nc*j)+i] = tentative;
             }
           }

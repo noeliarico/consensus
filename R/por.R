@@ -61,26 +61,42 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
   
   # evaluate the profile of ranking to get the rows which are unique
   # this means, the different rankings given by the voters
-  unique.rankings <- unique.matrix(matrix,)
-  is_ok <- apply(unique.rankings, 1, is.ranking)
+  unique_rankings <- unique.matrix(matrix,)
+  is_ok <- apply(unique_rankings, 1, is.ranking)
   
   if(!all(is_ok)) {
     stop("Error creating the profile of rankings: At least one of the rows is not a ranking")
   }
   
-  for(indexrow in 1:nrow(unique.rankings)) {
-    v <- unique.rankings[indexrow, ]
+  voters <- rep(0, nrow(unique_rankings))
+  for(indexrow in 1:nrow(unique_rankings)) {
+    v <- unique_rankings[indexrow, ]
     
     #row_is_a_match <- apply(matrix, 1, identical, v)
     # identical does not work for a matrix of 1x1 with names in rows and columns
     row_is_a_match <- apply(matrix, 1, function(x, v) all(x == v), v)
     match_idx <- which(row_is_a_match)
     total_matches <- length(match_idx)
-    profileOfRankings <- rbind(profileOfRankings, c(total_matches, v))
+    #profileOfRankings <- rbind(profileOfRankings, c(total_matches, v))
+    voters[indexrow] <- total_matches 
+    profileOfRankings <- rbind(profileOfRankings, v)
   }
   
-  colnames(profileOfRankings) <- c('numberOfVoters', candidates)
-  class(profileOfRankings) <- c("por", "data.frame")
+  # TODO controlar esto porque una cosa es los que cuente repetidos, el numberOfVoters
+  # solo debería de servir en caso
+  if(!is.null(numberOfVoters)) {
+    voters <- numberOfVoters
+  }
+  
+  colnames(profileOfRankings) <- candidates
+  #print(profileOfRankings)
+  
+  #print(profileOfRankings)
+  
+  profileOfRankings <- list(profileOfRankings = profileOfRankings, 
+                            numberOfVoters = voters,
+                            candidates = candidates)
+  class(profileOfRankings) <- c("por", "list")
   
   return(profileOfRankings)
   
@@ -204,28 +220,29 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
 is.por <- function(x) inherits(x, "por")
 
 #' @export
-print.por <- function(profileOfRankings) {
+print.por <- function(profileOfRankings, latex = FALSE) {
   
-  # Matrix that stores the number of votters of each ranking
-  gpor <- matrix(data = profileOfRankings[,1], nrow = (nrow(profileOfRankings)))
+  if(latex) {
+    out <- "$$\\begin{table}\n"
+    out <- paste(out, "\t\\begin{tabular}{|c|c|}\n")
+    out <- paste(out, "\t\t\\hline\n")
+    out <- paste(out, "\t\t1 & 1 \\\\\n")
+    out <- paste(out, "\t\\end{tabular}\n")
+    out <- paste(out, "\\end{table}$$")
+    print(out)
+  }
   
-  # Split votes and rankings
-  splittedPOF <- split_profile_of_rankings(profileOfRankings)
-  # Get votes
-  votes <- splittedPOF$votes
-  # Get rankings
-  profileOfRankings <- splittedPOF$rankings
+  else {
+    gr <- apply(profileOfRankings$profileOfRankings, 1, format.ranking)
+    gr <- as.data.frame(gr)
+    gpor <- cbind(profileOfRankings$numberOfVoters, gr)
+    
+    colnames(gpor) <- c('numberOfVoters', 'ranking')
+    print(gpor)
+    invisible(gpor)
+  }
   
   
-  gr <- apply(profileOfRankings, 1, format.ranking)
-  
-  gr <- as.data.frame(gr)
-  
-  gpor <- cbind(gpor, gr)
-  
-  colnames(gpor) <- c('numberOfVoters', 'ranking')
-  print(gpor)
-  invisible(gpor)
   
 }
 
@@ -268,7 +285,7 @@ random_profile_of_rankings <- function(ncandidates = 4,
   }
   
   if(!withties) {
-    rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% as_tibble()
+    rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% as_tibble(.name_repair = "unique")
   }
   else {
     rankings <- t(replicate(nranking, ranking(sample(1:(sample(2:ncandidates, 1)), ncandidates, replace = TRUE)))) %>% as_tibble()
@@ -287,7 +304,8 @@ random_profile_of_rankings <- function(ncandidates = 4,
 #' @export
 toLatex.por <- function(profileOfRankings) {
   # TODO probar con format en vez de con print para que no lo imprima
-  xtable::xtable(print(profileOfRankings))
+  print(xtable::xtable(print(profileOfRankings), digits = 0), 
+        include.rownames=FALSE)
 }
 
 # -------------------------------------------------------------------------
@@ -353,7 +371,7 @@ read_rankings <- function(file_path, from_csv = FALSE) {
   lines <- readLines(conn)
   if(from_csv) {
     ncandidates <- length(str_split(lines[1], ",", simplify = TRUE))
-    print(ncandidates)
+    #print(ncandidates)
     the_rankings <- matrix(ncol = ncandidates)
     for (line in lines) {
       r <- as.numeric(str_split(line, ",", simplify = TRUE))
@@ -369,7 +387,7 @@ read_rankings <- function(file_path, from_csv = FALSE) {
   }
   
   close(conn)
-  print(the_rankings)
+  #print(the_rankings)
   # Remove the first row which is a row of NAs from the creation of the matrix
   the_rankings <- the_rankings[-1, ] 
   rownames(the_rankings) <- NULL
@@ -414,26 +432,32 @@ parse_profile_of_rankings <- function(string) {
     }
   }
 
-  m <- data.frame(cbind(numberOfVoters, m))
-  class(m) <- c("por", "data.frame")
-  return(m)
+  por <- profile_of_rankings(m, numberOfVoters)
+  return(por)
 }
 
 #' @export
 get_ranking <- function(profileOfRankings, index) {
   
-  if(index > nrow(profileOfRankings))
-    stop(paste("There are ", nrow(profileOfRankings), "different rankings only."))
+  rankings <- profileOfRankings$profileOfRankings
   
-  # Split votes and rankings
-  splittedPOF <- split_profile_of_rankings(profileOfRankings)
-  # Get rankings
-  rankings <- splittedPOF$rankings
+  if(index > nrow(rankings))
+    stop(paste("There are", nrow(profileOfRankings), "different rankings only."))
   
-  class(rankings) <- "data.frame"
   # Get ranking from index
   ranking <- unlist(rankings[index,])
   class(ranking) <- "ranking"
   return(ranking)
+}
+
+#' @export
+set_candidates <- function(profileOfRankings, newCandidates) {
+  if(length(newCandidates) != length(profileOfRankings$candidate))
+    stop("You must give the same number of candidates")
+  else {
+    profileOfRankings$candidates <- newCandidates
+    names(profileOfRankings$profileOfRankings) <- newCandidates
+  }
+  return(profileOfRankings)
 }
 

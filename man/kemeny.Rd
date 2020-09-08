@@ -4,7 +4,7 @@
 \alias{kemeny}
 \title{Kemeny ranking rule}
 \usage{
-kemeny(profileOfRankings, details = TRUE, verbose = FALSE)
+kemeny(profileOfRankings, parallel = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{profileOfRankings}{an object of the class "por"}

@@ -7,19 +7,15 @@
 #'
 #' @examples
 simpson <- function(profileOfRankings) {
-  votrix <- votrix(profileOfRankings)
-  ncandidates <- 4
   
-  min_values <- rep(0, ncandidates)
-  min_candidates <- rep(0, ncandidates)
+  v <- votrix(profileOfRankings)
+  nhalf <- sum(profileOfRankings$numberOfVoters)/2
   
-  # Ojo porque esto puede que sea más de uno
-  for(i in seq(nrow(votrix))) {
-    row <- votrix[i,]
-    min_values[i] <- min(row)
-    min_candidates[i] <- which.min(row)
-  }
+  # Matrix that contains only the defeats
+  v <- (v < nhalf ) * v
+  # The biggest defeat is the max of the matrix containing only defeats
+  s <- apply(v, 1, max)
   
-  # TODO acabar
-  
+  # Winning ranking sorting the scores from highest to lowest
+  return(ranking(s, desc = TRUE))
 }

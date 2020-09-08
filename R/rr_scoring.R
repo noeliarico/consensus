@@ -25,14 +25,9 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, se
   
   attname <- deparse(substitute(profileOfRankings))
   
-  # Split votes and rankings
-  splittedPOF <- split_profile_of_rankings(profileOfRankings)
-  # Get votes
-  votes <- splittedPOF$votes
-  # Get rankings
-  profileOfRankings <- splittedPOF$rankings
-  # Get the candidates
-  candidates <- splittedPOF$candidates
+  candidates <- profileOfRankings$candidates
+  votes <- profileOfRankings$numberOfVoters
+  profileOfRankings <- profileOfRankings$profileOfRankings
   
   # Result vectors
   v <- vector(length = ncol(profileOfRankings))

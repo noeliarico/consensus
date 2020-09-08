@@ -19,6 +19,7 @@ kendall <- function(ranking1, ranking2, verbose = FALSE) {
     print(ranking1)
     print(ranking2)
   }
+  
   r2sort <- sort(ranking2) 
   r1sort <- ranking1[names(r2sort)]
   .C("kendall",

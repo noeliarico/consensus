@@ -6,21 +6,26 @@
 #' @export
 #' @examples
 scorix <- function(profileOfRankings) {
-  # Split votes and rankings
-  splittedPOF <- split_profile_of_rankings(profileOfRankings)
-  # Get votes
-  votes <- splittedPOF$votes
-  # Get rankings
-  profileOfRankings <- as.matrix(splittedPOF$rankings)
-  # Get the candidates
-  candidates <- splittedPOF$candidates
 
-  matrix(
+  votes <- profileOfRankings$numberOfVoters
+  candidates <- profileOfRankings$candidates
+  por <- profileOfRankings$profileOfRankings
+
+  s <- matrix(
   .C("scorix",
-     profileOfRankings = as.integer(t(profileOfRankings)),
+     profileOfRankings = as.integer(t(por)),
      votes = as.integer(votes),
-     ncandidates = as.integer(ncol(profileOfRankings)),
+     ncandidates = as.integer(ncol(por)),
      nrankings = as.integer(length(votes)),
-     results = integer(ncol(profileOfRankings)^2)
-  )$results, byrow = TRUE, nrow = ncol(profileOfRankings))
+     results = integer(ncol(por)^2)
+  )$results, byrow = TRUE, nrow = ncol(por))
+  
+  colnames(s) <- paste0("p", 1:length(candidates))
+  rownames(s) <- candidates
+  
+  arg <- as.character(sys.call())[2]
+  profileOfRankings$scorix <- s
+  assign(arg, profileOfRankings, envir = globalenv())
+  
+  return(s)
 }
