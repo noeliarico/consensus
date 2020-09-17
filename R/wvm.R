@@ -48,6 +48,9 @@ wvm <- function(profileOfRankings, alpha = 0.5) {
     diag(p) <- 0.5
   }
   
-  return(fractions(p))
+  # MASS::fractions(p)
+  
+  points <- rowSums(p)/ncandidates
+  return(ranking(points))
   
 }

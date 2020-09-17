@@ -7,7 +7,7 @@
 #' @examples
 votrix <- function(profileOfRankings) {
   
-  if (!is.null(profileOfRankings$vostrix)) {
+  if (!is.null(profileOfRankings$votrix)) {
     return(profileOfRankings$votrix)
   }
   

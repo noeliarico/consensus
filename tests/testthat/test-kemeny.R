@@ -1,14 +1,14 @@
 test_that("Kemeny1", {
   
   # Table 2.4
-  por <- parse_profile_of_rankings("6, a ≻ b ≻ c ≻ d,
-                                    5, b ≻ c ≻ a ≻ d,
-                                    3, c ≻ d ≻ a ≻ b")
+  # por <- parse_profile_of_rankings("6, a ≻ b ≻ c ≻ d,
+  #                                   5, b ≻ c ≻ a ≻ d,
+  #                                   3, c ≻ d ≻ a ≻ b")
   #expect_equal(kemeny(por), parse_ranking("a ≻ b ≻ c ≻ d"))
   
-  por <- parse_profile_of_rankings("1, a ≻ b ≻ c ≻ d,
-                                    1, a ≻ b ≻ c ≻ d,
-                                    1, a ≻ b ≻ c ≻ d")
+  # por <- parse_profile_of_rankings("1, a ≻ b ≻ c ≻ d,
+  #                                   1, a ≻ b ≻ c ≻ d,
+  #                                   1, a ≻ b ≻ c ≻ d")
 
 })
 

@@ -281,9 +281,9 @@ parse_ranking <- function(string) {
   i <- 1
   pos <- 1
   ranking[i] <- 1
-  print(ranking)
-  print(string)
-  print(operators)
+  # print(ranking)
+  # print(string)
+  # print(operators)
   for (elem in operators) {
     i <- i + 1
     if(elem %in% succ) {

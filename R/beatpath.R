@@ -23,6 +23,7 @@ beatpath <- function(profileOfRankings) {
   # Update the object in the environment to store the beatpath
   arg <- as.character(sys.call())[2]
   profileOfRankings$beatpath <- b
+  profileOfRankings$votrix <- v
   assign(arg, profileOfRankings, envir = globalenv())
   
   return(b)

@@ -15,24 +15,16 @@ kemeny <- function(profileOfRankings,
                    parallel = FALSE, 
                    verbose = FALSE) {
   
-  print("al entrar")
   # Get information of the profile of rankings
   votes <- profileOfRankings$numberOfVoters
   rankings <- profileOfRankings$profileOfRankings
   candidates <- profileOfRankings$candidates
   number_of_candidates <- length(candidates)
   
-  # Load the correct permutations file
-  file_name <- paste0("perm", number_of_candidates, ".csv")
-  print("antes del read")
-  rev <- read.csv(file.path("perms", file_name), header = FALSE)
-  print("después del read")
-  # Give the name of the candidates 
-  colnames(rev) <- candidates
-  # Create the correct profile of rankings
-  rev <- profile_of_rankings(rev)
-  
-  print("antes del if")
+  # Get the reversals preallocated in the data files
+  data_name <- paste0("perm", number_of_candidates)
+  rev <- get(data_name)
+  rev <- set_candidates(rev, candidates)
   
   if(!parallel) {
     
@@ -67,19 +59,28 @@ kemeny <- function(profileOfRankings,
     out <- cbind(rev, distances, distance)
   }
   else {
-    print("trying to get cores")
-    ncores < parallel::detectCores()
-    print(ncores)
+    # Detect the number of cores to use in parallel
+    ncores <- parallel::detectCores()
+    # Create a cluster for each core
     cl <- parallel::makeCluster(ncores)
-    distances <- parallel::parSapply(cl, 1:nrow(rev$profileOfRankings), function(i) {
+    # Calculate the distance from each ranking to each reversal
+    distances <- t(parallel::parSapply(cl, 1:nrow(rev$profileOfRankings), function(i) {
       sapply(1:nrow(rankings), function(j) {
         kendall(get_ranking(profileOfRankings, j), get_ranking(rev, i))
       })
-    })
+    }))
+    # Stop the clusters
     parallel::stopCluster(cl)
+    print(distances)
     distance <- t(apply(distances, 1, function(x) x * votes))
     distance <- rowSums(distance)
-    out <- cbind(rev, distance)
+    #print(distances[1:10,1:10])
+    # Keep only the rankings
+    rev <- rev$profileOfRankings
+    # The output stores the reversals
+    # the distance from each reversal to each ranking
+    # and the total distance from the reversal to the profile of rankings
+    out <- cbind(rev, distances, distance)
   }
   
   # The minimum value of the distance represents the closest
