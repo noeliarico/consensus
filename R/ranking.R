@@ -237,7 +237,7 @@ is.ranking <- function(x) {
     #}
   }
   else {
-    message("The vector is not a ranking")
+    # message("The vector is not a ranking")
     return(FALSE)
   }
   #}
@@ -298,3 +298,14 @@ parse_ranking <- function(string) {
   return(ranking)
 }
 
+#' Ranking has ties
+#'
+#' @param ranking 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+ranking_has_ties <- function(ranking) {
+  return(is.ranking(ranking) && (length(unique(ranking)) < length(ranking)))
+}

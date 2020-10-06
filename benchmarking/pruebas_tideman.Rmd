@@ -1,0 +1,56 @@
+---
+title: "Pruebas tideman"
+output: html_notebook
+---
+
+```{r}
+library(consensus)
+```
+
+```{r}
+por <- parse_profile_of_rankings("2, b > a > c,
+                                  1, b > c > a")
+por
+```
+
+```{r}
+votrix(por)
+```
+```{r} 
+tideman(por, break_ties = parse_ranking("b > a > c"))
+```
+
+```{r}
+por01
+```
+
+```{r}
+votrix(por01)
+```
+```{r}
+tideman(por01)
+```
+
+```{r}
+por02
+```
+
+```{r}
+votrix(por02)
+```
+
+```{r}
+por02
+```
+
+```{r}
+tideman(por02)
+```
+
+```{r}
+votrix(por03)
+```
+```{r}
+tideman(por03)
+```
+

@@ -17,7 +17,7 @@ void votrix(int *profileOfRankings,
   
   //printf("Number of candidates: %d; Number of rankings: %d \n", nc, nr);
   
-  for(c1 = 0; c1 < nc/2; c1++) { // for each of the candidates
+  for(c1 = 0; c1 < nc-1; c1++) { // for each of the candidates
     for(c2 = c1+1; c2 < nc; c2++) { // evaluate the rest of the candidates
       //printf("Evaluating the candidate %d against the candidate %d \n", c1, c2);
       total = 0;
