@@ -6,18 +6,7 @@ void scorix(int *profileOfRankings,
             int *votes, 
             int *ncandidates, 
             int *nrankings,
-            int *scorix) {
-  
-  //  numberOfVoters       ranking
-  //                6 c ≻ b ≻ a ≻ d
-  //                5 a ≻ d ≻ b ≻ c
-  //                3 b ≻ a ≻ d ≻ c
-  
-  // votes
-  // [6, 5, 3]
-  
-  // profile of rankings
-  // [3, 2, 1, 4,   1, 3, 4, 2,   2, 1, 4, 3]
+            int *results) {
   
   int c, r, total;
   int nc = *ncandidates;
@@ -31,8 +20,9 @@ void scorix(int *profileOfRankings,
   for(c = 0; c < nc; c++) { // for each of the candidates
     for(r = 0; r < nr; r++) { // do that in each ranking
       //printf("The position of the candidate %d in the ranking %d is %d\n", c, r, profileOfRankings[c+(r*nc)]);
-      scorix[(c*nc)+(profileOfRankings[c+(r*nc)]-1)] += votes[r];
+      // Add the position of the candidate c in the ranking r as the number
+      // of voters of the ranking r
+      results[(c*nc)+(profileOfRankings[c+(r*nc)]-1)] += votes[r];
     }
   }
-   
-} 
+}
