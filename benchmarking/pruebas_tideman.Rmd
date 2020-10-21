@@ -25,8 +25,18 @@ por01
 ```
 
 ```{r}
-votrix(por01)
+votrix(por08)
 ```
+```{r}
+v <- votrix(por01)
+(m <- ifelse(v >= 5, TRUE, FALSE))
+for(i in 2:m) {
+  for(j in i:m) {
+    m[]
+  }
+}
+```
+
 ```{r}
 tideman(por01)
 ```
@@ -50,7 +60,20 @@ tideman(por02)
 ```{r}
 votrix(por03)
 ```
+
 ```{r}
 tideman(por03)
+```
+
+
+```{r}
+por09
+```
+
+```{r}
+votrix(por09)
+```
+```{r}
+tideman(por09, break_ties = parse_ranking(c("c ≻ b ≻ d ≻ a")))
 ```
 

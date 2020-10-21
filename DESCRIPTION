@@ -24,4 +24,5 @@ Imports:
     xtable,
     tibble,
     parallel,
-    dplyr
+    dplyr,
+    magrittr

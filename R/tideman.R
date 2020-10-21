@@ -6,7 +6,10 @@
 #' @export
 #'
 #' @examples
-tideman <- function(profileOfRankings, break_ties = "random") {
+tideman <- function(profileOfRankings, 
+                    break_ties = "random", 
+                    seePoints = FALSE,
+                    seeTrace = FALSE) {
   
   votrix <- votrix(profileOfRankings)
   candidates <- profileOfRankings$candidates
@@ -33,15 +36,19 @@ tideman <- function(profileOfRankings, break_ties = "random") {
   if(!is.ranking(break_ties) && (break_ties %in% c("random", "max"))) {
     if(break_ties == "random") {
       break_ties <- ranking(sample(1:ncandidates), candidates)
-      print("Breaking ties using the ranking")
-      print(break_ties)
-      print(as.numeric(break_ties))
+      if(seeTrace) {
+        cat("Breaking ties using the ranking\n")
+        print(break_ties)
+        print(as.numeric(break_ties))
+      }
     }
     else { # break_ties == max
       max <- which.max(profileOfRankings$numberOfVoters)
+      if(seeTrace) {
       print(paste0("Breaking ties using the ranking with max number of votes (", max, ")"))
       break_ties <- get_ranking(profileOfRankings, max)
       print(break_ties)
+      }
     }
     
   } else { # the object is a ranking or an invalid argument
@@ -159,11 +166,12 @@ tideman <- function(profileOfRankings, break_ties = "random") {
       froms <- append(froms, from, pos)
       tos <- append(tos, to, pos)
       
+      if(seeTrace) {
       cat(paste("Values:\t", paste(values, collapse = "\t"), "\n"))
       cat(paste("Froms:\t", paste(candidates[froms], collapse = "\t"), "\n"))
       cat(paste("Tos:\t", paste(candidates[tos], collapse = "\t"), "\n"))
       cat("-----------------------------------------------------------------\n")
-      
+      }
     }
   }
   
@@ -191,21 +199,29 @@ tideman <- function(profileOfRankings, break_ties = "random") {
           adjajency[i, ] <- adjajency[i, ] | adjajency[from, ]
         }
       }
+      if(seeTrace) {
       cat(paste0("Añadiendo ", candidates[from], ",", candidates[to], "\n"))
+      }
       print(adjajency)
     }
     else {
+      if(seeTrace) {
       cat(paste0("Descartando ", candidates[from], ",", candidates[to], "\n"))
+      }
       #stop("Descartando")
     }
   }
   
+  if(seeTrace) {
   cat("Adjacency matrix:\n")
   print(adjajency)
+  }
   
   position <- rowSums(adjajency, na.rm = TRUE)
-  cat("Total by row:\n")
+  if(seePoints) {
+  cat("Score of each candidate\n")
   print(position)
+  }
   
   ranking(position)
   

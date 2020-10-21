@@ -8,7 +8,8 @@ random_profile_of_rankings(
   ncandidates = 4,
   nranking = 10,
   seed = NULL,
-  withties = FALSE
+  withties = FALSE,
+  cnames = NULL
 )
 }
 \arguments{

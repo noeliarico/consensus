@@ -39,7 +39,7 @@
 profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
                                 candidates = NULL, ties = NULL) {
   
-  if(is_tibble(matrix)) {
+  if(tibble::is_tibble(matrix)) {
     matrix <- as.matrix(matrix)
   }
   
@@ -279,19 +279,43 @@ split_profile_of_rankings <- function(profileOfRankings) {
 random_profile_of_rankings <- function(ncandidates = 4,
                                        nranking = 10,
                                        seed = NULL,
-                                       withties = FALSE) {
+                                       withties = FALSE,
+                                       cnames = NULL) {
   if(!is.null(seed)) {
     set.seed(seed)
   }
   
   if(!withties) {
-    rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% as_tibble(.name_repair = "unique")
+    rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% tibble::as_tibble(.name_repair = "unique")
   }
   else {
-    rankings <- t(replicate(nranking, ranking(sample(1:(sample(2:ncandidates, 1)), ncandidates, replace = TRUE)))) %>% as_tibble()
+    rankings <- t(replicate(nranking, ranking(sample(1:(sample(2:ncandidates, 1)), ncandidates, replace = TRUE)))) %>% tibble::as_tibble()
   }
   
-  names(rankings) <- paste0("C", 1:ncol(rankings))
+  if(!is.null(cnames)) {
+    if(length(cnames) == 1 && cnames == "letters") {
+      if(ncandidates > length(letters)) {
+        stop("Not enough letters to name the candidates.")
+      }
+      else {
+        names(rankings) <- letters[1:ncol(rankings)]
+      }
+    }
+    else {
+      if(length(cnames) != ncandidates) {
+        stop("A name must be given to each candidate.")
+      }
+      if(length(cnames) != length(unique(cnames))) {
+        stop("The name of each candidate must be unique.")
+      }
+      names(rankings) <- cnames
+    }
+    
+  }
+  else {
+    names(rankings) <- paste0("C", 1:ncol(rankings))
+  }
+  
   por <- profile_of_rankings(rankings)
 
   return(por)

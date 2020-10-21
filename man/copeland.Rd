@@ -4,14 +4,21 @@
 \alias{copeland}
 \title{Copeland}
 \usage{
-copeland(profileOfRankings)
+copeland(profileOfRankings, seePoints = FALSE, seeTrace = FALSE)
 }
 \arguments{
 \item{profileOfRankings}{}
 }
 \value{
-
+An object of the class `ranking` that represents the winning ranking
+after of the profile of rankings given as parameter
 }
 \description{
-Copeland
+Condorcet method that takes into account the number of victories, ties and 
+defeats of each candidate in relation to the other candidates, in order to 
+determine a winning ranking. A common setting considers the following 
+scoring assessment:
+- 1 point per victory
+- 0.5 points per tie
+- 0 points per defeat
 }
