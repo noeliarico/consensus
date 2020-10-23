@@ -4,7 +4,12 @@
 \alias{tideman}
 \title{Tideman}
 \usage{
-tideman(profileOfRankings, break_ties = "random", seePoints = FALSE)
+tideman(
+  profileOfRankings,
+  break_ties = "random",
+  seePoints = FALSE,
+  seeTrace = FALSE
+)
 }
 \arguments{
 \item{profileOfRankings}{}

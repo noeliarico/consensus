@@ -31,3 +31,5 @@
 ^data/perm9\.rda$
 ^data/perm10\.rda$
 ^data/perm11\.rda$
+^mork_exact\.R$
+^R/mork_exact\.R$
