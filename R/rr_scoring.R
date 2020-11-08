@@ -7,19 +7,21 @@
 ##'  \item{"borda"}{Stuff}
 ##'  \item{"t"}{Stuff}
 ##' }
-#' @param t only necessary when the \code{method} choosen is
-#' @param verbose by default FALSE. Change to TRUE for seeing on the screen
+#' @param t only necessary when the \code{method} choosen is \code{t}
+#' @param seeTrace by default FALSE. Change to TRUE for seeing on the screen
 #'                the workflow of the function
 #'
 #' @return the ranking generated after applying the ranking rule
 #'
 #' @examples
 #' 
+#' @export
+#' 
 #' @family ranking rule
 #' 
-scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, seePoints = FALSE) {
+scoring <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, seePoints = FALSE) {
   
-  if(verbose) {
+  if(seeTrace) {
     cat('Executing a scoring ranking rule...\n')
   }
   
@@ -34,29 +36,35 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, se
   names(v) <- names(profileOfRankings)
   
   # For each ranking in the profile of rankings
-  for(i in 1:nrow(profileOfRankings)) {
-    numVotersRow <- votes[i]
-    ranking <- profileOfRankings[i,]
-    
-    p <- calculatePoints(ranking, method, t, verbose, seePoints)
-    v <- v + (numVotersRow * p)
-    
-    if(verbose) {
-      cat("-> The points for this ranking\n")
-      print(p)
-      cat("-> This ranking has ",numVotersRow," voters\n")
-      cat("-> The current value of the total points is:")
-      print(v)
+  if(method != "borda") {
+    for(i in 1:nrow(profileOfRankings)) {
+      numVotersRow <- votes[i]
+      ranking <- profileOfRankings[i,]
+      
+      p <- calculatePoints(ranking, method, t, seeTrace, seePoints)
+      v <- v + (numVotersRow * p)
+      
+      if(seeTrace) {
+        cat("-> The points for this ranking\n")
+        print(p)
+        cat("-> This ranking has ",numVotersRow," voters\n")
+        cat("-> The current value of the total points is:")
+        print(v)
+      }
+      
     }
     
+  } else {
+    v <- rowSums(votrix(profileOfRankings))
   }
+  
   
   #if(seePoints) {
   
   #}
   
   v <- sort(v, decreasing = TRUE) # sort v from more votes to less
-  if(verbose) {
+  if(seeTrace) {
     print(paste('Points rewarded by each candidate of the profile of rankings', "'", attname, "'"))
     print(v)
     print('Ranking:')
@@ -93,37 +101,37 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, verbose = FALSE, se
 }
 
 
-#' plurality ranking rule
+#' Plurality ranking rule
 #'
 #' @param profileOfRankings
-#' @param verbose
+#' @param seeTrace
 #'
 #' @return
 #' @export
 #'
 #' @examples
-plurality <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "plurality", verbose = verbose, seePoints = seePoints)
+plurality <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "plurality", seeTrace = seeTrace, seePoints = seePoints)
 }
 
-#' veto ranking rule
+#' Veto (a.k.a. antiplurality) ranking rule
 #'
 #' @param profileOfRankings
-#' @param verbose
+#' @param seeTrace
 #'
 #' @return
 #' @export
 #'
 #' @family ranking rule
 #' @examples
-veto <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "veto", verbose = verbose, seePoints = seePoints)
+veto <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "veto", seeTrace = seeTrace, seePoints = seePoints)
 }
 
 #' t-approval ranking rule
 #'
 #' @param profileOfRankings
-#' @param verbose
+#' @param seeTrace
 #'
 #' @return
 #' @export
@@ -131,8 +139,8 @@ veto <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
 #' @family ranking rule
 #' 
 #' @examples
-tapproval <- function(profileOfRankings, t = 2, verbose = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "t", t, verbose = verbose, seePoints = seePoints)
+tapproval <- function(profileOfRankings, t = 2, seeTrace = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "t", t, seeTrace = seeTrace, seePoints = seePoints)
 }
 
 #' Borda Count ranking rule
@@ -140,7 +148,7 @@ tapproval <- function(profileOfRankings, t = 2, verbose = FALSE, seePoints = FAL
 #' Apply Borda Count ranking rule in a profile of ranking
 #'
 #' @param profileOfRankings
-#' @param verbose
+#' @param seeTrace
 #'
 #' @return
 #' @export
@@ -148,8 +156,8 @@ tapproval <- function(profileOfRankings, t = 2, verbose = FALSE, seePoints = FAL
 #' @family ranking rule
 #' 
 #' @examples
-borda_count <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "borda", verbose = verbose)
+borda_count <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
+  scoring(profileOfRankings, "borda", seeTrace = seeTrace)
 }
 
 #' Borda Winner
@@ -158,7 +166,7 @@ borda_count <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
 #' then it takes the winner in the first position. 
 #' 
 #' @param profileOfRankings
-#' @param verbose
+#' @param seeTrace
 #'
 #' @return
 #' @export
@@ -166,7 +174,7 @@ borda_count <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
 #' @family ranking rule
 #' 
 #' @examples
-borda_winner <- function(profileOfRankings, verbose = FALSE, seePoints = FALSE) {
-  ranking <- scoring(profileOfRankings, "borda", verbose = verbose)
+borda_winner <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
+  ranking <- scoring(profileOfRankings, "borda", seeTrace = seeTrace)
   names(ranking[which.min(ranking)])
 }

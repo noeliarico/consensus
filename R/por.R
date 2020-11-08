@@ -286,7 +286,7 @@ random_profile_of_rankings <- function(ncandidates = 4,
   }
   
   if(!withties) {
-    rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% tibble::as_tibble(.name_repair = "unique")
+    rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% tibble::as_tibble(.name_repair =  ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE))
   }
   else {
     rankings <- t(replicate(nranking, ranking(sample(1:(sample(2:ncandidates, 1)), ncandidates, replace = TRUE)))) %>% tibble::as_tibble()
