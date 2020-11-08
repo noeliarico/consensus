@@ -366,7 +366,7 @@ as_por <- function(matrix, criterion = NULL) {
       matrix[] <- t(apply(matrix, 1, ranking))
     } else if (criterion == "desc") {
       matrix[] <- t(apply(matrix, 1, ranking, desc = TRUE))
-    } else if (criterion == "desc") {
+    } else {
       stop("Unkown criterion. It must be 'asc', 'desc' or a vector 
            containing one of these values for each row.")
     }

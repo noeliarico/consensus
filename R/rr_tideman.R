@@ -107,20 +107,28 @@ tideman <- function(profileOfRankings,
       v <- which(values == value)
       # There is a value equal to the value to insert
       if(length(v) > 0) {
-        cat("There is a pair with the same value \n")
+        if(seeTrace) {
+          cat("There is a pair with the same value \n")
+        }
         # Is there any value that goes out from the same node?
         v <- which((froms == from) & (values == value))
         
         # There is a pair with the same value that goes out from the same node
         if(length(v) > 0) {
-          cat("There is a pair with the same value that goes out from the same node \n")
+          if(seeTrace) {
+            cat("There is a pair with the same value that goes out from the same node \n")
+          }
+          
           # Is there a pair that goes out to a node ranked in a worse position?
           c1 <- break_ties[tos] > break_ties[to]
           c2 <- (froms == from)
           c3 <- (values == value)
           v <- which(c1 & c2 & c3)
           if(length(v) > 0) {
-            cat("There is a pair that goes to a node ranked in a worse position \n")
+            if(seeTrace) {
+              cat("There is a pair that goes to a node ranked in a worse position \n")  
+            }
+            
             pos <- min(v) - 1
           }
           # It must be the first of the nodes with the same value going out of
@@ -142,7 +150,10 @@ tideman <- function(profileOfRankings,
           # Is there a pair that goes out from a node ranked in a worse position?
           v <- which((break_ties[froms] > break_ties[from]) & (values == value))
           if(length(v) > 0) {
-            cat("There is a pair that goes out from a node ranked in a worse position \n")
+            if(seeTrace) {
+              cat("There is a pair that goes out from a node ranked in a worse position \n")
+            }
+            
             pos <- min(v) - 1
           }
           else {
@@ -163,19 +174,28 @@ tideman <- function(profileOfRankings,
         v <- which(values < value)
         # There is a value lower than this one
         if(length(v) > 0) {
-          cat("There is a pair with lower value \n")
+          if(seeTrace) {
+            cat("There is a pair with lower value \n")
+          }
+          
           # Then the value goes before the first element that is lower
           pos <- min(v) - 1
         } 
         # There is not a value lower than this one, the element is the lowest
         else {
-          cat("There isn't a pair with lower value \n")
+          if(seeTrace) {
+            cat("There isn't a pair with lower value \n")
+          }
+          
           # The element goes in the first position
           pos <- length(values)
         }
       }  
       
-      cat(paste("Pos:", pos, "\n"))
+      if(seeTrace) {
+        cat(paste("Pos:", pos, "\n"))
+      }
+      
       
       values <- append(values, value, pos)
       froms <- append(froms, from, pos)
@@ -190,7 +210,10 @@ tideman <- function(profileOfRankings,
     }
   }
   
-  cat("=====================================================================\n")
+  if(seeTrace) {
+    cat("=====================================================================\n")
+  }
+  
   
   # Adjacency matrix
   adjajency <- matrix(rep(FALSE, ncandidates^2), ncol = ncandidates)
