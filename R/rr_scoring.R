@@ -28,17 +28,17 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, s
   
   candidates <- profileOfRankings$candidates
   votes <- profileOfRankings$numberOfVoters
-  profileOfRankings <- profileOfRankings$profileOfRankings
+  por <- profileOfRankings$profileOfRankings
   
   # Result vectors
-  v <- vector(length = ncol(profileOfRankings))
-  names(v) <- names(profileOfRankings)
+  v <- vector(length = ncol(por))
+  names(v) <- names(por)
   
   # For each ranking in the profile of rankings
   if(method != "borda") {
-    for(i in 1:nrow(profileOfRankings)) {
+    for(i in 1:nrow(por)) {
       numVotersRow <- votes[i]
-      ranking <- profileOfRankings[i,]
+      ranking <- por[i,]
       
       p <- calculatePoints(ranking, method, t, seeTrace, seePoints)
       v <- v + (numVotersRow * p)
