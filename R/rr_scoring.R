@@ -15,10 +15,9 @@
 #'
 #' @examples
 #' 
-#' @export
 #' 
 #' @family ranking rule
-#' 
+#' @export 
 scoring <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, seePoints = FALSE) {
   
   if(seeTrace) {
@@ -107,9 +106,9 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, s
 #' @param seeTrace
 #'
 #' @return
-#' @export
 #'
 #' @examples
+#' @export
 plurality <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
   scoring(profileOfRankings, "plurality", seeTrace = seeTrace, seePoints = seePoints)
 }
@@ -120,10 +119,10 @@ plurality <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
 #' @param seeTrace
 #'
 #' @return
-#' @export
 #'
 #' @family ranking rule
 #' @examples
+#' @export
 veto <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
   scoring(profileOfRankings, "veto", seeTrace = seeTrace, seePoints = seePoints)
 }
@@ -139,6 +138,7 @@ veto <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
 #' @family ranking rule
 #' 
 #' @examples
+#' @export
 tapproval <- function(profileOfRankings, t = 2, seeTrace = FALSE, seePoints = FALSE) {
   scoring(profileOfRankings, "t", t, seeTrace = seeTrace, seePoints = seePoints)
 }
@@ -156,6 +156,7 @@ tapproval <- function(profileOfRankings, t = 2, seeTrace = FALSE, seePoints = FA
 #' @family ranking rule
 #' 
 #' @examples
+#' @export
 borda_count <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
   scoring(profileOfRankings, "borda", seeTrace = seeTrace)
 }
@@ -174,6 +175,7 @@ borda_count <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) 
 #' @family ranking rule
 #' 
 #' @examples
+#' @export
 borda_winner <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
   ranking <- scoring(profileOfRankings, "borda", seeTrace = seeTrace)
   names(ranking[which.min(ranking)])
