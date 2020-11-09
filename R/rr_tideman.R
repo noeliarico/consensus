@@ -244,7 +244,7 @@ tideman <- function(profileOfRankings,
     }
     else {
       if(seeTrace) {
-      cat(paste0("Descartando ", candidates[from], ",", candidates[to], "\n"))
+      cat(paste0("Skipping ", candidates[from], ",", candidates[to], "\n"))
       }
       #stop("Descartando")
     }
