@@ -7,8 +7,10 @@
 #'
 #' @examples
 schulze <- function(profileOfRankings) {
-  v <- votrix(profileOfRankings)
-  half <- sum(profileOfRankings$numberOfVoters)/2
-  values <- rowSums((v > half) * v)
-  return(ranking(values))
+  m <- beatpath(profileOfRankings)
+  m <- sapply(1:ncol(m), function(x) {sapply(1:ncol(m), f, x)})
+  values <- rowSums(m)
+  return(ranking(values, desc = TRUE))
 }
+
+f <- function(x, y) return(x > y)
