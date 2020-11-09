@@ -22,7 +22,8 @@ irv <- function(profileOfRankings, break_ties = "random", seeTrace = FALSE) {
   
   for(i in 1:(ncandidates-1)) {
     if(seeTrace) {
-      cat("----------------------------\n")
+      cat("------------------------------------\n")
+      cat("Rankings:\n")
       print(rankings)
     }
     # Count the times that the candidate has been ranked at the first position

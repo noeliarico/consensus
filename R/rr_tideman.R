@@ -238,7 +238,7 @@ tideman <- function(profileOfRankings,
         }
       }
       if(seeTrace) {
-      cat(paste0("Añadiendo ", candidates[from], ",", candidates[to], "\n"))
+      cat(paste0("Adding ", candidates[from], ",", candidates[to], "\n"))
       print(adjajency)
       }
     }
