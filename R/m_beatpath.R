@@ -24,7 +24,7 @@ beatpath <- function(profileOfRankings) {
   arg <- as.character(sys.call())[2]
   profileOfRankings$beatpath <- b
   profileOfRankings$votrix <- v
-  assign(arg, profileOfRankings, envir = globalenv())
+  assign(arg, profileOfRankings, envir = parent.frame())
   
   return(b)
 }

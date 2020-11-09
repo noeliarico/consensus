@@ -66,7 +66,7 @@ litvak <- function(profileOfRankings,
     # Calculate the distance from each ranking to each reversal
     distances <- t(parallel::parSapply(cl, 1:nrow(rev$profileOfRankings), function(i) {
       sapply(1:nrow(rankings), function(j) {
-        kendall(get_ranking(profileOfRankings, j), get_ranking(rev, i))
+        litvak_distance(get_ranking(profileOfRankings, j), get_ranking(rev, i))
       })
     }))
     # Stop the clusters

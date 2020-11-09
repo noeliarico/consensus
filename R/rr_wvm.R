@@ -36,9 +36,9 @@ wvm <- function(profileOfRankings, alpha = 0.5) {
     defeats <- ifelse(defeats >= 0, 0, defeats)
     
     print("Victories")
-    print(fractions(victories))
+    print(MASS::fractions(victories))
     print("Defeats")
-    print(fractions(defeats))
+    print(MASS::fractions(defeats))
     
     p <- (alpha * victories) + ((1 - alpha) * defeats)
     diag(p) <- 0

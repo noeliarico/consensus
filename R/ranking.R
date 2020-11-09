@@ -165,7 +165,7 @@ ranking <- function(v, cnames = NULL, desc = FALSE) {
 
 #' @method format ranking
 #' @export
-format.ranking <- function(x, latex = FALSE, ...) {
+format.ranking <- function(x, ..., latex = FALSE) {
   
   if(length(x) == 1){
     return(names(x))
@@ -207,19 +207,19 @@ format.ranking <- function(x, latex = FALSE, ...) {
 
 #' @method print ranking
 #' @export
-print.ranking <- function(x, latex = FALSE, ...) {
+print.ranking <- function(x, ..., latex = FALSE) {
   r <- format.ranking(x, latex)
   cat(r, "\n")
   #NextMethod() # for calling the print of the next class which is the vector
   invisible(r)
 }
 
-default.ranking <- function(ranking) {
+default.ranking <- function(ranking, ...) {
   stop("Error: method not defined for the class ranking")
 }
 
 #' @export
-is.ranking <- function(x) {
+is.ranking <- function(x, ...) {
   
   if(length(x) == 1 && x == 1) {
     return(TRUE)
@@ -258,8 +258,8 @@ is.ranking <- function(x) {
 parse_ranking <- function(string) {
   
   # Valid symbols to express succ and sim
-  succ <- c("≻", "\u227B", ">")
-  sim <- c("~", "∼", "\u223C", "\u007E", "=")
+  succ <- c("\u227B", ">")
+  sim <- c("\u223C", "\u007E", "=")
   symbols <- paste(paste(succ, collapse = "|"), 
              paste(sim, collapse = "|"), sep = "|")
   

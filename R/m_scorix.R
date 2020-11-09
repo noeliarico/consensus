@@ -34,7 +34,7 @@ scorix <- function(profileOfRankings) {
   
   arg <- as.character(sys.call())[2]
   profileOfRankings$scorix <- s
-  assign(arg, profileOfRankings, envir = globalenv())
+  assign(arg, profileOfRankings, envir = parent.frame())
   
   return(s)
 }

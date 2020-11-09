@@ -217,10 +217,10 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
 }
 
 #' @export
-is.por <- function(x) inherits(x, "por")
+is.por <- function(x, ...) inherits(x, "por")
 
 #' @export
-print.por <- function(profileOfRankings, latex = FALSE) {
+print.por <- function(x, ..., latex = FALSE) {
   
   if(latex) {
     out <- "$$\\begin{table}\n"
@@ -233,9 +233,9 @@ print.por <- function(profileOfRankings, latex = FALSE) {
   }
   
   else {
-    gr <- apply(profileOfRankings$profileOfRankings, 1, format.ranking)
+    gr <- apply(x$profileOfRankings, 1, format.ranking)
     gr <- as.data.frame(gr)
-    gpor <- cbind(profileOfRankings$numberOfVoters, gr)
+    gpor <- cbind(x$numberOfVoters, gr)
     
     colnames(gpor) <- c('numberOfVoters', 'ranking')
     print(gpor)
@@ -322,6 +322,7 @@ random_profile_of_rankings <- function(ncandidates = 4,
 }
 
 
+
 # -------------------------------------------------------------------------
 
 
@@ -384,11 +385,11 @@ read_rankings <- function(file_path, from_csv = FALSE) {
   conn <- file(file_path,open = "r")
   lines <- readLines(conn)
   if(from_csv) {
-    ncandidates <- length(str_split(lines[1], ",", simplify = TRUE))
+    ncandidates <- length(stringr::str_split(lines[1], ",", simplify = TRUE))
     #print(ncandidates)
     the_rankings <- matrix(ncol = ncandidates)
     for (line in lines) {
-      r <- as.numeric(str_split(line, ",", simplify = TRUE))
+      r <- as.numeric(stringr::str_split(line, ",", simplify = TRUE))
       the_rankings <- the_rankings %>% rbind(r)
     }
   }

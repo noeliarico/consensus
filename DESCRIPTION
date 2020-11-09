@@ -25,4 +25,6 @@ Imports:
     tibble,
     parallel,
     dplyr,
-    magrittr
+    magrittr,
+    vctrs,
+    MASS
