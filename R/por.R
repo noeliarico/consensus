@@ -321,16 +321,6 @@ random_profile_of_rankings <- function(ncandidates = 4,
   return(por)
 }
 
-#' @title Latex table of profile of rankings
-#' 
-#' @param profileOfRankings
-#'
-#' @export
-toLatex.por <- function(profileOfRankings) {
-  # TODO probar con format en vez de con print para que no lo imprima
-  print(xtable::xtable(print(profileOfRankings), digits = 0), 
-        include.rownames=FALSE)
-}
 
 # -------------------------------------------------------------------------
 
