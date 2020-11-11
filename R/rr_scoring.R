@@ -55,18 +55,13 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, s
     
   } else {
     v <- rowSums(votrix(profileOfRankings))
-  }
-  
-  
-  #if(seePoints) {
-  
-  #}
-  
-  v <- sort(v, decreasing = TRUE) # sort v from more votes to less
-  if(seeTrace) {
-    print(paste('Points rewarded by each candidate of the profile of rankings', "'", attname, "'"))
-    print(v)
-    print('Ranking:')
+    v <- sort(v, decreasing = TRUE) # sort v from more votes to less
+    if(seePoints) {
+      cat("Points rewarded by each candidate of the profile of rankings:\n")
+      print(v)
+      cat('Winning ranking:\n')
+    }
+    return(ranking(v, desc = TRUE))
   }
   
   # vector that will store the final ranking
@@ -158,7 +153,7 @@ tapproval <- function(profileOfRankings, t = 2, seeTrace = FALSE, seePoints = FA
 #' @examples
 #' @export
 borda_count <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "borda", seeTrace = seeTrace)
+  scoring(profileOfRankings, "borda", seeTrace = seeTrace, seePoints = seePoints)
 }
 
 #' Borda Winner

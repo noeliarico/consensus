@@ -4,11 +4,11 @@
 #'
 #' @param method
 #' @param t
-#' @param verbose
+#' @param seeTrace
 #' @param seePoints
 #'
 #' @export
-calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoints = F) {
+calculatePoints <- function(ranking, method = NULL, t = 0, seeTrace = F, seePoints = F) {
 
   switch(method,
 
@@ -17,8 +17,8 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
     plurality = {
        points <- as.integer(ranking == 1)
        total <- sum(ranking == 1)
-       if(verbose) print(points/total)
-       if(seePoints) print(points/total)
+       if(seeTrace) print(points/total)
+       if(seePoints) { print(points/total) }
        return(points/total)
      },
 
@@ -28,7 +28,7 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
       last_pos <- max(ranking)
       points <- as.integer(ranking == last_pos)
       total <- sum(ranking == last_pos)
-      if(verbose) print(points/total)
+      if(seeTrace) print(points/total)
       return(points/total)
     },
 
@@ -38,7 +38,7 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
     t = {
 
       if(t >= length(ranking)) {
-        if(seePoints) print(rep(1, length(ranking)))
+        if(seePoints) { print(rep(1, length(ranking))) }
         return(rep(1, length(ranking)))
       }
       else {
@@ -57,15 +57,9 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
           num_of_rewarded_candidates <- num_of_rewarded_candidates + candidates_in_pos_i
           i <- i+1
         }
-        if(seePoints) print(points)
+        if(seePoints) { print(points) }
         return(points)
       }
-
-           # old implementation
-           # points <- as.integer(ranking %in% 1:t)
-           # total <- sum(ranking %in% 1:t)
-           # if(verbose) print(points/total)
-           # return(points/total)
     },
 
 # borda -------------------------------------------------------------------
@@ -73,19 +67,19 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
     borda = {
 
       # number of different positions in the rankings
-      n_of_candidates <- length(ranking)
-      max_pos <- max(ranking)
+      n_of_candidates <- length(as.numeric(ranking))
+      max_pos <- max(as.numeric(ranking))
 
       # For the rankings without ties the result is
       if(n_of_candidates == max_pos) { # ranking without ties
-        # the same result would be achieve with the following code
-        # but here the operation is vectorized so execution time decreases
 
-        if(verbose)
+        if(seeTrace) {
           cat("-- Ranking without ties -- \n")
-
+        }
+          
         return(n_of_candidates - as.numeric(ranking))
       }
+      
       else { # ranking with ties
         # vector that will store the puntuation for each category
         points_by_pos <- rep(-1, max_pos)
@@ -100,7 +94,7 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
         points_for_each_candidate <- ranking
         points_for_each_candidate <- sapply(ranking,
                                             function(x) {points_by_pos[x]})
-        if(verbose) {
+        if(seeTrace) {
           cat("The points for the ranking...\n")
           print(ranking)
           cat("...are:\n")
@@ -118,6 +112,6 @@ calculatePoints <- function(ranking, method = NULL, t = 0, verbose = F, seePoint
 
   )
 
-  if(seePoints) print(points_for_each_candidate)
+  if(seePoints) {print(points_for_each_candidate)}
   return(points_for_each_candidate)
 }
