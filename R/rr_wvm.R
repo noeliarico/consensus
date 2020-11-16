@@ -18,7 +18,7 @@
 #' @export
 #'
 #' @examples
-wvm <- function(profileOfRankings, alpha = 0.5) {
+wvm <- function(profileOfRankings, alpha = 0.5, seePoints = FALSE) {
   
   votrix <- votrix(profileOfRankings)
   ncandidates <- sum(profileOfRankings$numberOfVoters)
@@ -35,10 +35,13 @@ wvm <- function(profileOfRankings, alpha = 0.5) {
     defeats <- p - 0.5
     defeats <- ifelse(defeats >= 0, 0, defeats)
     
-    print("Victories")
-    print(MASS::fractions(victories))
-    print("Defeats")
-    print(MASS::fractions(defeats))
+    if(seePoints) {
+      cat("Victories: \n")
+      print(MASS::fractions(victories))
+      cat("Defeats \n")
+      print(MASS::fractions(defeats))
+    }
+    
     
     p <- (alpha * victories) + ((1 - alpha) * defeats)
     diag(p) <- 0
@@ -50,7 +53,13 @@ wvm <- function(profileOfRankings, alpha = 0.5) {
   
   # MASS::fractions(p)
   
-  points <- rowSums(p)/ncandidates
-  return(ranking(points))
+  if(seePoints) {
+    points <- rowSums(p)/ncandidates
+    cat("Points: \n")
+    print(points)
+    cat("Final ranking: \n")
+  }
+  
+  return(ranking(points, desc = TRUE))
   
 }
