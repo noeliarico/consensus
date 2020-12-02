@@ -19,11 +19,11 @@ void beatpath(int *votrix,
             t1 = votrix[(nc*iter)+i];
             t2 = votrix[(nc*j)+iter];
             current = votrix[(nc*j)+i];
-            // printf("Iter %d: comparing [%d](%d, %d) and [%d](%d, %d) against [%d](%d, %d)\n",
-            //         iter+1, t1, iter+1, i+1, t2, j+1, iter+1, current, i+1, j+1);
+            //printf("Iter %d: comparing [%d](%d, %d) and [%d](%d, %d) against [%d](%d, %d)\n",
+             //        iter+1, t1, iter+1, i+1, t2, j+1, iter+1, current, j+1, i+1);
             tentative = MIN(t1, t2);
             if(current < tentative) {
-            //  printf("UPDATE %d -> %d\n", current, tentative);
+              //printf("UPDATE %d -> %d\n", current, tentative);
               votrix[(nc*j)+i] = tentative;
             }
           }
