@@ -6,13 +6,18 @@
 #' @export
 #'
 #' @examples
-condorcet <- function(profileOfRankings) {
+condorcet <- function(profileOfRankings, seePoints = FALSE) {
   v <- votrix(profileOfRankings)
   half <- sum(profileOfRankings$numberOfVoters)/2
   # Check if the candidates are preferred by at least half of the votes
   # in relation to other candidates
   v <- apply(v, 1:2, function(x) x > half)
   v <- rowSums(v, na.rm = TRUE)
+  
+  if(seePoints) {
+    print(v)
+  }
+  
   if(any(v == (length(v)-1))) {
     if(all(1:(length(v)-1) %in% v)) {
       cat("There Condorcet ranking is:\n")
