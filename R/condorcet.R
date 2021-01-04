@@ -62,3 +62,32 @@ condorcet_winner <- function(profileOfRankings) {
     return(NULL)
   }
 }
+
+#' Condorcet loser
+#' 
+#' A candidate is preferred by less or equal than half of the voters to all the other 
+#' candidates, then it is presumptively the worst and then it is selected as
+#' Condorcet loser
+#'
+#' @param profileOfRankings 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+condorcet_loser <- function(profileOfRankings) {
+  v <- votrix(profileOfRankings)
+  half <- sum(profileOfRankings$numberOfVoters)/2
+  # Check if the candidates are preferred by at least half of the votes
+  # in relation to other candidates
+  v <- apply(v, 1:2, function(x) x <= half)
+  v <- rowSums(v, na.rm = TRUE)
+  if(any(v == (length(v)-1))) {
+    cat("There is a Condorcet loser:\n")
+    return(v[v== (length(v)-1)])
+  }
+  else {
+    cat("There is not a Condorcet loser\n")
+    return(NULL)
+  }
+}
