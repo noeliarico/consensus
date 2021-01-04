@@ -280,16 +280,30 @@ random_profile_of_rankings <- function(ncandidates = 4,
                                        nranking = 10,
                                        seed = NULL,
                                        withties = FALSE,
-                                       cnames = NULL) {
+                                       cnames = NULL,
+                                       distinct = NULL) {
   if(!is.null(seed)) {
     set.seed(seed)
   }
   
   if(!withties) {
-    rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% tibble::as_tibble(.name_repair =  ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE))
+    if(!is.null(distinct)) {
+      if(distinct > nranking) {
+        stop("The number of voters must be greater than the number of rankings")
+      }
+      ok <- 0
+      while(ok != distinct) {
+        rankings <- t(replicate(distinct, sample(1:ncandidates))) %>% tibble::as_tibble(.name_repair =  ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE))
+        ok <- n_distinct(rankings)
+      }
+      
+    }
+    else {
+      rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% tibble::as_tibble(.name_repair =  ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE))
+    }
   }
   else {
-    rankings <- t(replicate(nranking, ranking(sample(1:(sample(2:ncandidates, 1)), ncandidates, replace = TRUE)))) %>% tibble::as_tibble()
+    rankings <- t(replicate(distinct, ranking(sample(1:(sample(2:ncandidates, 1)), ncandidates, replace = TRUE)))) %>% tibble::as_tibble()
   }
   
   if(!is.null(cnames)) {
@@ -316,12 +330,34 @@ random_profile_of_rankings <- function(ncandidates = 4,
     names(rankings) <- paste0("C", 1:ncol(rankings))
   }
   
-  por <- profile_of_rankings(rankings)
+  if(!is.null(distinct)) {
+    nvoters <- rand_vect(nrow(rankings), nranking)
+    por <- profile_of_rankings(rankings, numberOfVoters = nvoters)
+  }
+  else {
+    por <- profile_of_rankings(rankings)
+  }
+  
 
   return(por)
 }
 
-
+rand_vect <- function(N, M, sd = 1, pos.only = TRUE) {
+  vec <- rnorm(N, M/N, sd)
+  if (abs(sum(vec)) < 0.01) vec <- vec + 1
+  vec <- round(vec / sum(vec) * M)
+  deviation <- M - sum(vec)
+  for (. in seq_len(abs(deviation))) {
+    vec[i] <- vec[i <- sample(N, 1)] + sign(deviation)
+  }
+  if (pos.only) while (any(vec < 0)) {
+    negs <- vec < 0
+    pos  <- vec > 0
+    vec[negs][i] <- vec[negs][i <- sample(sum(negs), 1)] + 1
+    vec[pos][i]  <- vec[pos ][i <- sample(sum(pos ), 1)] - 1
+  }
+  vec
+}
 
 # -------------------------------------------------------------------------
 
