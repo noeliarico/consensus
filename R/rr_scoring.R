@@ -53,10 +53,11 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, s
       
     }
     
-  } else {
+  } else { # Borda count
+    # Count the number of times that each candidate is ahead of the remaining ones
     v <- rowSums(votrix(profileOfRankings))
-    v <- sort(v, decreasing = TRUE) # sort v from more votes to less
-    if(seePoints) {
+    # v <- sort(v, decreasing = TRUE) # sort v from more votes to less
+    if(seePoints || seeTrace) {
       cat("Points rewarded by each candidate of the profile of rankings:\n")
       print(v)
       cat('Winning ranking:\n')
@@ -89,8 +90,8 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, s
   }
   
   ranking[which(candidates == names(v)[i+1])] <- pos
-  
-  return(ranking(ranking))
+  class(ranking) <- ranking
+  return(ranking)
   
 }
 
