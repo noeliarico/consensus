@@ -21,6 +21,9 @@ kemeny <- function(profileOfRankings,
   candidates <- profileOfRankings$candidates
   number_of_candidates <- length(candidates)
   
+  if(nrow(rankings) == 1)
+    return(get_ranking(profileOfRankings, 1))
+  
   # Get the reversals preallocated in the data files
   data_name <- paste0("perm", number_of_candidates) 
   rev <- get(data_name)
