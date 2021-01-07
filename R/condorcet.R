@@ -54,8 +54,9 @@ condorcet_winner <- function(profileOfRankings) {
   v <- apply(v, 1:2, function(x) x > half)
   v <- rowSums(v, na.rm = TRUE)
   if(any(v == (length(v)-1))) {
-    cat("There is a Condorcet winner:\n")
-    return(v[v== (length(v)-1)])
+    a <- v[v== (length(v)-1)]
+    cat(paste0("There is a Condorcet winner:\n"), names(a))
+    invisible(which(v== (length(v)-1)))
   }
   else {
     cat("There is not a Condorcet winner.\n")
