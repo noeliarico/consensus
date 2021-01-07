@@ -165,7 +165,7 @@ tapproval <- function(profileOfRankings, t = 2, seeTrace = FALSE, seePoints = FA
 #' 
 #' @examples
 #' @export
-borda_count <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
+borda <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
   scoring_rule(profileOfRankings, "borda", seeTrace = seeTrace, seePoints = seePoints)
 }
 

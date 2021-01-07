@@ -38,8 +38,8 @@ Scoring ranking rules
 }
 \seealso{
 Other ranking rule: 
-\code{\link{borda_count}()},
 \code{\link{borda_winner}()},
+\code{\link{borda}()},
 \code{\link{tapproval}()},
 \code{\link{veto}()}
 }

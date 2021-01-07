@@ -18,7 +18,7 @@ then it takes the winner in the first position.
 }
 \seealso{
 Other ranking rule: 
-\code{\link{borda_count}()},
+\code{\link{borda}()},
 \code{\link{scoring_rule}()},
 \code{\link{tapproval}()},
 \code{\link{veto}()}

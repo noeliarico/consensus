@@ -17,8 +17,8 @@ t-approval ranking rule
 }
 \seealso{
 Other ranking rule: 
-\code{\link{borda_count}()},
 \code{\link{borda_winner}()},
+\code{\link{borda}()},
 \code{\link{scoring_rule}()},
 \code{\link{veto}()}
 }
