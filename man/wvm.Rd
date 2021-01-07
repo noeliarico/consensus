@@ -4,7 +4,7 @@
 \alias{wvm}
 \title{Weigted Voting Method (WVM)}
 \usage{
-wvm(profileOfRankings, alpha = 0.5)
+wvm(profileOfRankings, alpha = 0.5, seePoints = FALSE)
 }
 \arguments{
 \item{profileOfRankings}{}

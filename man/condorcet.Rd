@@ -4,7 +4,7 @@
 \alias{condorcet}
 \title{Condorcet}
 \usage{
-condorcet(profileOfRankings)
+condorcet(profileOfRankings, seePoints = FALSE)
 }
 \arguments{
 \item{profileOfRankings}{}

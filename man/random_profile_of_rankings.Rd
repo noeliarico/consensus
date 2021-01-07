@@ -9,7 +9,8 @@ random_profile_of_rankings(
   nranking = 10,
   seed = NULL,
   withties = FALSE,
-  cnames = NULL
+  cnames = NULL,
+  distinct = NULL
 )
 }
 \arguments{

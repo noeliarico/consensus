@@ -141,9 +141,6 @@ print.kemeny <- function(x, sort = TRUE, ...) {
       print(gr)
     }
   }
-  else {
-    cat("\nKemeny distances not computed: profile with one single ranking.\n")
-  }
   
   cat(paste("\nWinning ranking applying Kemeny with a distance of", x$winnerDistance, "is:\n"))
   print(x$winningRanking)

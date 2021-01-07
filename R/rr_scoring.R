@@ -90,7 +90,7 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, s
   }
   
   ranking[which(candidates == names(v)[i+1])] <- pos
-  class(ranking) <- ranking
+  class(ranking) <- "ranking"
   return(ranking)
   
 }
@@ -175,4 +175,18 @@ borda_count <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) 
 borda_winner <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
   ranking <- scoring(profileOfRankings, "borda", seeTrace = seeTrace)
   names(ranking[which.min(ranking)])
+}
+
+#' @export
+scoring_rule <- function(profileOfRankings, points) {
+  s <- scorix(profileOfRankings)
+  if(length(points) == ncol(s)) {
+    s <- s * points
+    s <- colSums(s)
+    return(ranking(s, desc = TRUE))
+  }
+  else {
+    stop("you must give a punctuation for each position")
+  }
+  
 }

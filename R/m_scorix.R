@@ -40,21 +40,21 @@ scorix <- function(profileOfRankings) {
 }
 
 times_position <- function(ranking) {
-  print("---------------------------")
-  print(ranking)
+  # print("---------------------------")
+  # print(ranking)
   n <- length(ranking)
   counts <- as.numeric(table(ranking))
   results <- matrix(rep(0, n^2), ncol = n)
   
-  print("counts:")
-  print(counts)
+  # print("counts:")
+  # print(counts)
   for(i in 1:n) {
     count <- counts[ranking[i]]
     share <- 1 / count
-    print("count:")
-    print(count)
-    print("share:")
-    print(share)
+    # print("count:")
+    # print(count)
+    # print("share:")
+    # print(share)
     
     if(ranking[i] > 1) {
       from <- sum(counts[1:(ranking[i]-1)])+1
@@ -62,8 +62,8 @@ times_position <- function(ranking) {
       from <- 1
     }
     
-    print("from:")
-    print(from)
+    # print("from:")
+    # print(from)
     results[i, from:(from+count-1)] <- share
   }
   
