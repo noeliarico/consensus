@@ -121,8 +121,7 @@ print.kemeny <- function(x, sort = TRUE, complete = FALSE, ...) {
       print(x$winningRanking)
     }
     else {
-      print("more")
-      apply(x$winningRanking, 2, function(x) ranking(x$winningRanking))
+      apply(x$winningRanking, 1, function(x) print(ranking(x)))
     }
   }
   else {
