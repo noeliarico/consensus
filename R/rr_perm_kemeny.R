@@ -99,7 +99,8 @@ kemeny <- function(profileOfRankings,
   }
   # There are more than one rankings that achieve the minimum distance
   else {
-    winner <- c("More than one winning ranking.")
+    # winner <- c("More than one winning ranking.")
+    winner <- winners
   }
   
   # The output is a list that contains all the info
@@ -113,37 +114,49 @@ kemeny <- function(profileOfRankings,
 }
 
 #' @export
-print.kemeny <- function(x, sort = TRUE, ...) {
+print.kemeny <- function(x, sort = TRUE, complete = FALSE, ...) {
 
-  cat("\nGiven the profile of rankings:\n")
-  print(x$profileOfRankings)
-    
-  if(!is.na(nrow(x$distances))) {
-    cat("\nThe Kemeny distances to all the possible permutations 
-        of the ranking for those candidates are:\n")
-    # If the output is sort by the value of the distance
-    if(sort) {
-      x$distances <- x$distances[order(x$distances$distance), ]
-    }
-    
-    ncandidates <- ncol(x$profileOfRankings$profileOfRankings)
-    gr <- apply(x$distances[, 1:ncandidates], 1, format.ranking)
-    distances <- x$distances[, (ncandidates+1):ncol(x$distances)]
-    gr <- as.data.frame(gr)
-    colnames(gr) <- c('ranking')
-    gr <- cbind(gr, distances)
-    
-    if(nrow(gr) > 100) {
-      print(gr[1:100,])
-      cat("\n(Only 100 rankings are shown)\n")
+  if(!complete) {
+    if(is.ranking(x$winningRanking)) {
+      print(x$winningRanking)
     }
     else {
-      print(gr)
+      print("more")
+      apply(x$winningRanking, 2, function(x) ranking(x$winningRanking))
     }
   }
+  else {
+    cat("\nGiven the profile of rankings:\n")
+    print(x$profileOfRankings)
+    
+    if(!is.na(nrow(x$distances))) {
+      cat("\nThe Kemeny distances to all the possible permutations 
+        of the ranking for those candidates are:\n")
+      # If the output is sort by the value of the distance
+      if(sort) {
+        x$distances <- x$distances[order(x$distances$distance), ]
+      }
+      
+      ncandidates <- ncol(x$profileOfRankings$profileOfRankings)
+      gr <- apply(x$distances[, 1:ncandidates], 1, format.ranking)
+      distances <- x$distances[, (ncandidates+1):ncol(x$distances)]
+      gr <- as.data.frame(gr)
+      colnames(gr) <- c('ranking')
+      gr <- cbind(gr, distances)
+      
+      if(nrow(gr) > 100) {
+        print(gr[1:100,])
+        cat("\n(Only 100 rankings are shown)\n")
+      }
+      else {
+        print(gr)
+      }
+    }
+    
+    cat(paste("\nWinning ranking applying Kemeny with a distance of", x$winnerDistance, "is:\n"))
+    print(x$winningRanking)
+    
+    invisible(x$winningRanking)
+  }
   
-  cat(paste("\nWinning ranking applying Kemeny with a distance of", x$winnerDistance, "is:\n"))
-  print(x$winningRanking)
-  
-  invisible(x$winningRanking)
 }

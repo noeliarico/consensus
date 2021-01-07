@@ -182,7 +182,7 @@ scoring_rule <- function(profileOfRankings, points) {
   s <- scorix(profileOfRankings)
   if(length(points) == ncol(s)) {
     s <- s * points
-    s <- colSums(s)
+    s <- rowSums(s)
     return(ranking(s, desc = TRUE))
   }
   else {
