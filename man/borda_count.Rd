@@ -18,7 +18,7 @@ Apply Borda Count ranking rule in a profile of ranking
 \seealso{
 Other ranking rule: 
 \code{\link{borda_winner}()},
-\code{\link{scoring}()},
+\code{\link{scoring_rule}()},
 \code{\link{tapproval}()},
 \code{\link{veto}()}
 }

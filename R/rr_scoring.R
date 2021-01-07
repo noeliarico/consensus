@@ -17,8 +17,7 @@
 #' 
 #' 
 #' @family ranking rule
-#' @export 
-scoring <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, seePoints = FALSE) {
+scoring_rule <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, seePoints = FALSE) {
   
   if(seeTrace) {
     cat('Executing a scoring ranking rule...\n')
@@ -36,22 +35,24 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, s
   
   # For each ranking in the profile of rankings
   if(method != "borda") {
-    for(i in 1:nrow(por)) {
-      numVotersRow <- votes[i]
-      ranking <- por[i,]
-      
-      p <- calculatePoints(ranking, method, t, seeTrace, seePoints)
-      v <- v + (numVotersRow * p)
-      
-      if(seeTrace) {
-        cat("-> The points for this ranking\n")
-        print(p)
-        cat("-> This ranking has ",numVotersRow," voters\n")
-        cat("-> The current value of the total points is:")
-        print(v)
-      }
-      
-    }
+    # for(i in 1:nrow(por)) {
+    #   numVotersRow <- votes[i]
+    #   ranking <- por[i,]
+    #   
+    #   p <- calculatePoints(ranking, method, t, seeTrace, seePoints)
+    #   v <- v + (numVotersRow * p)
+    #   
+    #   if(seeTrace) {
+    #     cat("-> The points for this ranking\n")
+    #     print(p)
+    #     cat("-> This ranking has ",numVotersRow," voters\n")
+    #     cat("-> The current value of the total points is:")
+    #     print(v)
+    #   }
+    #   
+    # }
+    stop("07/01/2021")
+    scoring_rule(profileOfRankings, )
     
   } else { # Borda count
     # Count the number of times that each candidate is ahead of the remaining ones
@@ -106,7 +107,10 @@ scoring <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FALSE, s
 #' @examples
 #' @export
 plurality <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "plurality", seeTrace = seeTrace, seePoints = seePoints)
+  n <- length(profileOfRankings$candidates)
+  v <- rep(0, n)
+  v[1] <- 1
+  scoring(profileOfRankings, v)
 }
 
 #' Veto (a.k.a. antiplurality) ranking rule
@@ -120,7 +124,11 @@ plurality <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
 #' @examples
 #' @export
 veto <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "veto", seeTrace = seeTrace, seePoints = seePoints)
+  # scoring(profileOfRankings, "veto", seeTrace = seeTrace, seePoints = seePoints)
+  n <- length(profileOfRankings$candidates)
+  v <- rep(1, n)
+  v[n] <- 0
+  scoring(profileOfRankings, v)
 }
 
 #' t-approval ranking rule
@@ -136,7 +144,11 @@ veto <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
 #' @examples
 #' @export
 tapproval <- function(profileOfRankings, t = 2, seeTrace = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "t", t, seeTrace = seeTrace, seePoints = seePoints)
+  # scoring(profileOfRankings, "t", t, seeTrace = seeTrace, seePoints = seePoints)
+  n <- length(profileOfRankings$candidates)
+  v <- rep(0, n)
+  v[1:t] <- 1
+  scoring(profileOfRankings, v)
 }
 
 #' Borda Count ranking rule
@@ -154,7 +166,7 @@ tapproval <- function(profileOfRankings, t = 2, seeTrace = FALSE, seePoints = FA
 #' @examples
 #' @export
 borda_count <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
-  scoring(profileOfRankings, "borda", seeTrace = seeTrace, seePoints = seePoints)
+  scoring_rule(profileOfRankings, "borda", seeTrace = seeTrace, seePoints = seePoints)
 }
 
 #' Borda Winner
@@ -173,16 +185,18 @@ borda_count <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) 
 #' @examples
 #' @export
 borda_winner <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
-  ranking <- scoring(profileOfRankings, "borda", seeTrace = seeTrace)
+  ranking <- scoring_rule(profileOfRankings, "borda", seeTrace = seeTrace)
   names(ranking[which.min(ranking)])
 }
 
 #' @export
-scoring_rule <- function(profileOfRankings, points) {
+scoring <- function(profileOfRankings, points, seeTrace = FALSE) {
   s <- scorix(profileOfRankings)
+  n <- profileOfRankings$candidates
   if(length(points) == ncol(s)) {
-    s <- s * points
-    s <- rowSums(s)
+    s <- as.numeric(s %*% points)
+    names(s) <- n
+    if(seeTrace) print(s)
     return(ranking(s, desc = TRUE))
   }
   else {

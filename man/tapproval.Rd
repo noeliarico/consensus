@@ -19,7 +19,7 @@ t-approval ranking rule
 Other ranking rule: 
 \code{\link{borda_count}()},
 \code{\link{borda_winner}()},
-\code{\link{scoring}()},
+\code{\link{scoring_rule}()},
 \code{\link{veto}()}
 }
 \concept{ranking rule}
