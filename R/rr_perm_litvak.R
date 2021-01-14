@@ -71,7 +71,7 @@ litvak <- function(profileOfRankings,
     }))
     # Stop the clusters
     parallel::stopCluster(cl)
-    print(distances)
+    # print(distances)
     distance <- t(apply(distances, 1, function(x) x * votes))
     distance <- rowSums(distance)
     #print(distances[1:10,1:10])
