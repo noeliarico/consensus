@@ -237,14 +237,14 @@ tideman <- function(profileOfRankings,
           adjajency[i, ] <- adjajency[i, ] | adjajency[from, ]
         }
       }
-      if(seeTrace) {
-      cat(paste0("Adding ", candidates[from], ",", candidates[to], "\n"))
-      print(adjajency)
+      if(seeTrace || seePoints) {
+      cat(paste0("Adding ", candidates[from], ",", candidates[to], paste0("\t[", paste(rowSums(adjajency, na.rm = T), collapse = ","),"]"), "\n"))
+        if(seeTrace) print(adjajency)
       }
     }
     else {
-      if(seeTrace) {
-      cat(paste0("Skipping ", candidates[from], ",", candidates[to], "\n"))
+      if(seeTrace || seePoints) {
+      cat(paste0("Skipping ", candidates[from], ",", candidates[to], paste0("\t[", paste(rowSums(adjajency, na.rm = T), collapse = ","),"]"), "\n"))
       }
       #stop("Descartando")
     }
