@@ -217,22 +217,47 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
 }
 
 #' @export
+toLatex.por <- function(x, caption = NULL, label = NULL, align = NULL, digits = NULL, 
+                       display = NULL, auto = FALSE, ...) {
+  stopifnot(any(class(x)=="por"))
+  out <- apply(x$profileOfRankings, 1, function(a) paste(paste(x$candidates[a], collapse = " \\succ "), "\\\\"))
+  out <- paste(x$numberOfVoters, out, sep = " & ")
+  out <- paste(out, collapse = "\n")
+  t <- "\\begin{table}[H] \n \\centering \n \\begin{tabular}{|c|c|} \n \\hline \n number of voters & ranking  \\\\ \\hline  \n"
+  t <- paste(t, out, sep = "\n")
+  t <- paste(t, "\n \\hline \n \\end{tabular} \n \\caption{por.} \n \\label{tab:por} \n \\end{table}")
+  cat(t)
+  invisible(t)
+  
+  # \begin{table}[H]
+  # \centering
+  # \begin{tabular}{|c|c|}
+  # \hline
+  # number of voters & ranking \\ 
+  # \hline
+  # 1 & $c_1 \succ c_3 \succ c_2 \succ c_4$ \\ 
+  # 1 & $c_4 \succ c_3 \succ c_1 \succ c_2$ \\ 
+  # 2 & $c_3 \succ c_2 \succ c_4 \succ c_1$ \\ 
+  # 1 & $c_2 \succ c_1 \succ c_4 \succ c_3$ \\ 
+  # 2 & $c_1 \succ c_4 \succ c_2 \succ c_3$ \\ 
+  # 1 & $c_2 \succ c_4 \succ c_1 \succ c_3$ \\ 
+  # 1 & $c_2 \succ c_4 \succ c_3 \succ c_1$ \\ 
+  # 1 & $c_4 \succ c_1 \succ c_3 \succ c_2$ \\ 
+  # \hline
+  # \end{tabular}
+  # \caption{Profile of rankings on $\mathcal{C} = \{c_1, c_2, c_3, c_4\}$ given by 10 voters.}
+  # \label{tab:por08}
+  # \end{table}
+}
+
+
+#' @export
 is.por <- function(x, ...) inherits(x, "por")
 
 #' @export
-print.por <- function(x, ..., latex = FALSE) {
-  
-  if(latex) {
-    out <- "$$\\begin{table}\n"
-    out <- paste(out, "\t\\begin{tabular}{|c|c|}\n")
-    out <- paste(out, "\t\t\\hline\n")
-    out <- paste(out, "\t\t1 & 1 \\\\\n")
-    out <- paste(out, "\t\\end{tabular}\n")
-    out <- paste(out, "\\end{table}$$")
-    print(out)
-  }
-  
-  else {
+print.por <- function(x, ...) {
+
+
     gr <- apply(x$profileOfRankings, 1, format.ranking)
     gr <- as.data.frame(gr)
     gpor <- cbind(x$numberOfVoters, gr)
@@ -240,7 +265,7 @@ print.por <- function(x, ..., latex = FALSE) {
     colnames(gpor) <- c('numberOfVoters', 'ranking')
     print(gpor)
     invisible(gpor)
-  }
+  
   
   
   

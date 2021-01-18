@@ -21,7 +21,6 @@ RoxygenNote: 7.1.1
 Imports: 
     stringr,
     gtools,
-    xtable,
     tibble,
     parallel,
     dplyr,
