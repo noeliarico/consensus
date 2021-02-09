@@ -309,3 +309,32 @@ parse_ranking <- function(string) {
 ranking_has_ties <- function(ranking) {
   return(is.ranking(ranking) && (length(unique(ranking)) < length(ranking)))
 }
+
+#' Ranking to lineal
+#' 
+#' Take a ranking that contains ties and give a linear extension of the ranking
+#'
+#' @param ranking 
+#'
+#' @return linear extension of the ranking given as parameter
+#' @export
+ranking_to_linear <- function(ranking) {
+  m <- max(ranking)
+  i <- 1
+  for(iter in 1:m) {
+    indexes <- which(ranking == i)
+    if(length(indexes) > 1) { # there are tied candidates
+      # Increment all the candidates that are later on the ranking
+      ranking[ranking > i] <- ranking[ranking > i] + (length(indexes)-1)
+      # Untie
+      values <- i + 0:(length(indexes)-1)
+      ranking[indexes] <- values
+      # Update
+      i <- i + (length(indexes)-1)
+    }
+    else {
+      i <- i + 1
+    }
+  }
+  return(ranking)
+}
