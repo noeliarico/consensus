@@ -368,7 +368,6 @@ random_profile_of_rankings <- function(ncandidates = 4,
   # profile of rankings this is repeated until a random vector without zeros
   # is found.
   if(!is.null(distinct)) {
-    print("Choosing")
     nvotersv <- 0
     while(any(nvotersv == 0)) {
       nvotersv <- rand_vect(nrow(rankings), nvoters)
