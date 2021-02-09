@@ -6,7 +6,7 @@
 \usage{
 random_profile_of_rankings(
   ncandidates = 4,
-  nranking = 10,
+  nvoters = 10,
   seed = NULL,
   withties = FALSE,
   cnames = NULL,
@@ -16,11 +16,11 @@ random_profile_of_rankings(
 \arguments{
 \item{ncandidates}{Number of candidates}
 
-\item{nranking}{Number of rankings in the profile of rankings}
-
 \item{seed}{Fix a seed to hace reproducible code}
 
 \item{withties}{The rankings are generated without ties by default.}
+
+\item{nranking}{Number of rankings in the profile of rankings}
 }
 \description{
 Creates a ranfom profile of rankings

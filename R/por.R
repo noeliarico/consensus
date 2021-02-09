@@ -302,7 +302,7 @@ split_profile_of_rankings <- function(profileOfRankings) {
 #'
 #' @export
 random_profile_of_rankings <- function(ncandidates = 4,
-                                       nranking = 10,
+                                       nvoters = 10,
                                        seed = NULL,
                                        withties = FALSE,
                                        cnames = NULL,
@@ -312,22 +312,30 @@ random_profile_of_rankings <- function(ncandidates = 4,
   }
   
   if(!withties) {
+    # Number of distinct rankings in the profile is given
     if(!is.null(distinct)) {
-      if(distinct > nranking) {
+      # It cannot be more distinct rankings than voters
+      if(distinct > nvoters) {
         stop("The number of voters must be greater than the number of rankings")
+      }
+      if(distinct > factorial(ncandidates)) {
+        stop(paste("There aren't", distinct, "different rankings with n candidates"))
       }
       ok <- 0
       while(ok != distinct) {
-        rankings <- t(replicate(distinct, sample(1:ncandidates))) %>% tibble::as_tibble(.name_repair =  ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE))
-        ok <- n_distinct(rankings)
+        # Create "distinct" random rankings. The results can contain repeated rankings
+        # therefore the process is repeated until "distinct" different rankings are found
+        rankings <- t(replicate(distinct, sample(1:ncandidates))) %>% 
+          tibble::as_tibble(.name_repair =  ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE))
+        ok <- dplyr::n_distinct(rankings)
       }
-      
     }
-    else {
-      rankings <- t(replicate(nranking, sample(1:ncandidates))) %>% tibble::as_tibble(.name_repair =  ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE))
+    else { # the number of distinct rankings is not given
+      rankings <- t(replicate(nvoters, sample(1:ncandidates))) %>% 
+        tibble::as_tibble(.name_repair =  ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE))
     }
   }
-  else {
+  else { # ranking containing ties
     rankings <- t(replicate(distinct, ranking(sample(1:(sample(2:ncandidates, 1)), ncandidates, replace = TRUE)))) %>% tibble::as_tibble()
   }
   
@@ -355,12 +363,24 @@ random_profile_of_rankings <- function(ncandidates = 4,
     names(rankings) <- paste0("C", 1:ncol(rankings))
   }
   
+  # If the number of distinct rankings is given, then a number of voters must
+  # be assigned to each ranking. As it cannot be a ranking with 0 votes in the
+  # profile of rankings this is repeated until a random vector without zeros
+  # is found.
   if(!is.null(distinct)) {
-    nvoters <- rand_vect(nrow(rankings), nranking)
-    por <- profile_of_rankings(rankings, numberOfVoters = nvoters)
+    print("Choosing")
+    nvotersv <- 0
+    while(any(nvotersv == 0)) {
+      nvotersv <- rand_vect(nrow(rankings), nvoters)
+    }
+    por <- profile_of_rankings(rankings, numberOfVoters = nvotersv)
   }
   else {
     por <- profile_of_rankings(rankings)
+  }
+  
+  if(!is.null(seed)) {
+    por$seed <- seed
   }
   
 
