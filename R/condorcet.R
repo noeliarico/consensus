@@ -103,7 +103,7 @@ format.condorcet <- function(x, ...) {
   
   c <- class(x)
   if(any("ranking" == c)) {
-    if(x) out <- paste("There is a Condorcet ranking:", x)
+    if(x) out <- paste("There is a Condorcet ranking:", format.ranking(x))
     else out <- "There is not a Condorcet ranking"
   }
   else if(any("winner" == c)) {
