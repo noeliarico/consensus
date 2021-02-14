@@ -379,7 +379,16 @@ random_profile_of_rankings <- function(ncandidates = 4,
   }
   
   if(!is.null(seed)) {
-    por$seed <- seed
+    if(!is.null(distinct)) {
+      s <- c(seed, distinct)
+      names(s) <- c("seed", "distinct")
+      por$seed <- s
+    }
+    else {
+      s <- seed
+      names(s) <- "seed"
+      por$seed <- s
+    }
   }
   
 
