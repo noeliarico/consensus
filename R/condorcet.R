@@ -45,12 +45,16 @@ condorcet <- function(profileOfRankings, seePoints = FALSE) {
 #' @export
 #'
 #' @examples
-condorcet_winner <- function(profileOfRankings) {
-  v <- votrix(profileOfRankings)
+condorcet_winner <- function(profileOfRankings, weak = FALSE) {
+  vo <- votrix(profileOfRankings)
   half <- sum(profileOfRankings$numberOfVoters)/2
   # Check if the candidates are preferred by at least half of the votes
   # in relation to other candidates
-  v <- apply(v, 1:2, function(x) x > half)
+  if(!weak) {
+    v <- apply(vo, 1:2, function(x) x > half)
+  } else {
+    v <- apply(vo, 1:2, function(x) x >= half)
+  }
   v <- rowSums(v, na.rm = TRUE)
   if(any(v == (length(v)-1))) { # There is a Condorcet winner
     a <- v[v== (length(v)-1)]
@@ -59,7 +63,9 @@ condorcet_winner <- function(profileOfRankings) {
   else { # There is not a Condorcet winner
     out <- FALSE
   }
-  class(out) <- c("condorcet", "winner")
+  v <- apply(vo, 1:2, function(x) x == half)
+  if(any(v)) class(out) <- c("condorcet", "winner", "weak")
+  else class(out) <- c("condorcet", "winner")
   return(out)
 }
 
@@ -107,8 +113,19 @@ format.condorcet <- function(x, ...) {
     else out <- "There is not a Condorcet ranking"
   }
   else if(any("winner" == c)) {
-    if(x) out <- paste("There is a Condorcet winner:", names(x))
-    else out <- "There is not a Condorcet winner"
+    if(length(x) == 1) {
+      if(any("winner" == c)) {
+        if(x) out <- paste("There is a weak Condorcet winner:", names(x))
+        else out <- "There is not a Condorcet winner"
+      }
+      else {
+        if(x) out <- paste("There is a Condorcet winner:", names(x))
+        else out <- "There is not a Condorcet winner"
+      }
+    } else {
+      out <- paste("There are weak Condorcet winners:", paste(names(x), collapse = ","))
+    }
+    
   }
   else if(any("loser" == c)) {
     if(length(x) == 1) {
