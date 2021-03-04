@@ -338,7 +338,6 @@ random_profile_of_rankings <- function(ncandidates = 4,
         ok <- nrow(rankings)
         # ok <- n_distinct(rankings)
       }
-      print(rankings)
       rankings <- rankings[1:distinct,]
     }
     else { # the number of distinct rankings is not given
