@@ -322,13 +322,24 @@ random_profile_of_rankings <- function(ncandidates = 4,
         stop(paste("There aren't", distinct, "different rankings with n candidates"))
       }
       ok <- 0
-      while(ok != distinct) {
+      rankings <- NULL
+      while(ok <= distinct) {
         # Create "distinct" random rankings. The results can contain repeated rankings
         # therefore the process is repeated until "distinct" different rankings are found
-        rankings <- t(replicate(distinct, sample(1:ncandidates))) %>% 
+        new_rankings <- t(replicate(distinct, sample(1:ncandidates))) %>% 
           tibble::as_tibble(.name_repair =  ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE))
-        ok <- dplyr::n_distinct(rankings)
+        if(!is.null(rankings)) {
+          rankings <- dplyr::bind_rows(rankings, new_rankings)
+        }
+        else { # first time
+          rankings <- new_rankings
+        }
+        rankings <- rankings %>% dplyr::distinct()
+        ok <- nrow(rankings)
+        # ok <- n_distinct(rankings)
       }
+      print(rankings)
+      rankings <- rankings[1:distinct,]
     }
     else { # the number of distinct rankings is not given
       rankings <- t(replicate(nvoters, sample(1:ncandidates))) %>% 
@@ -368,9 +379,13 @@ random_profile_of_rankings <- function(ncandidates = 4,
   # profile of rankings this is repeated until a random vector without zeros
   # is found.
   if(!is.null(distinct)) {
-    nvotersv <- 0
-    while(any(nvotersv == 0)) {
-      nvotersv <- rand_vect(nrow(rankings), nvoters)
+    if(distinct!=nvoters) {
+      nvotersv <- 0
+      while(any(nvotersv == 0)) {
+        nvotersv <- rand_vect(nrow(rankings), nvoters)
+      }
+    } else {
+      nvotersv <- rep(1, nvoters)
     }
     por <- profile_of_rankings(rankings, numberOfVoters = nvotersv)
   }
@@ -396,15 +411,23 @@ random_profile_of_rankings <- function(ncandidates = 4,
 }
 
 rand_vect <- function(N, M, sd = 1, pos.only = TRUE) {
-  vec <- rnorm(N, M/N, sd)
+  # create a vector with a value for each of the n rankings
+  # there are m voters, so the elements must sum m
+  # mean is m/n to make it as close as possible to perfect division
+  vec <- rnorm(N, M/N, sd) 
+  # if all the values are negative add values
   if (abs(sum(vec)) < 0.01) vec <- vec + 1
+  # get integer numbers based on the proportion of the number in the vector
   vec <- round(vec / sum(vec) * M)
+  # deviation of the elements from M
   deviation <- M - sum(vec)
+  # for each element increment or decrement in one unit
   for (. in seq_len(abs(deviation))) {
     vec[i] <- vec[i <- sample(N, 1)] + sign(deviation)
   }
-  if (pos.only) while (any(vec < 0)) {
-    negs <- vec < 0
+  # ensure that there are only positive numbers > 0
+  if (pos.only) while (any(vec <= 0)) {
+    negs <- vec <= 0
     pos  <- vec > 0
     vec[negs][i] <- vec[negs][i <- sample(sum(negs), 1)] + 1
     vec[pos][i]  <- vec[pos ][i <- sample(sum(pos ), 1)] - 1
