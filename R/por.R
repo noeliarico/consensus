@@ -324,7 +324,7 @@ random_profile_of_rankings <- function(ncandidates = 4,
       }
       ok <- 0
       rankings <- NULL
-      while(ok <= distinct) {
+      while(ok < distinct) {
         # Create "distinct" random rankings. The results can contain repeated rankings
         # therefore the process is repeated until "distinct" different rankings are found
         new_rankings <- t(replicate(distinct, sample(1:ncandidates))) %>% 
@@ -379,13 +379,17 @@ random_profile_of_rankings <- function(ncandidates = 4,
   # profile of rankings this is repeated until a random vector without zeros
   # is found.
   if(!is.null(distinct)) {
-    if(distinct!=nvoters) {
+    if(distinct==factorial(ncandidates)) {
+      nvotersv <- rep(1, distinct)
+    } 
+    if(distinct==nvoters) {
+      nvotersv <- rep(1, nvoters)
+    }
+    else {
       nvotersv <- 0
       while(any(nvotersv == 0)) {
         nvotersv <- rand_vect(nrow(rankings), nvoters, dist = distribution)
       }
-    } else {
-      nvotersv <- rep(1, nvoters)
     }
     por <- profile_of_rankings(rankings, numberOfVoters = nvotersv)
   }
