@@ -306,7 +306,8 @@ random_profile_of_rankings <- function(ncandidates = 4,
                                        seed = NULL,
                                        withties = FALSE,
                                        cnames = NULL,
-                                       distinct = NULL) {
+                                       distinct = NULL,
+                                       distribution = "norm") {
   if(!is.null(seed)) {
     set.seed(seed)
   }
@@ -381,7 +382,7 @@ random_profile_of_rankings <- function(ncandidates = 4,
     if(distinct!=nvoters) {
       nvotersv <- 0
       while(any(nvotersv == 0)) {
-        nvotersv <- rand_vect(nrow(rankings), nvoters)
+        nvotersv <- rand_vect(nrow(rankings), nvoters, dist = distribution)
       }
     } else {
       nvotersv <- rep(1, nvoters)
@@ -404,35 +405,77 @@ random_profile_of_rankings <- function(ncandidates = 4,
       por$seed <- s
     }
   }
-  
-
   return(por)
 }
 
-rand_vect <- function(N, M, sd = 1, pos.only = TRUE) {
-  # create a vector with a value for each of the n rankings
-  # there are m voters, so the elements must sum m
-  # mean is m/n to make it as close as possible to perfect division
-  vec <- rnorm(N, M/N, sd) 
-  # if all the values are negative add values
-  if (abs(sum(vec)) < 0.01) vec <- vec + 1
-  # get integer numbers based on the proportion of the number in the vector
-  vec <- round(vec / sum(vec) * M)
-  # deviation of the elements from M
-  deviation <- M - sum(vec)
-  # for each element increment or decrement in one unit
-  for (. in seq_len(abs(deviation))) {
-    vec[i] <- vec[i <- sample(N, 1)] + sign(deviation)
+rand_vect <- function(N, M, sd = 1, pos.only = TRUE, dist = "norm") {
+  if(dist == "norm") {
+    # create a vector with a value for each of the n rankings
+    # there are m voters, so the elements must sum m
+    # mean is m/n to make it as close as possible to perfect division
+    vec <- rnorm(N, M/N, sd) 
+    # if all the values are negative add values
+    if (abs(sum(vec)) < 0.01) vec <- vec + 1
+    # get integer numbers based on the proportion of the number in the vector
+    vec <- round(vec / sum(vec) * M)
+    # deviation of the elements from M
+    deviation <- M - sum(vec)
+    # for each element increment or decrement in one unit
+    for (. in seq_len(abs(deviation))) {
+      vec[i] <- vec[i <- sample(N, 1)] + sign(deviation)
+    }
+    # ensure that there are only positive numbers > 0
+    if (pos.only) while (any(vec <= 0)) {
+      negs <- vec <= 0
+      pos  <- vec > 0
+      vec[negs][i] <- vec[negs][i <- sample(sum(negs), 1)] + 1
+      vec[pos][i]  <- vec[pos ][i <- sample(sum(pos ), 1)] - 1
+    }
+    return(vec)
   }
-  # ensure that there are only positive numbers > 0
-  if (pos.only) while (any(vec <= 0)) {
-    negs <- vec <= 0
-    pos  <- vec > 0
-    vec[negs][i] <- vec[negs][i <- sample(sum(negs), 1)] + 1
-    vec[pos][i]  <- vec[pos ][i <- sample(sum(pos ), 1)] - 1
+  else if(dist == "unif") {
+    d <- N
+    m <- M
+    distrib <- round(runif(d, min=1, max=m)) # m voters and d rankings
+    v <- round(m*distrib/sum(distrib))
+    # Check if there is any zero
+    if(any(v==0)) {
+      i <- which(v==0)
+      v[i] <- 1
+    }
+    # Check the sum 
+    s <- sum(v)
+    if(s > m) { # Remove
+      diff <- s - m
+      for(i in 1:diff) {
+        j <- sample(1:d, 1) 
+        while(v[j] == 1) { # it must be > 1 to remove and avoid 0s
+          j <- sample(1:d, 1) 
+        }
+        v[j] <- v[j] - 1
+      }
+    }
+    else if(s < m) { # Add
+      diff <- m - s
+      for(i in 1:diff) {
+        j <- sample(1:d, 1) 
+        v[j] <- v[j] + 1
+      }
+    }
+    if(sum(v) != m) stop("Error generating random unirform distribution of votes. Incorrect sum.")
+    if(any(v == 0)) stop("Error generating random unirform distribution of votes. There is a 0.")
+    return(v)
+  } else {
+    stop("Unkwown distribution")
   }
-  vec
 }
+
+rv <- function(d,m) {
+  if(d > m) stop("This function requires d <= m")
+  
+}
+
+
 
 # -------------------------------------------------------------------------
 
