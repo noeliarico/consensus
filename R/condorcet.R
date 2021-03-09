@@ -114,7 +114,7 @@ format.condorcet <- function(x, ...) {
   }
   else if(any("winner" == c)) {
     if(length(x) == 1) {
-      if(any("winner" == c)) {
+      if(any("weak" == c)) {
         if(x) out <- paste("There is a weak Condorcet winner:", names(x))
         else out <- "There is not a Condorcet winner"
       }
