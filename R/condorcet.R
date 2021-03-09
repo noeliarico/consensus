@@ -64,7 +64,7 @@ condorcet_winner <- function(profileOfRankings, weak = FALSE) {
     out <- FALSE
   }
   v <- apply(vo, 1:2, function(x) x == half)
-  if(any(v)) class(out) <- c("condorcet", "winner", "weak")
+  if(any(v) && weak) class(out) <- c("condorcet", "winner", "weak")
   else class(out) <- c("condorcet", "winner")
   return(out)
 }
