@@ -1,16 +1,17 @@
 #' Create ranking from vector
 #' 
-#' Given a numeric vector, the default behaviour creates a ranking in 
+#' Given a numeric vector, the default behavior creates a ranking in 
 #' ascending value. This is, the lower the value of the vector the better the 
 #' candidate is considered.
 #' If names are given in the vector they will be used as names of the 
 #' candidates, to overwrite them, use the argument `cnames`.
 #'
-#' @param v   vector to be translated to a ranking
+#' @param v   vector to be translated to a ranking.
 #' @param cnames  names of the candidates. The values in this vector cannot
 #' must identified uniquely each candidate, thus, repeated values are not 
 #' allowed. 
-#' @param desc Default is FALSE.
+#' @param desc Default is FALSE. Therefore the rankings are creating in 
+#' ascending value
 #'
 #' @family ranking
 #' @export

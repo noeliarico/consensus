@@ -7,7 +7,7 @@
 ranking(v, cnames = NULL, desc = FALSE)
 }
 \arguments{
-\item{v}{vector to be translated to a ranking}
+\item{v}{vector to be translated to a ranking.}
 
 \item{cnames}{names of the candidates. The values in this vector cannot
 must identified uniquely each candidate, thus, repeated values are not 
@@ -16,7 +16,7 @@ allowed.}
 \item{desc}{Default is FALSE.}
 }
 \description{
-Given a numeric vector, the default behaviour creates a ranking in 
+Given a numeric vector, the default behavior creates a ranking in 
 ascending value. This is, the lower the value of the vector the better the 
 candidate is considered.
 If names are given in the vector they will be used as names of the 

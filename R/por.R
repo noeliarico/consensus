@@ -216,39 +216,7 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
   return(profileOfRankings)
 }
 
-#' @export
-toLatex.por <- function(x, caption = NULL, label = NULL, align = NULL, digits = NULL, 
-                       display = NULL, auto = FALSE, ...) {
-  stopifnot(any(class(x)=="por"))
-  out <- apply(x$profileOfRankings, 1, function(a) paste(paste(x$candidates[a], collapse = " \\succ "), "\\\\"))
-  out <- paste(x$numberOfVoters, out, sep = " & ")
-  out <- paste(out, collapse = "\n")
-  t <- "\\begin{table}[H] \n \\centering \n \\begin{tabular}{|c|c|} \n \\hline \n number of voters & ranking  \\\\ \\hline  \n"
-  t <- paste(t, out, sep = "\n")
-  t <- paste(t, "\n \\hline \n \\end{tabular} \n \\caption{por.} \n \\label{tab:por} \n \\end{table}")
-  cat(t)
-  invisible(t)
-  
-  # \begin{table}[H]
-  # \centering
-  # \begin{tabular}{|c|c|}
-  # \hline
-  # number of voters & ranking \\ 
-  # \hline
-  # 1 & $c_1 \succ c_3 \succ c_2 \succ c_4$ \\ 
-  # 1 & $c_4 \succ c_3 \succ c_1 \succ c_2$ \\ 
-  # 2 & $c_3 \succ c_2 \succ c_4 \succ c_1$ \\ 
-  # 1 & $c_2 \succ c_1 \succ c_4 \succ c_3$ \\ 
-  # 2 & $c_1 \succ c_4 \succ c_2 \succ c_3$ \\ 
-  # 1 & $c_2 \succ c_4 \succ c_1 \succ c_3$ \\ 
-  # 1 & $c_2 \succ c_4 \succ c_3 \succ c_1$ \\ 
-  # 1 & $c_4 \succ c_1 \succ c_3 \succ c_2$ \\ 
-  # \hline
-  # \end{tabular}
-  # \caption{Profile of rankings on $\mathcal{C} = \{c_1, c_2, c_3, c_4\}$ given by 10 voters.}
-  # \label{tab:por08}
-  # \end{table}
-}
+
 
 
 #' @export
@@ -265,10 +233,6 @@ print.por <- function(x, ...) {
     colnames(gpor) <- c('numberOfVoters', 'ranking')
     print(gpor)
     invisible(gpor)
-  
-  
-  
-  
 }
 
 #' For internal purpouse only
@@ -417,7 +381,7 @@ rand_vect <- function(N, M, sd = 1, pos.only = TRUE, dist = "norm") {
     # create a vector with a value for each of the n rankings
     # there are m voters, so the elements must sum m
     # mean is m/n to make it as close as possible to perfect division
-    vec <- rnorm(N, M/N, sd) 
+    vec <- stats::rnorm(N, M/N, sd) 
     # if all the values are negative add values
     if (abs(sum(vec)) < 0.01) vec <- vec + 1
     # get integer numbers based on the proportion of the number in the vector
@@ -440,7 +404,7 @@ rand_vect <- function(N, M, sd = 1, pos.only = TRUE, dist = "norm") {
   else if(dist == "unif") {
     d <- N
     m <- M
-    distrib <- round(runif(d, min=1, max=m)) # m voters and d rankings
+    distrib <- round(stats::runif(d, min=1, max=m)) # m voters and d rankings
     v <- round(m*distrib/sum(distrib))
     # Check if there is any zero
     if(any(v==0)) {
