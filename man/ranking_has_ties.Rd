@@ -7,11 +7,11 @@
 ranking_has_ties(ranking)
 }
 \arguments{
-\item{ranking}{}
+\item{ranking}{Object of class ranking.}
 }
 \value{
-
+TRUE if the ranking has ties, FALSE otherwise.
 }
 \description{
-Ranking has ties
+Check whether the ranking object given as parameter has ties.
 }

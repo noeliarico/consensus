@@ -8,6 +8,8 @@ read_rankings(file_path, from_csv = FALSE)
 }
 \arguments{
 \item{file_path}{Path of the file storing the rankings}
+
+\item{from_csv}{Default FALSE}
 }
 \description{
 Given a .csv file, read the rankings in the file and creates

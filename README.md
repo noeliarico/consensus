@@ -15,15 +15,20 @@ Check the full doc in https://noeliarico.github.io/consensus/
 You can install the released version of consensus from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("consensus")
+devtools::install_github("noeliarico/consensus")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to create rankings:
 
 ``` r
 library(consensus)
-## basic example code
+# To create a ranking
+r <- ranking(c(4, 1, 2))
+C2 ≻ C3 ≻ C1 
+# To give names to the ranking
+r <- ranking(c(4, 1, 2), cnames = letters[1:3])
+b ≻ c ≻ a 
 ```
 

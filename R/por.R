@@ -218,23 +218,6 @@ profile_of_rankings <- function(matrix = NULL, numberOfVoters = NULL,
 
 
 
-
-#' @export
-is.por <- function(x, ...) inherits(x, "por")
-
-#' @export
-print.por <- function(x, ...) {
-
-
-    gr <- apply(x$profileOfRankings, 1, format.ranking)
-    gr <- as.data.frame(gr)
-    gpor <- cbind(x$numberOfVoters, gr)
-    
-    colnames(gpor) <- c('numberOfVoters', 'ranking')
-    print(gpor)
-    invisible(gpor)
-}
-
 #' For internal purpouse only
 split_profile_of_rankings <- function(profileOfRankings) {
   
@@ -256,14 +239,20 @@ split_profile_of_rankings <- function(profileOfRankings) {
   
 }
 
-#' @title Create random profile of rankings
-#' @description Creates a ranfom profile of rankings
+
+#' Create a random profile of rankings
 #' 
-#' @param ncandidates Number of candidates
-#' @param nranking Number of rankings in the profile of rankings
-#' @param seed Fix a seed to hace reproducible code
-#' @param withties The rankings are generated without ties by default.
+#' Useful for testing purposes
 #'
+#' @param ncandidates Number of candidates. Default is 4.
+#' @param nvoters Number of voters. Default is 10.
+#' @param seed To fix a seed to replicate the results. Default is NULL.
+#' @param withties Indicates whether the profile created can contain ties. Default is FALSE.
+#' @param cnames Names of the candidates
+#' @param distinct Num
+#' @param distribution norm or uniform
+#'
+#' @return A profile of rankings
 #' @export
 random_profile_of_rankings <- function(ncandidates = 4,
                                        nvoters = 10,
@@ -443,14 +432,15 @@ rv <- function(d,m) {
   
 }
 
-
-
 # -------------------------------------------------------------------------
 
 
-#' @title Convert matrix to profile of rankings
+#' Convert matrix to profile of rankings
+#' 
+#' It is different than the normal one as this can include any number
 #' 
 #' @param matrix Matrix to convert to a profile of rankings
+#' @param critersion Ascending or descending.
 #'
 #' @return A profile of rankings object
 #' 
@@ -495,12 +485,13 @@ as_por <- function(matrix, criterion = NULL) {
   return(por)
 }
 
-#' @title Read rankings from file
+#' Read rankings from file
 #' 
-#' @description Given a .csv file, read the rankings in the file and creates
+#' Given a .csv file, read the rankings in the file and creates
 #' a profile of rankings object.
 #' 
 #' @param file_path Path of the file storing the rankings
+#' @param from_csv Default FALSE
 #'
 #' @export
 read_rankings <- function(file_path, from_csv = FALSE) {
@@ -532,8 +523,9 @@ read_rankings <- function(file_path, from_csv = FALSE) {
   return(the_rankings)
 }
 
-#' @title Parse profile of rankings
-#' @description Create profile of rankings using its string representation.
+#' Parse profile of rankings
+#' 
+#' Create profile of rankings using its string representation.
 #'
 #' @param string A string containing a representation of the ranking in the form:
 #' "number_of_voters_r1, ranking1,
@@ -544,15 +536,12 @@ read_rankings <- function(file_path, from_csv = FALSE) {
 #'  another are ≻ and >. For representing ties use ~.
 #'
 #' @return A profile of rankings object containing the representation.
-#' 
-#' @export
 #'
 #' @examples
-#' 
 #' parse_profile_of_rankings("6, a ≻ b ≻ c ≻ d,
 #'                            5, b ≻ c ≻ a ≻ d,
 #'                            3, c ≻ d ≻ a ≻ b")
-
+#' @export
 parse_profile_of_rankings <- function(string) {
   
   string <- stringr::str_remove(string, "\n")
@@ -573,6 +562,13 @@ parse_profile_of_rankings <- function(string) {
   return(por)
 }
 
+#' Get a single ranking from a profile of rankings
+#' 
+#' The ranking is not deleted from the profile.
+#' 
+#' @param profileOfRankings object to get the ranking
+#' @param index row of the ranking to extract
+#'
 #' @export
 get_ranking <- function(profileOfRankings, index) {
   
@@ -587,8 +583,15 @@ get_ranking <- function(profileOfRankings, index) {
   return(ranking)
 }
 
+#' Change the names of the candidates of a given profile
+#' 
+#' @param profileOfRankings Profile to update the name of the candidates.
+#' @param newCandidates New name of the candidates.
+#' 
+#' @return The profile of rankings with the name of the candidates modified.
+#'
 #' @export
-set_candidates <- function(profileOfRankings, newCandidates) {
+update_candidates <- function(profileOfRankings, newCandidates) {
   if(length(newCandidates) != length(profileOfRankings$candidate))
     stop("You must give the same number of candidates")
   else {
@@ -598,3 +601,20 @@ set_candidates <- function(profileOfRankings, newCandidates) {
   return(profileOfRankings)
 }
 
+################################################################################
+
+#' @export
+is.por <- function(x, ...) inherits(x, "por")
+
+#' @export
+print.por <- function(x, ...) {
+  
+  
+  gr <- apply(x$profileOfRankings, 1, format.ranking)
+  gr <- as.data.frame(gr)
+  gpor <- cbind(x$numberOfVoters, gr)
+  
+  colnames(gpor) <- c('numberOfVoters', 'ranking')
+  print(gpor)
+  invisible(gpor)
+}

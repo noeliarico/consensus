@@ -164,6 +164,140 @@ ranking <- function(v, cnames = NULL, desc = FALSE) {
   return(ranking)
 }
 
+#' Translate ranking 
+#' 
+#' Parses a ranking from a graphical format to its R representation
+#'
+#' @param string  Graphical representation of the ranking
+#' 
+#' @family ranking
+#' 
+#' @return
+#' @export
+parse_ranking <- function(string) {
+  
+  # Valid symbols to express succ and sim
+  succ <- c("\u227B", ">")
+  sim <- c("\u223C", "\u007E", "=")
+  symbols <- paste(paste(succ, collapse = "|"), 
+             paste(sim, collapse = "|"), sep = "|")
+  
+  # Remove all the blank spaces
+  string <- stringr::str_replace_all(string, " ", "")
+  # Get the list of candidates splitting by the operators
+  candidates <- unlist(strsplit(string, symbols))
+  # Get the names of the candidates removing the operators
+  candidates_names <- candidates[!candidates %in% symbols]
+  # Count the number of candidates
+  number_of_candidates <- length(candidates_names)
+  # Vector of zeros (one per candidate) that will store the final ranking
+  ranking <- integer(number_of_candidates)
+  # Name the vector
+  names(ranking) <- candidates_names
+  operators <- unlist(strsplit(string, ""))
+  operators <- operators[operators %in% c(succ, sim)]
+  
+  i <- 1
+  pos <- 1
+  ranking[i] <- 1
+
+  for (elem in operators) {
+    i <- i + 1
+    if(elem %in% succ) {
+      pos <- pos + 1
+    }
+    ranking[i] <- pos
+  }
+  
+  ranking <- ranking[order(names(ranking))]
+  
+  class(ranking) <- c("ranking", "numeric")
+  return(ranking)
+}
+
+#' Ranking has ties
+#' 
+#' Check whether the ranking object given as parameter has ties.
+#'
+#' @param ranking  Object of class ranking.
+#'
+#' @return TRUE if the ranking has ties, FALSE otherwise.
+#' @export
+ranking_has_ties <- function(ranking) {
+  return(is.ranking(ranking) && (length(unique(ranking)) < length(ranking)))
+}
+
+#' Ranking to lineal
+#' 
+#' Take a ranking that contains ties and give a linear extension of the ranking
+#' without ties.
+#'
+#' @param ranking  Object of the class ranking.
+#'
+#' @return Linear extension of the ranking given as parameter
+#' @export
+ranking_to_linear <- function(ranking) {
+  if(!ranking_has_ties(ranking)) {
+    warning("This ranking do not have ties")
+    return(ranking)
+  }
+    
+  m <- max(ranking)
+  i <- 1
+  for(iter in 1:m) {
+    indexes <- which(ranking == i)
+    if(length(indexes) > 1) { # there are tied candidates
+      # Increment all the candidates that are later on the ranking
+      ranking[ranking > i] <- ranking[ranking > i] + (length(indexes)-1)
+      # Untie
+      values <- i + 0:(length(indexes)-1)
+      ranking[indexes] <- values
+      # Update
+      i <- i + (length(indexes)-1)
+    }
+    else {
+      i <- i + 1
+    }
+  }
+  return(ranking)
+}
+
+################################################################################
+################################################################################
+
+#' Check if the object is a ranking
+#' 
+#' @param x Object to check whether is a ranking
+#' @param ... Any other parameter will be ignored
+#'
+#' @return TRUE if the object given as parameter is a ranking. FALSE otherwise.
+#' 
+#' @export
+is.ranking <- function(x, ...) {
+  
+  if(length(x) == 1 && x == 1) {
+    return(TRUE)
+  }
+  
+  #if(length(unique(names(x))) == length(x)){
+  max_pos <- max(x)
+  min_pos <- min(x)
+  if(min_pos > 0 && max_pos > 0 &&
+     max_pos <= length(x) && min_pos < length(x) &&
+     all(x <= max_pos) && all(x >= min_pos) &&
+     all(1:max_pos %in% x)) {
+    #if(inherits(x, "ranking")) {
+    return(TRUE)
+    #}
+  }
+  else {
+    # message("The vector is not a ranking")
+    return(FALSE)
+  }
+  #}
+  
+}
+
 #' @method format ranking
 #' @export
 format.ranking <- function(x, ..., latex = FALSE) {
@@ -184,9 +318,13 @@ format.ranking <- function(x, ..., latex = FALSE) {
       if(latex) {
         gr <- paste(gr, '\\succ',names[i+1])
       } else {
-        gr <- paste(gr, '\u227B',names[i+1])
+        if(Sys.info()['sysname'] != "Windows") {
+          gr <- paste(gr, '\u227B',names[i+1])
+        }
+        else {
+          gr <- paste(gr, '>', names[i+1]) 
+        }
       }
-
       #gr <- paste(gr, '&#227B',names[i+1])
     }
     else { # this means the two rankings are equals
@@ -215,127 +353,7 @@ print.ranking <- function(x, ..., latex = FALSE) {
   invisible(r)
 }
 
+#' @export
 default.ranking <- function(ranking, ...) {
   stop("Error: method not defined for the class ranking")
-}
-
-#' @export
-is.ranking <- function(x, ...) {
-  
-  if(length(x) == 1 && x == 1) {
-    return(TRUE)
-  }
-  
-  #if(length(unique(names(x))) == length(x)){
-  max_pos <- max(x)
-  min_pos <- min(x)
-  if(min_pos > 0 && max_pos > 0 &&
-     max_pos <= length(x) && min_pos < length(x) &&
-     all(x <= max_pos) && all(x >= min_pos) &&
-     all(1:max_pos %in% x)) {
-    #if(inherits(x, "ranking")) {
-    return(TRUE)
-    #}
-  }
-  else {
-    # message("The vector is not a ranking")
-    return(FALSE)
-  }
-  #}
-  
-}
-
-#' Translate ranking 
-#' 
-#' Parses a ranking from a graphical format to its R representation
-#'
-#' @param string
-#' 
-#' @family ranking
-#' 
-#' @return
-#' @export
-#'
-parse_ranking <- function(string) {
-  
-  # Valid symbols to express succ and sim
-  succ <- c("\u227B", ">")
-  sim <- c("\u223C", "\u007E", "=")
-  symbols <- paste(paste(succ, collapse = "|"), 
-             paste(sim, collapse = "|"), sep = "|")
-  
-  # Remove all the blank spaces
-  string <- stringr::str_replace_all(string, " ", "")
-  # Get the list of candidates splitting by the operators
-  candidates <- unlist(strsplit(string, symbols))
-  # Get the names of the candidates removing the operators
-  candidates_names <- candidates[!candidates %in% symbols]
-  # Count the number of candidates
-  number_of_candidates <- length(candidates_names)
-  # Vector of zeros (one per candidate) that will store the final ranking
-  ranking <- integer(number_of_candidates)
-  # Name the vector
-  names(ranking) <- candidates_names
-  operators <- unlist(strsplit(string, ""))
-  operators <- operators[operators %in% c(succ, sim)]
-  
-  i <- 1
-  pos <- 1
-  ranking[i] <- 1
-  # print(ranking)
-  # print(string)
-  # print(operators)
-  for (elem in operators) {
-    i <- i + 1
-    if(elem %in% succ) {
-      pos <- pos + 1
-    }
-    ranking[i] <- pos
-  }
-  
-  ranking <- ranking[order(names(ranking))]
-  
-  class(ranking) <- c("ranking", "numeric")
-  return(ranking)
-}
-
-#' Ranking has ties
-#'
-#' @param ranking 
-#'
-#' @return
-#' @export
-#'
-#' @examples
-ranking_has_ties <- function(ranking) {
-  return(is.ranking(ranking) && (length(unique(ranking)) < length(ranking)))
-}
-
-#' Ranking to lineal
-#' 
-#' Take a ranking that contains ties and give a linear extension of the ranking
-#'
-#' @param ranking 
-#'
-#' @return linear extension of the ranking given as parameter
-#' @export
-ranking_to_linear <- function(ranking) {
-  m <- max(ranking)
-  i <- 1
-  for(iter in 1:m) {
-    indexes <- which(ranking == i)
-    if(length(indexes) > 1) { # there are tied candidates
-      # Increment all the candidates that are later on the ranking
-      ranking[ranking > i] <- ranking[ranking > i] + (length(indexes)-1)
-      # Untie
-      values <- i + 0:(length(indexes)-1)
-      ranking[indexes] <- values
-      # Update
-      i <- i + (length(indexes)-1)
-    }
-    else {
-      i <- i + 1
-    }
-  }
-  return(ranking)
 }

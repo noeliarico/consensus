@@ -13,7 +13,8 @@ ranking(v, cnames = NULL, desc = FALSE)
 must identified uniquely each candidate, thus, repeated values are not 
 allowed.}
 
-\item{desc}{Default is FALSE.}
+\item{desc}{Default is FALSE. Therefore the rankings are creating in 
+ascending value}
 }
 \description{
 Given a numeric vector, the default behavior creates a ranking in 

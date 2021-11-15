@@ -22,7 +22,6 @@ A profile of rankings object containing the representation.
 Create profile of rankings using its string representation.
 }
 \examples{
-
 parse_profile_of_rankings("6, a ≻ b ≻ c ≻ d,
                            5, b ≻ c ≻ a ≻ d,
                            3, c ≻ d ≻ a ≻ b")

@@ -2,7 +2,7 @@
 % Please edit documentation in R/por.R
 \name{random_profile_of_rankings}
 \alias{random_profile_of_rankings}
-\title{Create random profile of rankings}
+\title{Create a random profile of rankings}
 \usage{
 random_profile_of_rankings(
   ncandidates = 4,
@@ -15,14 +15,23 @@ random_profile_of_rankings(
 )
 }
 \arguments{
-\item{ncandidates}{Number of candidates}
+\item{ncandidates}{Number of candidates. Default is 4.}
 
-\item{seed}{Fix a seed to hace reproducible code}
+\item{nvoters}{Number of voters. Default is 10.}
 
-\item{withties}{The rankings are generated without ties by default.}
+\item{seed}{To fix a seed to replicate the results. Default is NULL.}
 
-\item{nranking}{Number of rankings in the profile of rankings}
+\item{withties}{Indicates whether the profile created can contain ties. Default is FALSE.}
+
+\item{cnames}{Names of the candidates}
+
+\item{distinct}{Num}
+
+\item{distribution}{norm or uniform}
+}
+\value{
+A profile of rankings
 }
 \description{
-Creates a ranfom profile of rankings
+Useful for testing purposes
 }

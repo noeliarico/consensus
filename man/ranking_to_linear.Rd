@@ -7,11 +7,12 @@
 ranking_to_linear(ranking)
 }
 \arguments{
-\item{ranking}{}
+\item{ranking}{Object of the class ranking.}
 }
 \value{
-linear extension of the ranking given as parameter
+Linear extension of the ranking given as parameter
 }
 \description{
 Take a ranking that contains ties and give a linear extension of the ranking
+without ties.
 }

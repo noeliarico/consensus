@@ -7,7 +7,7 @@
 parse_ranking(string)
 }
 \arguments{
-\item{string}{}
+\item{string}{Graphical representation of the ranking}
 }
 \value{
 
