@@ -609,7 +609,6 @@ is.por <- function(x, ...) inherits(x, "por")
 #' @export
 print.por <- function(x, ...) {
   
-  
   gr <- apply(x$profileOfRankings, 1, format.ranking)
   gr <- as.data.frame(gr)
   gpor <- cbind(x$numberOfVoters, gr)

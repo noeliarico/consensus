@@ -52,14 +52,12 @@ ranking <- function(v, cnames = NULL, desc = FALSE) {
           has_names <- TRUE
         }
       }
-      
     }
     # If we are here it means that there are not valid names specified in n
     # or they are not given.
     # Now we have two different options. These are, if the vector v has or
     # hasn't names. If it has names and the names are valid they are used. If it
     # doesn't have names or they are invalid default names are given
-    
     
     if(!is.null(names(v)) && !has_names) {
       
@@ -300,7 +298,7 @@ is.ranking <- function(x, ...) {
 
 #' @method format ranking
 #' @export
-format.ranking <- function(x, ..., latex = FALSE) {
+format.ranking <- function(x, ..., full = FALSE, latex = FALSE) {
   
   if(length(x) == 1){
     return(names(x))
@@ -310,7 +308,12 @@ format.ranking <- function(x, ..., latex = FALSE) {
   
   names <- as.character(names(ranking))
   gr <- names[1]
-  for(i in 1:(length(ranking)-1)) {
+  if(!full) {
+    max <- 9
+  } else {
+    max <- length(ranking)-1
+  }
+  for(i in 1:max) {
     thisElem <- ranking[i]
     nextElem <- ranking[i+1]
     
@@ -335,6 +338,10 @@ format.ranking <- function(x, ..., latex = FALSE) {
       }
       #gr <- paste(gr, '&#007E',names[i+1])
     }
+  }
+  
+  if(max < (length(ranking)-1)) {
+    gr <- paste(gr, "...")
   }
   
   if(latex) {
