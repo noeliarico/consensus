@@ -34,7 +34,25 @@ scoring_rule <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FAL
   names(v) <- names(por)
   
   # For each ranking in the profile of rankings
-  if(method != "borda") {
+  if(method == "borda") { # Borda count
+    # Count the number of times that each candidate is ahead of the remaining ones
+    v <- rowSums(votrix(profileOfRankings))
+    # v <- sort(v, decreasing = TRUE) # sort v from more votes to less
+    if(seePoints || seeTrace) {
+      cat("Points rewarded by each candidate of the profile of rankings:\n")
+      print(v)
+      cat('Winning ranking:\n')
+    }
+    return(ranking(v, desc = TRUE))
+  # } else if(method == "plurality") { # esto se hace en scoring
+  #   points <- vector(mode = "numeric", length = length(candidates))
+  #   names(points) <- candidates
+  #   winners <- which(x == 1)
+  #   points[winners] <- 1/length(winners)
+  #   print(points)
+  #   return(ranking(points))
+  } else {
+    stop("Unkown method")
     # for(i in 1:nrow(por)) {
     #   numVotersRow <- votes[i]
     #   ranking <- por[i,]
@@ -52,18 +70,7 @@ scoring_rule <- function(profileOfRankings, method = NULL, t = 1, seeTrace = FAL
     #   
     # }
     stop("07/01/2021")
-    scoring_rule(profileOfRankings, )
-    
-  } else { # Borda count
-    # Count the number of times that each candidate is ahead of the remaining ones
-    v <- rowSums(votrix(profileOfRankings))
-    # v <- sort(v, decreasing = TRUE) # sort v from more votes to less
-    if(seePoints || seeTrace) {
-      cat("Points rewarded by each candidate of the profile of rankings:\n")
-      print(v)
-      cat('Winning ranking:\n')
-    }
-    return(ranking(v, desc = TRUE))
+    # scoring_rule(profileOfRankings, )
   }
   
   # vector that will store the final ranking
@@ -110,7 +117,7 @@ plurality <- function(profileOfRankings, seeTrace = FALSE, seePoints = FALSE) {
   n <- length(profileOfRankings$candidates)
   v <- rep(0, n)
   v[1] <- 1
-  scoring(profileOfRankings, v)
+  scoring(profileOfRankings, v, seeTrace = seeTrace)
 }
 
 #' Veto (a.k.a. antiplurality) ranking rule
@@ -148,7 +155,7 @@ tapproval <- function(profileOfRankings, t = 2, seeTrace = FALSE, seePoints = FA
   n <- length(profileOfRankings$candidates)
   v <- rep(0, n)
   v[1:t] <- 1
-  scoring(profileOfRankings, v)
+  scoring(profileOfRankings, v, seeTrace = seeTrace)
 }
 
 #' Borda Count ranking rule
@@ -200,7 +207,7 @@ scoring <- function(profileOfRankings, points, seeTrace = FALSE) {
     return(ranking(s, desc = TRUE))
   }
   else {
-    stop("you must give a punctuation for each position")
+    stop("You must give a score for each position")
   }
   
 }

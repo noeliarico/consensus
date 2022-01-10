@@ -298,7 +298,7 @@ is.ranking <- function(x, ...) {
 
 #' @method format ranking
 #' @export
-format.ranking <- function(x, ..., full = FALSE, latex = FALSE) {
+format.ranking <- function(x, ..., max.print = 9, latex = FALSE) {
   
   if(length(x) == 1){
     return(names(x))
@@ -308,8 +308,8 @@ format.ranking <- function(x, ..., full = FALSE, latex = FALSE) {
   
   names <- as.character(names(ranking))
   gr <- names[1]
-  if(!full) {
-    max <- 9
+  if(max.print > 0 && length(x) >= 9) {
+    max <- max.print
   } else {
     max <- length(ranking)-1
   }

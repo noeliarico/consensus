@@ -617,3 +617,14 @@ print.por <- function(x, ...) {
   print(gpor)
   invisible(gpor)
 }
+
+#' @export
+set_candidates <- function(profileOfRankings, newCandidates) {
+  if(length(newCandidates) != length(profileOfRankings$candidate))
+    stop("You must give the same number of candidates")
+  else {
+    profileOfRankings$candidates <- newCandidates
+    names(profileOfRankings$profileOfRankings) <- newCandidates
+  }
+  return(profileOfRankings)
+}
