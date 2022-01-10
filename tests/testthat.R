@@ -1,4 +1,4 @@
 library(testthat)
 library(consensus)
 
-# test_check("consensus")
+test_check("consensus")

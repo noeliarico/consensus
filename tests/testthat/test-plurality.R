@@ -1,0 +1,18 @@
+test_that("Plurality profiles 4 candidates", {
+  expect_output(print(plurality(por01)), "C3 ≻ C1 ≻ C2 ≻ C4")
+  expect_output(print(plurality(por02)), "C1 ≻ C2 ≻ C3 ≻ C4")
+  expect_output(print(plurality(por03)), "C3 ≻ C1 ≻ C2 ≻ C4")
+  expect_output(print(plurality(por04)), "C1 ≻ C2 ≻ C3 ≻ C4")
+  expect_output(print(plurality(por05)), "C1 ≻ C2 ≻ C3 ≻ C4")
+  expect_output(print(plurality(por06)), "C2 ≻ C1 ≻ C4 ≻ C3")
+  expect_output(print(plurality(por07)), "C1 ≻ C2 ≻ C3 ≻ C4")
+  expect_output(print(plurality(por08)), "C1 ∼ C2 ≻ C3 ∼ C4")
+  expect_output(print(plurality(por09)), "C1 ≻ C2 ≻ C3 ≻ C4")
+  expect_output(print(plurality(por10)), "C1 ∼ C2 ∼ C3 ≻ C4")
+  expect_output(print(plurality(por11)), "C1 ≻ C3 ≻ C2 ≻ C4")
+  expect_output(print(plurality(por12)), "C1 ≻ C2 ≻ C3 ≻ C4")
+  expect_output(print(plurality(por13)), "C1 ≻ C2 ≻ C3 ≻ C4")
+  expect_output(print(plurality(por14)), "C5 ≻ C1 ∼ C3 ≻ C2 ≻ C4")
+  
+  expect_output(print(plurality(por16)), "C3 ≻ C4 ≻ C2 ≻ C1")
+})
